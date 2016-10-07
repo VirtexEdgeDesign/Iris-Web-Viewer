@@ -1,3 +1,8 @@
+body {
+    font-family: "Lato", sans-serif;
+    transition: background-color .5s;
+}
+
 .sidenav {
     height: 100%;
     width: 0;
@@ -5,7 +10,7 @@
     z-index: 1;
     top: 0;
     left: 0;
-    background-color: #111;
+    background-color: #222;
     overflow-x: hidden;
     transition: 0.5s;
     padding-top: 60px;
@@ -32,7 +37,7 @@
     margin-left: 50px;
 }
 
-#div_main {
+#main {
     transition: margin-left .5s;
     padding: 16px;
 }

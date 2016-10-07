@@ -1,37 +1,25 @@
 function io_import_obj(FileName, InputFileText)
 {
   log("Loading file <b>'"+FileName+"'</b> as an <b>'ascii .obj'</b> file...");
-    var node = $('#tt').tree('find', 'models');
-      $('#tt').tree('append', {
-            parent: node.target,
-             data:[{
-                 id: FileName,
-                 text: FileName,
-                 iconCls: 'icon-mesh',
-                 checked:true
 
-         }]
-    });
-    
-    
+  // Create the model variable
+  var model = new vxModel(FileName);
+  
+  // Now create the first mesh variable
     var NewMesh = new vxMesh();
     NewMesh.Name = FileName;
     
-  /*******************************/
   //First initialise Arrarys
   /*******************************/
-  var vertices = [];           //Vertices
   var temp_vertices = [];      //Vertices List for initial loading
-  var vertexNormals = [];     //Normals
   var temp_Normals = [];      //Normals List for initial loading
-  var generatedColors = [];     //Colours
-  var cubeVertexIndices = [];   //Indices - Not very useful in STL files.
-  
-  /*
   var temp_Normal = [];        //To hold the Normal for that entire face.
-   */
-  var temp_colour = [ 0.75, 0.5, 0.05, 1];        //Holds the Current Model Colour
- 
+  
+  var vert1 = new vxVertex3D(0,0,0);
+  var vert2 = new vxVertex3D(0,0,0);
+  var vert3 = new vxVertex3D(0,0,0);
+  var norm = new vxVertex3D(0,0,0);
+  
   
   //Zero out the number of elements
   numOfElements = 0;
@@ -42,6 +30,8 @@ function io_import_obj(FileName, InputFileText)
   modelprop_Center[0] = 0;
   modelprop_Center[1] = 0;
   modelprop_Center[2] = 0;
+  
+  
   
       // Print out Result line By Line
     var lines = InputFileText.split('\n');
@@ -73,28 +63,19 @@ function io_import_obj(FileName, InputFileText)
        case 'o':
        case 'g':
          
-         
-         if(NewMesh.vertices.length> 0){
-            NewMesh.InitialiseBuffers();
-            MeshCollection.push(NewMesh);
-            numOfElements += NewMesh.Indices.length;
+         // Each Group, create a New Mesh
+         if(NewMesh.mesh_vertices.length> 0){
+            model.AddMesh(NewMesh);
          }
         
-        NewMesh = new vxMesh();
-        NewMesh.Name = 'Group: ' + inputLine[1];
-         
-          var dataThisLoop = {
-          id: 'Group: ' + inputLine[1],
-          text:'Group: ' + inputLine[1],
-          checked:true
-         };
-         treeItems.push(dataThisLoop);
-         
+        NewMesh = new vxMesh('mesh: ' + inputLine[1]);
+        
          break;
        
       //Add Face
        case 'f':
          
+          //console.log('indexArray');
         //Loop through each vertice collection in each line
         for(var vrt = 1; vrt < inputLine.length; vrt++){
           if(inputLine[vrt] !== ""){
@@ -102,16 +83,6 @@ function io_import_obj(FileName, InputFileText)
           //Index Array
           var indexArray = inputLine[vrt] .split("/");
           
-
-          //Should Always have Vertice Data
-          NewMesh.vertices.push(temp_vertices[(indexArray[0]-1)*3]);
-          NewMesh.vertices.push(temp_vertices[(indexArray[0]-1)*3+1]);
-          NewMesh.vertices.push(temp_vertices[(indexArray[0]-1)*3+2]);
-          
-         modelprop_Center[0] -= temp_vertices[(indexArray[0]-1)*3];
-         modelprop_Center[1] -= temp_vertices[(indexArray[0]-1)*3+1];
-         modelprop_Center[2] -= temp_vertices[(indexArray[0]-1)*3+2];
-
           //TODO: Add in Texture Support
 
 
@@ -124,56 +95,66 @@ function io_import_obj(FileName, InputFileText)
             temp_Normal[1] = temp_Normals[(indexArray[2]-1)*3+1];
             temp_Normal[2] = temp_Normals[(indexArray[2]-1)*3+2];
             //console.log((indexArray[2]-1));
+            
+            
+            // Set the Normal for this Current Face
+            norm.Set(temp_Normal[0], temp_Normal[1], temp_Normal[2]);
           }
+          else
+          {
+            norm.Set(0,1,0);
+          }
+          numOfElements++;
 
-          //Add In Normals
-          NewMesh.vert_noramls.push(temp_Normal[0]);
-          NewMesh.vert_noramls.push(temp_Normal[1]);
-          NewMesh.vert_noramls.push(temp_Normal[2]);
           
-          //TODO: Add in Material Texture Support
-          NewMesh.vert_colours.push(temp_colour[0]);
-          NewMesh.vert_colours.push(temp_colour[1]);
-          NewMesh.vert_colours.push(temp_colour[2]);
-          NewMesh.vert_colours.push(temp_colour[3]);
-          
-          //Add in Element Indice
-          NewMesh.Indices.push(NewMesh.Indices.length);
+          switch(vrt-1)
+         {
+          case 0:
+            vert1.Set(temp_vertices[(indexArray[0]-1)*3], temp_vertices[(indexArray[0]-1)*3+1], temp_vertices[(indexArray[0]-1)*3+2]);
+          break;
+          case 1:
+            vert2.Set(temp_vertices[(indexArray[0]-1)*3], temp_vertices[(indexArray[0]-1)*3+1], temp_vertices[(indexArray[0]-1)*3+2]);
+          break;
+          case 2:
+            vert3.Set(temp_vertices[(indexArray[0]-1)*3], temp_vertices[(indexArray[0]-1)*3+1], temp_vertices[(indexArray[0]-1)*3+2]);
+          break;
+         }
+
+
+         modelprop_Center[0] -= temp_vertices[(indexArray[0]-1)*3];
+         modelprop_Center[1] -= temp_vertices[(indexArray[0]-1)*3+1];
+         modelprop_Center[2] -= temp_vertices[(indexArray[0]-1)*3+2];
+         
           }
         }
+        
+        // Once all of the data is in, create the new face
+        var selcol = new vxColour();
+        selcol.EncodeColour(numOfFaces);
+          NewMesh.AddFace(vert1, vert2, vert3, norm, meshcolor, selcol);
+        
+          numOfFaces++;
          break;
      }
     }
-    
-         var node2 = $('#tt').tree('find', FileName);
-          $('#tt').tree('append', {
-            parent: node2.target,
-             data:treeItems
-             });
-    
-    $('#tt').tree({onCheck: function(node,checked){   
-              //New elegent Drawing code
-  for(var i = 0; i < MeshCollection.length; i++)
-  {
-    if(MeshCollection[i].Name == node.text){
-        MeshCollection[i].Enabled = !node.checked;
-     console.log(node);
-    }
-  }
-                }
-            });
-            
+
+         
     //Set Model Center
     modelprop_Center[0] /= numOfElements;
     modelprop_Center[1] /= numOfElements;
     modelprop_Center[2] /= numOfElements;
     
+        Zoom = -NewMesh.MaxPoint.Length()*1.75;
+        rotX = -45;
+        rotY = 30;
+    
     numOfElements = 0;
-         
-NewMesh.InitialiseBuffers();
-MeshCollection.push(NewMesh);
-console.log(MeshCollection.length);
+    
+  model.AddMesh(NewMesh);
   
-  $('#modelForm_Open').window('close');
+  InitialiseModel(model);
+
+  
+  //$('#modelForm_Open').window('close');
   log("Done!");
 }

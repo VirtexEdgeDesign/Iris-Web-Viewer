@@ -3,13 +3,18 @@ var MeshType = {
     Lines: 1
 };
 
-function vxMesh () {
+function vxMesh (name) {
   
   //Mesh Name
-    this.Name = "object:name";
+    this.Name = name;
     
-
-    this.meshcolor = new vxColour(0.75, 0.5, 0.05, 1);
+    var col = 0.75;
+    this.meshcolor = new vxColour(col, col, col, 1);
+    
+    // Place holders to determine if the Hover index is with in this
+    // mesh or not.
+    this.IndexStart = 0;
+    this.IndexEnd = 0;
 
     //Vertice Array
     this.mesh_vertices = [];
@@ -52,10 +57,25 @@ function vxMesh () {
     
     // The Max Point of this Mesh
     this.MaxPoint = new vxVertex3D(0,0,0);
+    
+    this.Center = [0,0,0];
+    
+    this.IndexStart = numOfFaces;
 }
 
 vxMesh.prototype.getInfo = function() {
     return 'Mesh Name: ' + this.Name;
+};
+
+// Initialises the Mesh
+vxMesh.prototype.Init = function() {
+  
+  this.InitialiseBuffers();
+  //this.IndexEnd = numOfFaces;
+  this.IndexEnd = this.IndexStart + this.Indices.length/3;
+  
+  // Now Add it to the MeshCollection
+  MeshCollection.push(this);
 };
 
 vxMesh.prototype.InitialiseBuffers = function(){

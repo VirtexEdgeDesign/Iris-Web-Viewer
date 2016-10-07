@@ -19,9 +19,10 @@
 .acidjs-css3-treeview *
 {
     padding: 0;
-    margin: 0;
+    margin: ;
     list-style: none;
-    
+    transition: margin-left .5s;
+    overflow:none;
     
   transition: background-color 1s ease;
   background-color:rgba(0, 0, 0, 0);
@@ -44,6 +45,7 @@
     
 }
 
+
 .acidjs-css3-treeview:hover
 {
   
@@ -58,7 +60,19 @@
     margin: 0 0 0 22px;
     
 }
- 
+
+.acidjs-css3-treeview li ul li>label
+{
+  transition: background-color 0.1s ease;
+}
+  
+
+.acidjs-css3-treeview li ul li>label:hover
+{
+  /*color:black;*/
+  background-color:#0094f7;
+}
+
 .acidjs-css3-treeview *
 {
     vertical-align: middle;
@@ -85,14 +99,16 @@
 {
     cursor: pointer;
 }
- 
+
+
+
 .acidjs-css3-treeview label[for]::before
 {
     -webkit-transform: translatex(-24px);
     -moz-transform: translatex(-24px);
     -ms-transform: translatex(-24px);
     -o-transform: translatex(-24px);
-    transform: translatex(-24px);
+    transform: translatex(-45px);
 }
  
 .acidjs-css3-treeview label span::before
@@ -116,8 +132,10 @@
  
 .acidjs-css3-treeview label:not([for])
 {
-    margin: 0 8px 0 5px;
+    margin: 0 7px 0 5px;
 }
+
+
  
 .acidjs-css3-treeview label span::before
 {
@@ -131,6 +149,49 @@
 {
     content: "\2714";
     box-shadow: 0 0 2px rgba(0, 0, 0, .25) inset;
-    color: darkorange;
+    color: white;
     opacity: 1;
 }
+
+
+.acidjs-css3-treeview label[for]
+{
+  position:relative;
+  left:16px;
+  
+  padding-left:5px;
+  padding-right:20px;
+  margin: 20px 0 0;
+  background-image: url('../img/tree/node_default.png');
+  background-repeat: no-repeat;
+  background-position: 0px 0px;
+}
+
+.acidjs-css3-treeview label[for][data-icon="envrroot"]{  background-image: url('../img/tree/node_envr.png'); }
+.acidjs-css3-treeview label[for][data-icon="axis"]{  background-image: url('../img/tree/node_axis.png'); }
+.acidjs-css3-treeview label[for][data-icon="plane"]{  background-image: url('../img/tree/node_plane.png'); }
+.acidjs-css3-treeview label[for][data-icon="folder"]{  background-image: url('../img/tree/node_folder.png'); }
+.acidjs-css3-treeview label[for][data-icon="txtrs"]{  background-image: url('../img/tree/node_folder_picture.png'); }
+.acidjs-css3-treeview label[for][data-icon="properties"]{  background-image: url('../img/tree/node_properties.png'); }
+
+.acidjs-css3-treeview label[for][data-icon="mesh"]{  background-image: url('../img/tree/node_mesh.png'); }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

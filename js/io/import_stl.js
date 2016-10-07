@@ -1,28 +1,15 @@
 function io_import_stl(FileName, InputFileText)
 {
-  var mesh = new vxMesh();
+  var model = new vxModel(FileName);
+  
+  var mesh = new vxMesh("mesh: " + FileName.substring(0, FileName.length-4));
 
   log("Loading file <b>'"+FileName+"'</b> as an <b>'ascii .stl'</b> file...");
-  /*
-    var node = $('#tt').tree('find', 'models');
-      $('#tt').tree('append', {
-            parent: node.target,
-             data:[{
-                 id: "mdl_" + FileName,
-                 text: FileName,
-                 iconCls: 'icon-mesh',
-                 checked:true
 
-         }]
-    });
-    */
   /*******************************/
   //First initialise Arrarys
   /*******************************/
-  
-  var temp_Normal = [];        //To hold the Normal for that entire face.
-   
-  var meshcolor = new vxColour(0.75, 0.5, 0.05, 1);
+
   var vertcount = 0;
 
 var vert1 = new vxVertex3D(0,0,0);
@@ -34,7 +21,7 @@ var norm = new vxVertex3D(0,0,0);
   numOfElements = 0;
   
   //Set the Index. 0 is the background.
-  numOfFaces = 1 + MeshCollection.length;
+  //numOfFaces = 1 + MeshCollection.length;
 
   var treeItems = [];
   
@@ -42,6 +29,8 @@ var norm = new vxVertex3D(0,0,0);
   modelprop_Center[0] = 0;
   modelprop_Center[1] = 0;
   modelprop_Center[2] = 0;
+  
+  mesh.IndexStart = numOfFaces;
   
       // Print out Result line By Line
     var lines = InputFileText.split('\n');
@@ -62,14 +51,14 @@ var norm = new vxVertex3D(0,0,0);
 
        var selcol = new vxColour();
         selcol.EncodeColour(numOfFaces);
+        
+//        console.log(numOfFaces);
 
           mesh.AddEdge(vert1, vert2);
           mesh.AddEdge(vert2, vert3);
           mesh.AddEdge(vert3, vert1);
 
          numOfFaces++;
-
-          //mesh.AddFace(vert1, vert2, vert3, norm, meshcolor, selcol);
         
        break;
 
@@ -95,7 +84,7 @@ var norm = new vxVertex3D(0,0,0);
           vertcount = 0;
 
 
-         
+         // Set Model Center
          modelprop_Center[0] -= inputLine[1];
          modelprop_Center[1] -= inputLine[2];
          modelprop_Center[2] -= inputLine[3];
@@ -103,18 +92,8 @@ var norm = new vxVertex3D(0,0,0);
          var vert = new vxVertex3D(inputLine[1], inputLine[2], inputLine[3]);
          
          mesh.AddVertices(vert, norm, meshcolor, selcol);
-         
-
-         var dataThisLoop = {
-          id: numOfElements,
-          text:'Face' + numOfElements
-         };
-         treeItems.push(dataThisLoop);
-         
-         
-         //First Increment number of elements
           numOfElements++;
-          //console.log(numOfElements);
+        
        break;
      }
 
@@ -126,28 +105,23 @@ var norm = new vxVertex3D(0,0,0);
         
         
         // Initialise the VBO Buffers 
-        mesh.InitialiseBuffers();
-        
+      //mesh.Initialise();
         
         // Set the Name
-        mesh.Name = FileName;
+        //mesh.Name = "mesh: " + FileName.substring(0, FileName.length-4);
         
-        // Now Add it to the MeshCollection
-        MeshCollection.push(mesh);
+
 
         
         // Now Set the View Parameters
         Zoom = -mesh.MaxPoint.Length()*1.75;
         rotX = -45;
         rotY = 30;
-/*
-        var node2 = $('#tt').tree('find', "mdl_" + FileName);
-
-          $('#tt').tree('append', {
-            parent: node2.target,
-             data:treeItems
-             });
-*/
+        
+  model.AddMesh(mesh);
+  
+   InitialiseModel(model);
+    
 
   //$('#modelForm_Open').window('close');
   log("Done!");

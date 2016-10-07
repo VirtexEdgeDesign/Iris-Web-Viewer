@@ -5,11 +5,14 @@
   
   <!-- Styles -->
   <link rel="stylesheet" href="css/styles.css">
-  <link rel="stylesheet" href="css/dropdownMenu.css">
+  <link rel="stylesheet" href="css/menubar.css">
   <link rel="stylesheet" href="css/treeview.css">
   <link rel="stylesheet" href="css/modal.css">
   <link rel="stylesheet" href="css/sidebar.css">
+  <link rel="stylesheet" href="css/contextmenu.css">
   
+  <script src="lib/prism.js" type="text/javascript"></script>
+  <link rel="stylesheet" href="lib/prism.css">
   
   <!-- Javascript -->
   <script src="lib/jquery-3.1.0.min.js" type="text/javascript"></script>
@@ -23,9 +26,9 @@
   <script src="js/vx/vxColour.js" type="text/javascript"></script>
   <script src="js/vx/vxVertex3D.js" type="text/javascript"></script>
   <script src="js/vx/vxMesh.js" type="text/javascript"></script>
+  <script src="js/vx/vxModel.js" type="text/javascript"></script>
   
   <script src="js/Input.js"></script>
-  <script src="js/TopMenuBar.js"></script>
     
     <!-- Inport Scripts -->
     <script src="js/io/import_obj.js" type="text/javascript"></script>
@@ -90,20 +93,31 @@
 
 <body>
   
-
+  
 
 <div id="div_main">
+  <div id="header" style="border: none;position:absolute; top:0px; left:0;height:30px;width:100%;background:darkorange"></div>
 <div>
-  <canvas id="glcanvas3D" style="border: none;position:absolute; top:30px; left:0;" width="500" height="500"></canvas>
-        
-<div class="acidjs-css3-treeview" style="position:absolute; top:30px; left:0;">
+  <canvas id="glcanvas3D" class="glcanvas3D" style="border: none;position:absolute; top:30px; left:0;" width="500" height="500"></canvas>
+<div class="footer" id="div_footer" style="border: none;position:absolute;bottom:0px; left:0;"><a id="footer_text">footer-text</a></div>
+<!-- This is the mouse div 
+  <div id="div_mstext"  style="border: none;position:absolute;top:30px; left:0;" >
+  <a>Model: newModel</a>
+  <br/>
+  <a>Mesh: newMesh</a>
+  </div>        
+-->
+
+<div id="model_treeview" class="acidjs-css3-treeview" style="position:absolute; top:30px; left:0;">
         <li>
-            <input type="checkbox" id="node-0" checked="checked" /><label><input type="checkbox" /><span></span></label><label for="node-0">Libraries</label>
-            <ul>
+            <input type="checkbox" id="tree_root" checked="checked" /><label><input type="checkbox" checked="checked" /><span></span></label><label data-icon="envrroot" for="tree_root">Enviroment</label>
+            <ul id="tree_root_ul">
+              <!--
                 <li>
-                    <input type="checkbox" id="node-0-0" checked="checked" /><label><input type="checkbox" /><span></span></label><label for="node-0-0">Documents</label>
+                    <input type="checkbox" id="node-0-0" checked="checked" /><label><input type="checkbox" /><span></span></label><label data-type="rt" for="node-0-0">       Documents</label>
                     <ul>
                         <li>
+                          
                             <input type="checkbox" id="node-0-0-0" checked="checked" /><label><input type="checkbox" /><span></span></label><label for="node-0-0-0">My Documents</label>
                             <ul>
                                 <li>
@@ -140,15 +154,19 @@
                 </li>
                 <li>
                     <input type="checkbox" id="node-0-3" checked="checked" /><label><input type="checkbox" checked="checked" /><span></span></label><label for="node-0-3">Video</label>
-                    <ul>
+                    <ul id = "testnode">
                         <li>
                             <input type="checkbox" id="node-0-3-0" /><label><input type="checkbox" checked="checked" /><span></span></label><label for="node-0-3-0">My Videos</label>
                         </li>
                         <li>
                             <input type="checkbox" id="node-0-3-1" /><label><input type="checkbox" checked="checked" /><span></span></label><label for="node-0-3-1">Public Videos</label>
                         </li>
+                        <li>
+                            <input type="checkbox" id="node-0-3-2" /><label><input type="checkbox" checked="checked" /><span></span></label><label for="node-0-3-2">Public Videos</label>
+                        </li>
                     </ul>
                 </li>
+               -->
             </ul>
         </li>
     </ul>
@@ -156,9 +174,9 @@
     
 </div>
 
-<div  style="border: none;position:absolute; top:0px; left:0;">
+<div class="menubar" id="top_menu" style="border: none;position:absolute; top:0px; left:0;">
   <!-- Top Menu Bar -->
-  <nav>
+  <nav class="menubar">
   <div id="logo"><a id="btn_logo" href="#">Iris Viewer</a></div>
   <label for="drop" class="toggle">Menu</label>
   <input type="checkbox" id="drop" />
@@ -231,22 +249,35 @@
       <input type="checkbox" id="drop-2"/>
       <ul>
         <li><a id="menu_about_about" href="#">About Iris</a></li>
+        <!-- 
         <li><a href="#">Help</a></li>
         
         <li><hr id="splitter" /></li>
         <li><a href="#">Tutorial</a></li>
-        
+        -->
         <li><hr id="splitter" /></li>
-        <li><a href="#">Virtex Edge Design</a></li>
-        
+        <li><a data-icon="icon-logo-vrtx" href="#">Virtex Edge Design</a></li>
       </ul>
       </li>
   </ul>
 </nav>
+
 </div>
 
 </div>
+
+<!--
+<div class="icon-bar" style="border: none;position:absolute; top:85%; left:0;">
+  <a class="active" href="#"><i class="fa fa-home"></i></a>
+  <a href="#">sdf<i class="fa fa-search"></i></a>
+  <a href="#"><i class="fa fa-envelope"></i></a>
+  <a href="#">asdf<i class="fa fa-globe"></i></a>
+  <a href="#"><i class="fa fa-trash"></i></a>
+</div>
+-->
+
 </body>
+
 
 <!-- The Modal -->
 <div id="myModal" class="modal">
@@ -254,28 +285,83 @@
   <!-- Modal content -->
   <div class="modal-content">
     <div class="modal-header">
-      <span class="close">×</span>
-      <h2>Modal Header</h2>
+      <span class="close">&times;</span>
+      <h2>Iris Web Viewer Chrome Extention</h2>
     </div>
     <div class="modal-body">
-      <p>Some text in the Modal Body</p>
-      <p>Some other text...</p>
+<table class="tg">
+  <tr>
+    <th class="tg-031e">
+      <img src="assets/icon_128.png" alt="Mountain View" style="width:128px;height:128px;">
+    </th>
+    <th class="tg-yw4l">
+     Iris Web Viewer is a cross platform 3D Model Viewer for exchange formats.
+     <br/><br/>
+      It allows for a number of different model formats to be viewed
+      as well as exposes the raw data of the model such as Vertice/Normal data, 
+      UV Texture Coordinates among other things, without the need for expensive and large
+      3D modeling systems.
+     <br/><br/>
+    </th>
+  </tr>
+  <tr>
+    <td class="tg-yw4l" style="width:150px">Supported Formats</td>
+    <td class="tg-yw4l">
+      <ul>
+        <li>*.stl</li>
+        <li>*.obj</li>
+        <li>*.ply</li>
+        <li>*.fbx (PRO version)</li>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td class="tg-yw4l"></td>
+    <td class="tg-yw4l">
+     <br/><br/>
+     </td>
+  </tr>
+  <tr>
+    <td class="tg-yw4l"></td>
+    <td class="tg-yw4l">
+     <br/><br/>
+     </td>
+  </tr>
+</table>
+
+
     </div>
     <div class="modal-footer">
-      <h3>Modal Footer</h3>
+      <p>(C) Virtex Edge Design</p>
     </div>
   </div>
 </div>
 
-  <div id="mySidenav" class="sidenav">
+<div id="mySidenav" class="sidenav">
+  <div id="mnd">
   <a href="#" class="closebtn" id="btn_closeSidebar">&times;</a>
   <a href="#">About</a>
-  <a href="#">Services</a>
-  <a href="#">Clients</a>
   <a href="#">Contact</a>
+
+</div>
 </div>
 
+<nav id="context-menu" class="context-menu">
+    <ul class="context-menu__items">
+      <li class="context-menu__item">
+        <a id="SetViewToSel" href="#" class="context-menu__link" data-action="View"><i class="fa fa-eye"></i>Center View to Selection</a>
+      </li>
+      <li class="context-menu__item">
+        <a id="SetViewToOrig" href="#" class="context-menu__link" data-action="Edit"><i class="fa fa-edit"></i>Center View to Origin</a>
+      </li>
+      <li><hr id="splitter" class="context-menu__item" /></li>
+      <li class="context-menu__item">
+        <a href="#"  data-icon="properties" class="context-menu__link" data-action="Delete"><i class="fa fa-times"></i>Properties</a>
+      </li>
+    </ul>
+  </nav>
 
   <script src="main.js"></script>
+  <script src="js/MenuBarEvents.js"></script>
   <script src="js/io/io_open.js" type="text/javascript"></script>
 </html>

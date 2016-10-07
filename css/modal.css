@@ -11,21 +11,24 @@
     overflow: auto; /* Enable scroll if needed */
     background-color: rgb(0,0,0); /* Fallback color */
     background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+
 }
 
 /* Modal Content */
 .modal-content {
     position: relative;
-    background-color: #000;
+    background-color: #333;
     margin: auto;
     padding: 0;
     border: 1px solid #888;
-    width: 80%;
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+    width: 450px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.75),0 6px 20px 0 rgba(0,0,0,0.75);
     -webkit-animation-name: animatetop;
     -webkit-animation-duration: 0.4s;
     animation-name: animatetop;
-    animation-duration: 0.75s
+    animation-duration: 0.75s;
+    font-size: 11px;
+    line-height: 16px;
 }
 
 /* Add Animation */
@@ -56,14 +59,20 @@
 
 .modal-header {
     padding: 2px 16px;
-    background-color: #5cb85c;
-    color: white;
+    background-color: darkorange;
+    color: black;
+        font-size: 12px;
+    line-height: 32px;
 }
 
-.modal-body {padding: 2px 16px;}
+.modal-body {
+  padding: 2px 16px; 
+  float:left;
+  color: #ffffff;
+}
 
 .modal-footer {
     padding: 2px 16px;
-    background-color: #5cb85c;
+    background-color: #222;
     color: white;
 }

@@ -31,31 +31,45 @@ $(document).keyup(function (e) {
         var newMesh = new vxMesh();
         
         var ind = 0;
-        var sel_colour = [ 0.1, 1, 0.6, 1];  
+        //var sel_colour = [ 0.1, 1, 0.6, 1];  
+        var center = [0,0,0];
         for(var i = 0; i < 9; i+=3)
         {
           newMesh.mesh_vertices.push(HoveredMesh.mesh_vertices[i]); 
           newMesh.mesh_vertices.push(HoveredMesh.mesh_vertices[i+1]);
           newMesh.mesh_vertices.push(HoveredMesh.mesh_vertices[i+2]);
+          center[0] += parseFloat(HoveredMesh.mesh_vertices[i]);
+          center[1] += parseFloat(HoveredMesh.mesh_vertices[i+1]);
+          center[2] += parseFloat(HoveredMesh.mesh_vertices[i+2]);
         
           newMesh.vert_noramls.push(0);
           newMesh.vert_noramls.push(1);
           newMesh.vert_noramls.push(0);
         
-          newMesh.vert_colours.push(sel_colour[0]);
-          newMesh.vert_colours.push(sel_colour[1]);
-          newMesh.vert_colours.push(sel_colour[2]);
-          newMesh.vert_colours.push(sel_colour[3]);
+          newMesh.vert_colours.push(selectedcolor.R);
+          newMesh.vert_colours.push(selectedcolor.G);
+          newMesh.vert_colours.push(selectedcolor.B);
+          newMesh.vert_colours.push(selectedcolor.A);
 
           newMesh.Indices.push(ind);
           ind++;
         }
 
         newMesh.InitialiseBuffers();
+        
+          center[0] /=-3;
+          center[1] /=-3;
+          center[2] /=-3;
+          
+          newMesh.Center = center;
+          
+          //console.log(newMesh.Center);
 
       SelectedMeshCollection.push(newMesh);
       }
   }
+  
+
 
 
 function handleMouseDown(event) {
@@ -98,10 +112,33 @@ function handleMouseDown(event) {
   }
 
   function handleMouseMove(event) {
+    
+    
+
+        
+        //d.innerHTML = "Face." + HoverIndex;
+        
+    
     var rect = canvas.getBoundingClientRect();
 
     MouseState.x = event.clientX - rect.left;
     MouseState.y = event.clientY - rect.top;
+    
+    /*
+            var msx = 0;
+        var msy = 0;
+        
+        if(HoverIndex !== 0)
+        {
+          msx = MouseState.x;
+          msy = MouseState.y;
+        }
+        
+        var d = document.getElementById('div_mstext');
+        d.style.position = "absolute";
+        d.style.left = msx+ 30 + 'px';
+        d.style.top = msy + 30 +'px';
+        */
     
     if (!mouseDown) {
       return;
@@ -118,6 +155,8 @@ function handleMouseDown(event) {
     lastMouseX = newX;
     lastMouseY = newY;
     }
+    
+    
     
   }
   
