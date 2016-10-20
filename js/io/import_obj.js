@@ -1,4 +1,4 @@
-function io_import_obj(FileName, InputFileText)
+function io_import_obj(FileName, InputFileText, reader)
 {
   log("Loading file <b>'"+FileName+"'</b> as an <b>'ascii .obj'</b> file...");
 

@@ -30,6 +30,10 @@ $(document).keyup(function (e) {
       if(HoverIndex > 0){
         var newMesh = new vxMesh();
         
+        newMesh.Name = "Face." + HoverIndex;
+        
+        newMesh.Model = HoveredMesh.Model;
+        
         var ind = 0;
         //var sel_colour = [ 0.1, 1, 0.6, 1];  
         var center = [0,0,0];
@@ -42,9 +46,9 @@ $(document).keyup(function (e) {
           center[1] += parseFloat(HoveredMesh.mesh_vertices[i+1]);
           center[2] += parseFloat(HoveredMesh.mesh_vertices[i+2]);
         
-          newMesh.vert_noramls.push(0);
-          newMesh.vert_noramls.push(1);
-          newMesh.vert_noramls.push(0);
+          newMesh.vert_noramls.push(HoveredMesh.vert_noramls[i]); 
+          newMesh.vert_noramls.push(HoveredMesh.vert_noramls[i+1]);
+          newMesh.vert_noramls.push(HoveredMesh.vert_noramls[i+2]);
         
           newMesh.vert_colours.push(selectedcolor.R);
           newMesh.vert_colours.push(selectedcolor.G);
@@ -66,6 +70,12 @@ $(document).keyup(function (e) {
           //console.log(newMesh.Center);
 
       SelectedMeshCollection.push(newMesh);
+      
+      // Set Properties Data
+      properties.remove();
+      properties = new FaceProperty(gui, newMesh);
+      //properties.setAll();
+      
       }
   }
   
@@ -110,14 +120,10 @@ function handleMouseDown(event) {
       break;
     }
   }
+  
+
 
   function handleMouseMove(event) {
-    
-    
-
-        
-        //d.innerHTML = "Face." + HoverIndex;
-        
     
     var rect = canvas.getBoundingClientRect();
 
@@ -164,13 +170,48 @@ function handleMouseDown(event) {
     rotY = 0;
     rotX = 0;
   }
-  
+  var treepos = 32;
   function MouseWheelHandler(e) {
 
 	// cross-browser wheel delta
 	var e = window.event || e; // old IE support
 	var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
+	
+	// Move the tree based off of whether it has focus or not
+if(treeHasFocus === 1)
+{
+   var tree = document.getElementById('model_treeview');
+  
+  //Set the position based off of the delta
+  treepos += delta*4;
+  //set the min as the bar height
+  treepos = Math.min(32, treepos);
+  
+  //console.log(document.getElementById('model_treeview').clientHeight);
+  //console.log(window.innerHeight);
+  var allowedMovement = document.getElementById('model_treeview').clientHeight - window.innerHeight+32;
+  
+  if(allowedMovement > 0)
+  {
+  //Now set the top bound for the treepos
+  treepos = Math.max(-1 * allowedMovement+32, treepos);
+  
+  //now set the css data
+  tree.style.top = treepos + "px";
+  }
+  else
+  { 
+    tree.style.top = "32px";
+  }
+  
+  
+  //$(".ui-cntrl-treeview").style.top += 5 * delta;
+}
+	else
+	{
+	// Set zoom info
 	Zoom -= delta * (Zoom/10);
+	}
   //log("Set Zoom: " + Zoom);
 	return false;
 }

@@ -1,4 +1,13 @@
 
+// Side Bar
+//******************************************************************
+$( "#sidebar_file_new" ).click(function() {
+  chrome.runtime.reload();
+});
+$( "#sidebar_file_import" ).click(function() {
+  $('#menu_file_openSelect').click();
+  CloseSidebar();
+});
 
 // File
 //******************************************************************
@@ -13,6 +22,9 @@ $( "#menu_file_open" ).click(function() {
 $( "#menu_file_quit" ).click(function() {
   window.close();
 });
+
+
+
 
 
 // View
@@ -42,7 +54,7 @@ $( "#menu_view_back" ).click(function() {
 $( "#menu_view_left" ).click(function() {
   SetViewToLeft();
 });
-$( "#menu_view_right" ).click(function() {
+$( "#menu_view_normal" ).click(function() {
   SetViewToRight();
 });
 
@@ -57,8 +69,24 @@ $( "#menu_view_wireframe" ).click(function() {
   SetShadingToWireframe();
 });
 
+$( "#menu_view_surfaceNormal" ).click(function() {
+  SetShadingToNormal();
+});
 
 
+// About
+//******************************************************************
+$( "#menu_tools_debug" ).click(function() {
+  
+     if(stats.dom.style.display == 'none')
+    {
+        stats.dom.style.display = 'block';
+    }
+    else
+    {
+      stats.dom.style.display = "none";
+    }
+});
 
 
 // About
@@ -66,6 +94,7 @@ $( "#menu_view_wireframe" ).click(function() {
 // Get the modal
 var modal = document.getElementById('myModal');
 $( "#menu_about_about" ).click(function() {
+  CloseSidebar();
   modal.style.display = "block";
 });
 
@@ -105,23 +134,28 @@ for (i = 0; i < acc.length; i++) {
 //******************************************************************
 // Get the modal
 $( "#btn_logo" ).click(function() {
-  console.log("ffff");
   document.getElementById("mySidenav").style.width = "250px";
-    document.getElementById("div_main").style.marginLeft = "250px";
-    document.getElementById("glcanvas3D").style.marginLeft = "250px";
-    document.getElementById("top_menu").style.marginLeft = "250px";
-    document.getElementById("model_treeview").style.marginLeft = "250px";
+  document.getElementById("div_main").style.marginLeft = "250px";
+  document.getElementById("glcanvas3D").style.marginLeft = "250px";
+  document.getElementById("top_menu").style.marginLeft = "250px";
+  document.getElementById("model_treeview").style.marginLeft = "250px";
     
     //document.body.style.color = "rgba(0,0,0,0.4)";
 });
 $( "#btn_closeSidebar" ).click(function() {
-      document.getElementById("mySidenav").style.width = "0";
-    document.getElementById("div_main").style.marginLeft= "0";
-    document.getElementById("glcanvas3D").style.marginLeft= "0";
-    document.getElementById("top_menu").style.marginLeft = "0";
-    document.getElementById("model_treeview").style.marginLeft = "0";
+ CloseSidebar();
     //document.body.style.backgroundColor = "white";
 });
+
+function CloseSidebar()
+{
+  document.getElementById("mySidenav").style.width = "0";
+  document.getElementById("div_main").style.marginLeft= "0";
+  document.getElementById("glcanvas3D").style.marginLeft= "0";
+  document.getElementById("top_menu").style.marginLeft = "0";
+  document.getElementById("model_treeview").style.marginLeft = "0";
+}
+
 
 
 
@@ -136,3 +170,21 @@ $( "#SetViewToSel" ).click(function() {
 $( "#SetViewToOrig" ).click(function() {
    modelprop_Center = [0, 0, 0];
 });
+$( "#cntx_properties" ).click(function() {
+   OpenProperties();
+});
+
+$( "#btn_closeProperties" ).click(function() {
+  CloseProperties();
+});
+
+
+function OpenProperties()
+{
+  document.getElementById("cntrl_properties").style.marginRight = "300px";
+}
+
+function CloseProperties()
+{
+  document.getElementById("cntrl_properties").style.marginRight = "0px";
+}

@@ -104,6 +104,9 @@
 
     function drawScene() {
 
+stats.begin();
+
+    // monitored code goes here
         currotX = Smooth(currotX, DegToRad(rotX), 8);
         currotY = Smooth(currotY, DegToRad(rotY), 8);
         curZoom = Smooth(curZoom, Zoom, 8);
@@ -166,9 +169,13 @@
         gl.clearColor(0.15, 0.15, 0.15, 1.0); // Clear to black, fully opaque
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
+        // Always draw the grid normally
         gl.uniform1i(hasTextureAttribute, 1);
         GridMesh.Draw();
-
+        
+        if(RenderState == vxRenderState.SurfaceNormal)
+          gl.uniform1i(hasTextureAttribute, 3);
+          
         if (RenderState != vxRenderState.Wireframe) {
             //New elegent Drawing code
             for (var i = 0; i < MeshCollection.length; i++) {
@@ -193,8 +200,12 @@
             {
               //Now Finally Draw the Face
               for (var j = 0; j < 9; j++)
+              {
                 HoveredMesh.mesh_vertices[j] = MeshCollection[i].mesh_vertices[(HoverIndex - 1 - runningtotal) * 9 + j];
-
+                HoveredMesh.vert_noramls[j] = MeshCollection[i].vert_noramls[(HoverIndex - 1 - runningtotal) * 9 + j];
+              }
+              HoveredMesh.Model = MeshCollection[i].Model;
+              
               HoveredMesh.InitialiseBuffers();
             }
             
@@ -273,5 +284,7 @@
         var d = document.getElementById('footer_text');
         
         d.innerHTML = "Hovering: Face." + HoverIndex;
+
+   stats.end();
 
     }

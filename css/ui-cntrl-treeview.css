@@ -15,8 +15,8 @@
  * https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=QFUHPWJB2JDBS
  **/
  
-.acidjs-css3-treeview,
-.acidjs-css3-treeview *
+.ui-cntrl-treeview,
+.ui-cntrl-treeview *
 {
     padding: 0;
     margin: ;
@@ -28,8 +28,8 @@
   background-color:rgba(0, 0, 0, 0);
 }
  
-.acidjs-css3-treeview label[for]::before,
-.acidjs-css3-treeview label span::before
+.ui-cntrl-treeview label[for]::before,
+.ui-cntrl-treeview label span::before
 {
     content: "\25b6";
     display: inline-block;
@@ -46,7 +46,7 @@
 }
 
 
-.acidjs-css3-treeview:hover
+.ui-cntrl-treeview:hover
 {
   
   background-color:rgba(0, 0, 0, .5);
@@ -55,54 +55,67 @@
   transition: box-shadow 0.5s ease;
 }
  
-.acidjs-css3-treeview li ul
+.ui-cntrl-treeview li ul
 {
     margin: 0 0 0 22px;
     
 }
 
-.acidjs-css3-treeview li ul li>label
+.ui-cntrl-treeview li ul li>label
 {
   transition: background-color 0.1s ease;
 }
   
 
-.acidjs-css3-treeview li ul li>label:hover
+.ui-cntrl-treeview li ul li>label:hover
 {
   /*color:black;*/
-  background-color:#0094f7;
+  /*background-color:#0094f7;*/
 }
 
-.acidjs-css3-treeview *
+.ui-cntrl-treeview *
 {
     vertical-align: middle;
 }
  
-.acidjs-css3-treeview
+.ui-cntrl-treeview
 {
     font: normal 11px/16px "Segoe UI", Arial, Sans-serif;
 }
  
-.acidjs-css3-treeview li
+.ui-cntrl-treeview li
 {
     -webkit-user-select: none;
     -moz-user-select: none;
     user-select: none;
 }
+
+.ui-cntrl-treeview li ul li canvas[data-id="id"]
+{
+  position:absolute;
+  left:0px;
+  
+  transition: background-color 0.25s ease;
+}
+
+.ui-cntrl-treeview li ul li:hover > canvas[data-id="id"]
+{
+  background-color:#0094f7;
+}
  
-.acidjs-css3-treeview input[type="checkbox"]
+.ui-cntrl-treeview input[type="checkbox"]
 {
     display: none;
 }
  
-.acidjs-css3-treeview label
+.ui-cntrl-treeview label
 {
     cursor: pointer;
 }
 
 
 
-.acidjs-css3-treeview label[for]::before
+.ui-cntrl-treeview label[for]::before
 {
     -webkit-transform: translatex(-24px);
     -moz-transform: translatex(-24px);
@@ -111,7 +124,7 @@
     transform: translatex(-45px);
 }
  
-.acidjs-css3-treeview label span::before
+.ui-cntrl-treeview label span::before
 {
     -webkit-transform: translatex(16px);
     -moz-transform: translatex(16px);
@@ -120,24 +133,24 @@
     transform: translatex(16px);
 }
  
-.acidjs-css3-treeview input[type="checkbox"][id]:checked ~ label[for]::before
+.ui-cntrl-treeview input[type="checkbox"][id]:checked ~ label[for]::before
 {
     content: "\25bc";
 }
  
-.acidjs-css3-treeview input[type="checkbox"][id]:not(:checked) ~ ul
+.ui-cntrl-treeview input[type="checkbox"][id]:not(:checked) ~ ul
 {
     display: none;
 }
  
-.acidjs-css3-treeview label:not([for])
+.ui-cntrl-treeview label:not([for])
 {
     margin: 0 7px 0 5px;
 }
 
 
  
-.acidjs-css3-treeview label span::before
+.ui-cntrl-treeview label span::before
 {
     content: "";
     border: solid 1px #1375b3;
@@ -145,7 +158,7 @@
     opacity: .50;
 }
  
-.acidjs-css3-treeview label input:checked + span::before
+.ui-cntrl-treeview label input:checked + span::before
 {
     content: "\2714";
     box-shadow: 0 0 2px rgba(0, 0, 0, .25) inset;
@@ -154,7 +167,7 @@
 }
 
 
-.acidjs-css3-treeview label[for]
+.ui-cntrl-treeview label[for]
 {
   position:relative;
   left:16px;
@@ -167,14 +180,14 @@
   background-position: 0px 0px;
 }
 
-.acidjs-css3-treeview label[for][data-icon="envrroot"]{  background-image: url('../img/tree/node_envr.png'); }
-.acidjs-css3-treeview label[for][data-icon="axis"]{  background-image: url('../img/tree/node_axis.png'); }
-.acidjs-css3-treeview label[for][data-icon="plane"]{  background-image: url('../img/tree/node_plane.png'); }
-.acidjs-css3-treeview label[for][data-icon="folder"]{  background-image: url('../img/tree/node_folder.png'); }
-.acidjs-css3-treeview label[for][data-icon="txtrs"]{  background-image: url('../img/tree/node_folder_picture.png'); }
-.acidjs-css3-treeview label[for][data-icon="properties"]{  background-image: url('../img/tree/node_properties.png'); }
+.ui-cntrl-treeview label[for][data-icon="envrroot"]{  background-image: url('../img/tree/node_envr.png'); }
+.ui-cntrl-treeview label[for][data-icon="axis"]{  background-image: url('../img/tree/node_axis.png'); }
+.ui-cntrl-treeview label[for][data-icon="plane"]{  background-image: url('../img/tree/node_plane.png'); }
+.ui-cntrl-treeview label[for][data-icon="folder"]{  background-image: url('../img/tree/node_folder.png'); }
+.ui-cntrl-treeview label[for][data-icon="txtrs"]{  background-image: url('../img/tree/node_folder_picture.png'); }
+.ui-cntrl-treeview label[for][data-icon="properties"]{  background-image: url('../img/tree/node_properties.png'); }
 
-.acidjs-css3-treeview label[for][data-icon="mesh"]{  background-image: url('../img/tree/node_mesh.png'); }
+.ui-cntrl-treeview label[for][data-icon="mesh"]{  background-image: url('../img/tree/node_mesh.png'); }
 
 
 

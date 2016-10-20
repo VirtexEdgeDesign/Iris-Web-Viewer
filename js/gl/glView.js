@@ -47,6 +47,11 @@ function SetShadingToWireframe() {
 	console.log(RenderState);
 }
 
+function SetShadingToNormal() {
+	RenderState = vxRenderState.SurfaceNormal;
+	console.log(RenderState);
+}
+
 
 function SetViewToPerspective() {
 	ProjectionType = vxProjectionType.Perspective;

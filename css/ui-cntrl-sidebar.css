@@ -3,7 +3,7 @@ body {
     transition: background-color .5s;
 }
 
-.sidenav {
+.ui-cntrl-sidenav {
     height: 100%;
     width: 0;
     position: fixed;
@@ -16,7 +16,7 @@ body {
     padding-top: 60px;
 }
 
-.sidenav a {
+.ui-cntrl-sidenav a {
     padding: 8px 8px 8px 32px;
     text-decoration: none;
     font-size: 25px;
@@ -25,11 +25,29 @@ body {
     transition: 0.3s
 }
 
-.sidenav a:hover, .offcanvas a:focus{
+.ui-cntrl-sidenav a:hover, .offcanvas a:focus{
     color: #f1f1f1;
 }
 
-.sidenav .closebtn {
+
+/*.sidenav a[data-icon="icon-import"]::before { content: url('../img/tlbr/file/import.png'); }*/
+
+
+/* Sidebar Splitter
+/***********************************************/
+.ui-cntrl-sidenav hr#splitter {
+    padding: 0px 10px 0px 10px;
+    margin: 0px 5px 0px 5px;
+    color: #555;
+    background-color: #555;
+    font-size:1%;
+    width:200px; 
+    height:1px; 
+    border: 0;
+}
+
+
+.ui-cntrl-sidenav .closebtn {
     position: absolute;
     top: 0;
     right: 25px;
@@ -43,6 +61,6 @@ body {
 }
 
 @media screen and (max-height: 450px) {
-  .sidenav {padding-top: 15px;}
-  .sidenav a {font-size: 18px;}
+  .ui-cntrl-sidenav {padding-top: 15px;}
+  .ui-cntrl-sidenav a {font-size: 18px;}
 }

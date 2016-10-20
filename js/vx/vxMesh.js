@@ -5,8 +5,11 @@ var MeshType = {
 
 function vxMesh (name) {
   
-  //Mesh Name
+    // Mesh Name
     this.Name = name;
+    
+    // The Owning Model
+    this.Model = null;
     
     var col = 0.75;
     this.meshcolor = new vxColour(col, col, col, 1);

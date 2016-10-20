@@ -1,10 +1,44 @@
-function io_import_stl(FileName, InputFileText)
+function io_import_stl(files, FileName, InputFileText, reader)
 {
-  var model = new vxModel(FileName);
+  
+    // First get split the file line By Line
+    var lines = InputFileText.split('\n');
+    
+    // Now check if it's a binary or ASCII file. ASCII files have 'solid' as the first
+    // word in the first line of the file. If not, then it's safe to say it's binary.
+    var isASCII = true;
+    
+    
+    // First do an ASCII check
+    // *****************************************************************************
+    if(lines.length > 1)
+    {
+      var asciiCheck = lines[1].split(" ");
+      
+      if(asciiCheck[0] != "facet")
+      {
+        isASCII = false;
+      }
+    }
+    // If the line length is less, then it's binary
+    else
+    {
+        isASCII = false;
+    }
+    
+    //log(asciiCheck);
+    if(isASCII === false)
+    {
+      io_import_stl_binary(files, FileName, InputFileText);
+    }
+    else
+    {
+      
+  var model = new vxModel(FileName +":ascii");
   
   var mesh = new vxMesh("mesh: " + FileName.substring(0, FileName.length-4));
 
-  log("Loading file <b>'"+FileName+"'</b> as an <b>'ascii .stl'</b> file...");
+  log("Loading file <b>'"+FileName+"'</b> as an <b>'ASCII .stl'</b> file...");
 
   /*******************************/
   //First initialise Arrarys
@@ -31,14 +65,13 @@ var norm = new vxVertex3D(0,0,0);
   modelprop_Center[2] = 0;
   
   mesh.IndexStart = numOfFaces;
+  var finalline;
   
-      // Print out Result line By Line
-    var lines = InputFileText.split('\n');
     for(var line = 0; line < lines.length; line++){
      
      //First Split the Current Line into an Array split by spaces
      var inputLine = lines[line].split(" ");
-     
+     finalline = line;
     
      switch (inputLine[0])
      {
@@ -93,6 +126,9 @@ var norm = new vxVertex3D(0,0,0);
          
          mesh.AddVertices(vert, norm, meshcolor, selcol);
           numOfElements++;
+          
+          if(numOfElements == 97752)
+          log(inputLine);
         
        break;
      }
@@ -102,8 +138,8 @@ var norm = new vxVertex3D(0,0,0);
     modelprop_Center[0] /= numOfElements;
     modelprop_Center[1] /= numOfElements;
     modelprop_Center[2] /= numOfElements;
-        
-        
+        log(finalline);
+        log(numOfElements);
         // Initialise the VBO Buffers 
       //mesh.Initialise();
         
@@ -125,5 +161,102 @@ var norm = new vxVertex3D(0,0,0);
 
   //$('#modelForm_Open').window('close');
   log("Done!");
+    }
 }
 
+
+function io_import_stl_binary(files, FileName, InputFileText)
+{
+  log("Loading file <b>'"+FileName+"'</b> as an <b>'BINARY .stl'</b> file...");
+  
+    var model = new vxModel(FileName +":binary");
+  
+  var mesh = new vxMesh("mesh: " + FileName.substring(0, FileName.length-4));
+  
+  var vert1 = new vxVertex3D(0,0,0);
+var vert2 = new vxVertex3D(0,0,0);
+var vert3 = new vxVertex3D(0,0,0);
+var norm = new vxVertex3D(0,0,0);
+  
+    var binreader = new FileReader();
+    //log(files[0]);
+    //Function Executed After the File Has Been Loaded
+    binreader.onload = function(e) {
+  //var arrayBuffer = binreader.result;
+    //var array = new Int8Array(binreader.result);
+    var buffer = e.target.result;//new Uint8Array(e.target.result);
+    //log(buffer);
+     //var bytes = new Uint8Array(e.target.result);
+     //var view = new DataView(buffer);
+     
+ // The stl binary is read into a DataView for processing
+    var dv = new DataView(buffer, 80); // 80 == unused header
+    var isLittleEndian = true;
+
+    // Read a 32 bit unsigned integer
+    var triangles = dv.getUint32(0, isLittleEndian);
+    log("tris: "+triangles)
+
+    var offset = 4;
+    for (var i = 0; i < triangles; i++) {
+        // Get the normal for this triangle by reading 3 32 but floats
+        //var normal = new THREE.Vector3(
+            norm.Set(dv.getFloat32(offset, isLittleEndian),
+            dv.getFloat32(offset+4, isLittleEndian),
+            dv.getFloat32(offset+8, isLittleEndian)
+            );
+        //);
+        offset += 12;
+
+        // Get all 3 vertices for this triangle, each represented
+        // by 3 32 bit floats.
+        for (var j = 0; j < 3; j++) {
+          
+         switch(j)
+         {
+            case 0:
+            vert1.Set(dv.getFloat32(offset, isLittleEndian),
+                    dv.getFloat32(offset+4, isLittleEndian),
+                    dv.getFloat32(offset+8, isLittleEndian));
+          break;
+          case 1:
+            vert2.Set(dv.getFloat32(offset, isLittleEndian),
+                    dv.getFloat32(offset+4, isLittleEndian),
+                    dv.getFloat32(offset+8, isLittleEndian));
+          break;
+          case 2:
+            vert3.Set(dv.getFloat32(offset, isLittleEndian),
+                    dv.getFloat32(offset+4, isLittleEndian),
+                    dv.getFloat32(offset+8, isLittleEndian));
+          break;
+         }
+            offset += 12
+        }
+
+        // there's also a Uint16 "attribute byte count" that we
+        // don't need, it should always be zero.
+        offset += 2;
+        
+        // Once all of the data is in, create the new face
+        var selcol = new vxColour();
+        selcol.EncodeColour(numOfFaces);
+        mesh.AddFace(vert1, vert2, vert3, norm, meshcolor, selcol);
+          
+         numOfFaces++;
+    }
+    
+            // Now Set the View Parameters
+        Zoom = -mesh.MaxPoint.Length()*1.75;
+        rotX = -45;
+        rotY = 30;
+        
+    model.AddMesh(mesh);
+  
+   InitialiseModel(model);
+    
+    };
+
+    // Read in the image file as a binary string.
+    //binreader.readAsBinaryString(files[0]);
+    binreader.readAsArrayBuffer(files[0]);
+}

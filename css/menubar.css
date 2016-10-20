@@ -22,12 +22,52 @@ h1 {
  display: none;
 }
 
+#Hamburger {
+  display: block;
+  padding: 0 30px;
+  float: left;
+  font-size: 11px;
+  line-height: 30px;
+  color: #222;
+}
+
+#Hamburger>a {
+  color: #222;
+}
+
+#Hamburger:hover {
+  color: #aaa;
+  background-color: #555;
+}
+#Hamburger>a:hover {
+  color: #aaa;
+}
+
+#Hamburger>a:before {
+  
+    vertical-align: center;
+    content: url('../img/gui/Hamburger.png');
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+
+#Hamburger>a:hover:before {
+  color: #aaa;
+    content: url('../img/gui/Hamburger_hover.png');
+}
+
+
+
+
+
+
 
 
 #logo {
   display: block;
   padding: 0 30px;
-  float: left;
+  float: right;
   font-size: 11px;
   line-height: 30px;
   color: #222;
@@ -44,16 +84,16 @@ h1 {
 #logo>a:hover {
   color: #aaa;
 }
-
+/*
 #logo:before {
   
     vertical-align: center;
     content: url('../assets/icon_20.png');
-    position: absolute;
+    position: relative;
     top: 4px;
     left: 5px;
 }
-
+*/
 .menubar nav {
   margin: 0;
   padding: 0;
@@ -97,7 +137,7 @@ nav ul li:before {
   padding: 0 10px;
   color: #bbb;
   font-size: 11px;
-  line-height: 30px;
+  line-height: 32px;
   text-decoration: none;
 }
 
@@ -113,7 +153,7 @@ nav ul li:before {
 .menubar nav ul li ul li > a
 {
   position: relative;
-  left: 30px;
+  left: 32px;
 }
 .menubar nav ul li ul li > a:before
 {
@@ -135,6 +175,7 @@ nav a[data-icon="icon-quit"]::before { content: url('../img/tlbr/file/exit.png')
 nav a[data-icon="icon-view-shadededge"]::before { content: url('../img/tlbr/view/render/edge.png'); }
 nav a[data-icon="icon-view-shaded"]::before { content: url('../img/tlbr/view/render/shaded.png'); }
 nav a[data-icon="icon-view-wireframe"]::before { content: url('../img/tlbr/view/render/wireframe.png'); }
+nav a[data-icon="icon-view-normal"]::before { content: url('../img/tlbr/view/render/normal.png'); }
 
 /* Tools Icons */
 nav a[data-icon="icon-tools-measure"]::before { content: url('../img/tlbr/tools/measure.png'); }
@@ -159,7 +200,7 @@ nav a[data-icon="icon-logo-vrtx"]::before { content: url('../img/icon/vrtx_logo_
 .menubar nav ul ul {
   display: none;
   position: absolute;
-  top: 30px;
+  top: 32px;
   
 }
 
@@ -176,7 +217,7 @@ nav a[data-icon="icon-logo-vrtx"]::before { content: url('../img/icon/vrtx_logo_
 
 .menubar nav ul ul ul li {
   position: relative;
-  top: -30px;
+  top: -32px;
   left: 170px;
 }
 
@@ -276,81 +317,3 @@ nav ul li {
 }
 
 }
-/*
-ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background-color: #333;
-}
-
-li {
-    float: left;
-}
-
-li a, .dropbtn {
-    display: inline-block;
-    color: white;
-    text-align: center;
-    padding: 7px 8px;
-    text-decoration: none;
-}
-
-
-li a:hover, .dropdown:hover .dropbtn {
-  color: black;
-    background-color: darkorange;
-}
-
-li.dropdown {
-    display: inline-block;
-}
-
-ul ul ul {
-  left: 100%;
-  top: 0;
-}
-
-ul:before,
-ul:after {
-  content: " "; 
-  display: table; 
-}
-
-ul:after { clear: both; }
-
-
-.dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #f9f9f9;
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.5);
-}
-
-.dropdown-content a {
-    color: #f1f1f1;
-    background-color: #444;
-    padding: 6px 8px;
-    text-decoration: none;
-    display: block;
-    text-align: left;
-}
-.dropdown-content a#splitter:before {
-    padding: 0px;
-    margin: 0px;
-    content: '______________________________________';
-    font-size:1%;
-}
-.dropdown-content a#splitter:hover {
-    color: white;
-    background-color: #444;
-}
-
-.dropdown-content a:hover {background-color: #888}
-
-.dropdown:hover .dropdown-content {
-    display: block;
-}
-*/

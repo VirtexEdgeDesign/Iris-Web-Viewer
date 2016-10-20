@@ -42,6 +42,7 @@ function getFileExtention(fileName){
       if (percentLoaded < 100) {
         //progress.style.width = percentLoaded + '%';
         //progress.textContent = percentLoaded + '%';
+        //console.log(percentLoaded);
       }
     }
   }
@@ -52,7 +53,8 @@ function getFileExtention(fileName){
     
      //First Find Which File Type it is.
       var fileExtention = getFileExtention(evt.target.files[0].name).toLowerCase();
-    fileName = evt.target.files[0].name;
+    
+    var CurFileIndex = 0;
     
     // Reset progress indicator on new file selection.
     //progress.style.width = '0%';
@@ -81,10 +83,10 @@ function getFileExtention(fileName){
       switch(fileExtention)
       {
         case "obj":
-          io_import_obj(fileName, this.result);
+          io_import_obj(fileName, this.result, reader);
           break;
         case "stl":
-          io_import_stl(fileName, this.result);
+          io_import_stl(evt.target.files, fileName, this.result, reader);
           break;
         case "ply":
           io_import_ply(fileName, this.result);
@@ -94,17 +96,27 @@ function getFileExtention(fileName){
         log("File Type .'" + fileExtention + "' Not Supported.\nIf you would like this file type added, please contact us!");
         break;
       }
-      
-
+      CurFileIndex++;
+      if(CurFileIndex < evt.target.files.length)
+      {
+        fileName = evt.target.files[CurFileIndex].name;
+        reader.readAsText(evt.target.files[CurFileIndex]);
+      }
       // Ensure that the progress bar displays 100% at the end.
       //progress.style.width = '100%';
       //progress.textContent = '100%';
       //setTimeout("document.getElementById('progress_bar').className='';", 200);
     };
-
+    
     // Read in the image file as a binary string.
     //reader.readAsBinaryString(evt.target.files[0]);
-    reader.readAsText(evt.target.files[0]);
+    //reader.readAsBinaryString(evt.target.files[0]);
+    log(evt.target.files.length);
+
+      fileName = evt.target.files[CurFileIndex].name;
+      reader.readAsText(evt.target.files[CurFileIndex]);
+    
+    
   }
 
   document.getElementById('menu_file_openSelect').addEventListener('change', handleFileSelect, false);

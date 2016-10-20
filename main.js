@@ -4,6 +4,15 @@ var canvas;
 // The WebGL Context
 var gl;
 
+// Properties GUI
+var gui;
+
+// Holder for vxProperties object
+var properties;
+
+// Stats Marker for FPS/MS etc...
+var stats = new Stats();
+
 // Model Center
 var modelprop_Center = [0, 0, 0];
 var Cur_Center = [0, 0, 0];
@@ -23,11 +32,17 @@ var numOfFaces = 1;
 vxRenderState = {
     ShadedEdge: 0,
     Shaded: 1,
-    Wireframe: 2
+    Wireframe: 2,
+    SurfaceNormal:3
 };
-
 var RenderState = vxRenderState.ShadedEdge;
 
+
+
+vxShaderState = {
+  Diffuse:0,
+};
+var ShaderState = vxShaderState.Diffuse;
 
 
 // View Projection Type 
@@ -43,6 +58,8 @@ var ProjectionType = vxProjectionType.Perspective;
 
 //The Selection Index
 var HoverIndex = 0;
+
+var treeHasFocus = 0;
 
 
 //This is a collection of all of the current models. A model is defined as a 
@@ -86,6 +103,7 @@ var hasTextureAttribute;
 var perspectiveMatrix;
 var elmntID;
 
+// Mouse State Struct
 var MouseState = {
     x: 0,
     y: 0,
@@ -94,16 +112,91 @@ var MouseState = {
     RightButtonDown: false
 };
 
+
+// Keyboard State
 var KeyboardState = {
     Shift: false,
 };
 
 var meshNodeId = "node_mesh";
 
+
+
+
+
 window.onload = function() {
 
-    canvas = document.getElementById('glcanvas3D');
+  canvas = document.getElementById('glcanvas3D');
+    
+    
+    // Setup Stats Panel
+stats.showPanel( 0 ); // 0: fps, 1: ms, 2: mb, 3+: custom
+//log(stats.dom);
+stats.dom.style.top = window.innerHeight - 75+"px";
+//hide it normally
+stats.dom.style.display = 'none';
+//stats.dom.style.bottom = 32+"px"
+document.body.appendChild( stats.dom );
 
+
+
+// Now Setup the Properties GUI
+  gui = new dat.GUI({ autoplace: false, width: 300 });
+
+  gui.domElement.id = 'prop_dat_gui';
+  
+    var prop = document.getElementById('cntrl_properties');
+    var customContainer = $(prop).append($(gui.domElement));
+    
+    /*
+    var propval = new PropertyData("Hello World");
+    propval.Set(gui);
+    propval.Clear(gui);
+    */
+    
+ properties = new ModelProp(gui, "");
+ 
+ /*
+ square.removeAll();
+ 
+ square = new FaceProp(gui, "circle Hello World", 5);
+ square.setAll();
+ */
+
+/*
+  var text = new FizzyText();
+  var gui = new dat.GUI({ autoplace: false, width: 300 });
+  gui.add(text, 'message');
+  gui.add(text, 'speed', -5, 5);
+  gui.add(text, 'displayOutline');
+  gui.domElement.id = 'prop_dat_gui';
+  
+  
+    var prop = document.getElementById('cntrl_properties');
+      var customContainer = $(prop).append($(gui.domElement));
+      
+       var text2 = new FizzyText();
+  gui.add(text2, 'message');
+  gui.add(text2, 'speed', -5, 5);
+  gui.add(text2, 'displayOutline');
+  
+  gui.remove(item);
+  
+  gui = new dat.GUI({ autoplace: false, width: 300 });
+  gui.domElement.id = 'prop_dat_gui';
+  
+  var f1 = gui.addFolder('Flow Field');
+f1.add(text, 'speed');
+f1.add(text, 'message');
+
+var f2 = f1.addFolder('Letters');
+f2.add(text, 'message');
+f2.add(text, 'message');
+f2.add(text, 'message');
+
+f2.open();
+*/
+  //
     //Initialise Web GL
     webGLStart();
 
@@ -113,8 +206,10 @@ window.onload = function() {
     canvas.onmousedown = handleMouseDown;
     document.onmouseup = handleMouseUp;
     canvas.onmousemove = handleMouseMove;
-
-
+    document.addEventListener("wheel", MouseWheelHandler, {passive:true});
+    
+//TODO: Old method of handling mouse scrolling
+/*
     //var myimage = document.getElementById(elmntID);
     if (canvas.addEventListener) {
         // IE9, Chrome, Safari, Opera
@@ -124,7 +219,7 @@ window.onload = function() {
     }
     // IE 6/7/8
     else canvas.attachEvent("onmousewheel", MouseWheelHandler);
-
+*/
     Resize();
 
     /*
@@ -178,6 +273,12 @@ function AddTreeNode(id, labelText, rootToAddTo, icon, isExpanded) {
 
     // Next create the li element which will encapslate the entire tree node GUI item
     var li = document.createElement("li");
+    
+    var cnvs = document.createElement("CANVAS");
+    cnvs.setAttribute("data-id", "id"); // added line
+    cnvs.style.width = "100%";
+    cnvs.style.height = "18px";
+    li.appendChild(cnvs);
 
     //Now Add an Input
 
@@ -226,9 +327,17 @@ function AddTreeNode(id, labelText, rootToAddTo, icon, isExpanded) {
 function InitialiseModel(model)
 {
   model.Init();
+  ModelCollection.push(model);
   
 }
+/*
 
+V 293256
+F 32584
+
+V 1082016
+F 120224
+*/
 
 
 $(window).resize(function() {
@@ -244,6 +353,7 @@ function Resize() {
     
     var footer = document.getElementById('div_footer');
     
+    stats.dom.style.top = window.innerHeight - 75+"px";
     //footer.bottom = -30 + "px";
     //footer.left = 0 + "px";
 
@@ -254,11 +364,13 @@ function Resize() {
 
 
 
+$(".ui-cntrl-treeview").mouseenter(function(){treeHasFocus = 1;});
+$(".ui-cntrl-treeview").mouseleave(function(){treeHasFocus = 0;});
 
 
 // Handle Tree View Checkbox Toggle
 // *****************************************************************************************************
-$(".acidjs-css3-treeview").delegate("label input:checkbox", "change", function() {
+$(".ui-cntrl-treeview").delegate("label input:checkbox", "change", function() {
     var
         checkbox = $(this),
         nestedList = checkbox.parent().next().next(),
@@ -277,7 +389,14 @@ $(".acidjs-css3-treeview").delegate("label input:checkbox", "change", function()
             if ("node_" + MeshCollection[i].Name == $(checkbox).attr('id')) {
                 MeshCollection[i].Enabled = checkbox.is(":checked");
             }
-
+        }
+        for (var i = 0; i < ModelCollection.length; i++) {
+            
+            ModelCollection[i].TrueFunc = !ModelCollection[i].TrueFunc;
+            
+            if ("node_" + ModelCollection[i].Name == $(checkbox).attr('id')) {
+                ModelCollection[i].SetEnabled(checkbox.is(":checked"));
+            }
         }
     }
     /*
@@ -308,6 +427,11 @@ function log(Text) {
 
     //$('#sonsoleDiv').animate({scrollTop: $('#sonsoleDiv').prop("scrollHeight")}, 50);
 }
+
+
+
+
+
 
 
 

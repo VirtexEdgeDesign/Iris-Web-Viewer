@@ -18,9 +18,25 @@ vxModel.prototype.GetNumberOfMeshes = function() {
     return this.Meshes.length;
 };
 
+vxModel.prototype.GetEnabled = function() {
+    return this.Enabled;
+};
+
+vxModel.prototype.SetEnabled = function(value) {
+    this.Enabled = value;
+    
+    //now do the same for all owned meshes
+    for (var i = 0; i < this.Meshes.length; i++) {
+      this.Meshes[i].Enabled = value;
+    }
+};
+
 vxModel.prototype.AddMesh = function(newMesh) {
   
+  newMesh.Model = this;
+  
   newMesh.Init();
+  
     this.Meshes.push(newMesh);
 };
 
