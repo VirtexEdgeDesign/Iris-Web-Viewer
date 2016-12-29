@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>IrisWebViewer</title>
+  <title>Iris Viewer [Alpha]</title>
   
   <!-- Styles -->
   <link rel="stylesheet" href="css/styles.css">
@@ -12,13 +12,16 @@
   <link rel="stylesheet" href="css/ui-cntrl-treeview.css">
   <link rel="stylesheet" href="css/ui-cntrl-sidebar.css">
   <link rel="stylesheet" href="css/ui-cntrl-properties.css">
-  
+  <!--
   <script src="lib/prism.js" type="text/javascript"></script>
   <link rel="stylesheet" href="lib/prism.css">
-  
+  -->
   <!-- Javascript -->
   <script type="text/javascript" src="lib/jquery-3.1.0.min.js"></script>
-  <script type="text/javascript" src="lib/glMatrix-0.9.5.min.js" ></script>
+<!--<script type="text/javascript" src="lib/glMatrix-0.9.5.min.js" ></script>
+  <script type="text/javascript" src="lib/glmat/src/gl-matrix.js" ></script>-->
+
+<script type="text/javascript" src="lib/glMatrix-0.9.5.min.js" ></script>
   <script type="text/javascript" src="lib/dat.gui.js"></script>
   <script type="text/javascript" src="lib/stats.min.js"></script>
   
@@ -29,11 +32,15 @@
   <!-- Base vx3D code -->
   <script src="js/vx/vxColour.js" type="text/javascript"></script>
   <script src="js/vx/vxVertex3D.js" type="text/javascript"></script>
+  <script src="js/vx/vxCommand.js" type="text/javascript"></script>
   <script src="js/vx/vxPropteries.js" type="text/javascript"></script>
+  <script src="js/vx/vxMaterial.js" type="text/javascript"></script>
+  <script src="js/vx/vxMeshChunk.js" type="text/javascript"></script>
   <script src="js/vx/vxMesh.js" type="text/javascript"></script>
   <script src="js/vx/vxModel.js" type="text/javascript"></script>
+  <script src="js/vx/vxMeasure.js" type="text/javascript"></script>
   
-  <script src="js/Input.js"></script>
+  <script src="js/InputHandling.js"></script>
     
     <!-- Inport Scripts -->
     <script src="js/io/import_obj.js" type="text/javascript"></script>
@@ -44,8 +51,13 @@
 <script id="shader-fs" type="x-shader/x-fragment">
     	varying highp vec4 vColor;
       varying highp vec3 vLighting;
-	  
+      
+      //varying highp vec2 vTextureCoord;
+      //uniform sampler2D uSampler;
+      
+      
       void main(void) {
+        //gl_FragColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));//vec4(vColor.rgb * vLighting, vColor.a);
         gl_FragColor = vec4(vColor.rgb * vLighting, vColor.a);
 		}
 </script>
@@ -54,6 +66,8 @@
     attribute vec3 aVertexPosition;
       attribute vec4 aVertexColor;
       attribute vec4 aVertexSelColor;
+      
+      //attribute vec2 aTextureCoord;
 
 	  attribute highp vec3 aVertexNormal;
     uniform int aHasTexture;
@@ -62,11 +76,17 @@
       uniform highp mat4 uPMatrix;
     uniform highp mat3 uNMatrix;
       
+      
 			varying highp vec4 vColor;
 			varying highp vec3 vLighting;
-    
+			
+      varying highp vec2 vTextureCoord;
+      
       void main(void) {
-        gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
+        gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1);
+        
+        //vTextureCoord = aTextureCoord;
+        
 
     // 1 is a basic Diffuse Shader
 	  if (aHasTexture == 1) {
@@ -139,8 +159,21 @@
 <div id="div_main">
   <div id="header" style="border: none;position:absolute; top:0px; left:0;height:32px;width:100%;background:darkorange"></div>
 <div>
+<div id="div_canvas">
   <canvas id="glcanvas3D" class="glcanvas3D" style="border: none;position:absolute; top:32px; left:0;" width="500" height="500"></canvas>
-<div class="footer" id="div_footer" style="border: none;position:absolute;bottom:0px; left:0;"><a id="footer_text">footer-text</a></div>
+</div>
+<div class="footer" id="div_footer" style="border: none;position:absolute;bottom:0px; left:0;"><a class="corner-status-text" id="footer_text">footer-text</a></div>
+
+<div ><a class="corner-title" id="btn_social_gthb">Iris Viewer [v 0.1] </a></div>
+<div><a class="img-header" data-icon="logo" ></a></div>
+
+<!-- Footer Images -->
+<div ><a class="img-footer" data-icon="fb" id="btn_social_fb" href=#></a></div>
+<div ><a class="img-footer" data-icon="twtr" id="btn_social_twtr" href=#></a></div>
+<div ><a class="img-footer" data-icon="github" id="btn_social_gthb" href=#></a></div>
+<div ><a class="img-footer" data-icon="build" id="btn_social_gthb" href=#></a></div>
+<!--<div><a class="img-footer" data-icon="build" id="btn_social_build"/></div>
+
 <!-- This is the mouse div 
   <div id="div_mstext"  style="border: none;position:absolute;top:30px; left:0;" >
   <a>Model: newModel</a>
@@ -299,17 +332,15 @@
       <a href="#">Tools</a>
       <input type="checkbox" id="drop-2"/>
       <ul>
-        <li><a data-icon="icon-tools-measure" href="#">Measure</a></li>
+        <li><a  id="menu_tools_measure" data-icon="icon-tools-measure" href="#">Measure</a></li>
         <li><hr id="splitter" /></li>
-        <li><a id="menu_tools_debug" data-icon="icon-tools-debug" href="#">Toggle Debug Info</a></li>
+        <li><a  id="menu_tools_debug" data-icon="icon-tools-debug" href="#">Toggle Debug Info</a></li>
       </ul>
       
     </li>
   </ul>
 </nav>
-
 </div>
-
 </div>
 
 <!--
@@ -324,6 +355,62 @@
 
 </body>
 
+<!-- The Intro Modal -->
+<div id="modal_intro" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <div class="modal-header">
+      <span class="close">&times;</span>
+      <h2>Iris Web Viewer Chrome Extention [v 0.1 - Beta]</h2>
+    </div>
+    <div class="modal-body">
+<table class="tg">
+  <tr>
+    <th class="tg-031e">
+      <img src="assets/icon_128.png" alt="Mountain View" style="width:128px;height:128px;">
+    </th>
+    <th class="tg-yw4l">
+     Welcome to Iris Web Viewer
+     <br/><br/>
+       A cross platform 3D Model Viewer for exchange formats.
+     <br/><br/>
+    </th>
+  </tr>
+  <tr>
+    <td class="tg-yw4l" style="width:150px">Supported Formats</td>
+    <td class="tg-yw4l">
+      <ul>
+        <li>*.stl</li>
+        <li>*.obj</li>
+        <!--
+        <li>*.ply</li>
+        <li>*.fbx (PRO version)</li>
+        -->
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td class="tg-yw4l"></td>
+    <td class="tg-yw4l">
+     <br/><br/>
+     </td>
+  </tr>
+  <tr>
+    <td class="tg-yw4l"></td>
+    <td class="tg-yw4l">
+     <br/><br/>
+     </td>
+  </tr>
+</table>
+
+
+    </div>
+    <div class="modal-footer">
+      <p>(C) Virtex Edge Design</p>
+    </div>
+  </div>
+</div>
 
 <!-- The Modal -->
 <div id="myModal" class="modal">
@@ -332,7 +419,7 @@
   <div class="modal-content">
     <div class="modal-header">
       <span class="close">&times;</span>
-      <h2>Iris Web Viewer Chrome Extention</h2>
+      <h2>Iris Web Viewer Chrome Extention [v 0.1 - Beta]</h2>
     </div>
     <div class="modal-body">
 <table class="tg">

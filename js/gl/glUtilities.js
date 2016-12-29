@@ -118,6 +118,9 @@ var mvMatrixStack = [];
          GridMesh.vert_noramls.push(temp_Normal[1]);
          GridMesh.vert_noramls.push(temp_Normal[2]);
          
+         //GridMesh.vert_uvcoords.push(temp_Normal[1]);
+         //GridMesh.vert_uvcoords.push(temp_Normal[2]);
+         
          GridMesh.vert_colours.push(temp_colour[0]);
          GridMesh.vert_colours.push(temp_colour[1]);
          GridMesh.vert_colours.push(temp_colour[2]);
@@ -136,6 +139,9 @@ var mvMatrixStack = [];
          GridMesh.vert_noramls.push(temp_Normal[0]);
          GridMesh.vert_noramls.push(temp_Normal[1]);
          GridMesh.vert_noramls.push(temp_Normal[2]);
+         
+         //GridMesh.vert_uvcoords.push(temp_Normal[1]);
+         //GridMesh.vert_uvcoords.push(temp_Normal[2]);
          
          GridMesh.vert_colours.push(temp_colour[0]);
          GridMesh.vert_colours.push(temp_colour[1]);
@@ -156,6 +162,9 @@ var mvMatrixStack = [];
          GridMesh.vert_noramls.push(temp_Normal[1]);
          GridMesh.vert_noramls.push(temp_Normal[2]);
          
+        // GridMesh.vert_uvcoords.push(temp_Normal[1]);
+        // GridMesh.vert_uvcoords.push(temp_Normal[2]);
+         
          GridMesh.vert_colours.push(temp_colour[0]);
          GridMesh.vert_colours.push(temp_colour[1]);
          GridMesh.vert_colours.push(temp_colour[2]);
@@ -174,6 +183,9 @@ var mvMatrixStack = [];
          GridMesh.vert_noramls.push(temp_Normal[1]);
          GridMesh.vert_noramls.push(temp_Normal[2]);
          
+        // GridMesh.vert_uvcoords.push(temp_Normal[1]);
+         //GridMesh.vert_uvcoords.push(temp_Normal[2]);
+         
          GridMesh.vert_colours.push(temp_colour[0]);
          GridMesh.vert_colours.push(temp_colour[1]);
          GridMesh.vert_colours.push(temp_colour[2]);
@@ -189,6 +201,88 @@ var mvMatrixStack = [];
     
     function CreateAxis()
     {
+      var strt = 2;
+      var end = 5;
+      
+  var cntr_colour = [0.75, 0.75, 0.75, 1];
+      Cntr_Mesh.mesh_vertices.push(0);
+         Cntr_Mesh.mesh_vertices.push(0);
+         Cntr_Mesh.mesh_vertices.push(0); 
+         
+         Cntr_Mesh.vert_noramls.push(0);
+         Cntr_Mesh.vert_noramls.push(1);
+         Cntr_Mesh.vert_noramls.push(0);
+         
+         //Cntr_Mesh.vert_uvcoords.push(0);
+         //Cntr_Mesh.vert_uvcoords.push(0);
+         
+         Cntr_Mesh.vert_colours.push(cntr_colour[0]);
+         Cntr_Mesh.vert_colours.push(cntr_colour[1]);
+         Cntr_Mesh.vert_colours.push(cntr_colour[2]);
+         Cntr_Mesh.vert_colours.push(cntr_colour[3]);
+         
+         Cntr_Mesh.Indices.push(0);
+
+         Cntr_Mesh.mesh_vertices.push(end);
+         Cntr_Mesh.mesh_vertices.push(0);
+         Cntr_Mesh.mesh_vertices.push(0); 
+         
+         Cntr_Mesh.vert_noramls.push(0);
+         Cntr_Mesh.vert_noramls.push(1);
+         Cntr_Mesh.vert_noramls.push(0);
+         
+        // Cntr_Mesh.vert_uvcoords.push(0);
+        // Cntr_Mesh.vert_uvcoords.push(0);
+         
+         Cntr_Mesh.vert_colours.push(cntr_colour[0]);
+         Cntr_Mesh.vert_colours.push(cntr_colour[1]);
+         Cntr_Mesh.vert_colours.push(cntr_colour[2]);
+         Cntr_Mesh.vert_colours.push(cntr_colour[3]);
+         
+         Cntr_Mesh.Indices.push(1);
+         Cntr_Mesh.Indices.push(0);
+         
+        Cntr_Mesh.mesh_vertices.push(0);
+         Cntr_Mesh.mesh_vertices.push(end);
+         Cntr_Mesh.mesh_vertices.push(0); 
+         
+         Cntr_Mesh.vert_noramls.push(0);
+         Cntr_Mesh.vert_noramls.push(1);
+         Cntr_Mesh.vert_noramls.push(0);
+         
+         //Cntr_Mesh.vert_uvcoords.push(0);
+         //Cntr_Mesh.vert_uvcoords.push(0);
+         
+         Cntr_Mesh.vert_colours.push(cntr_colour[0]);
+         Cntr_Mesh.vert_colours.push(cntr_colour[1]);
+         Cntr_Mesh.vert_colours.push(cntr_colour[2]);
+         Cntr_Mesh.vert_colours.push(cntr_colour[3]);
+         
+         Cntr_Mesh.Indices.push(2);
+         Cntr_Mesh.Indices.push(0);
+         
+        Cntr_Mesh.mesh_vertices.push(0);
+         Cntr_Mesh.mesh_vertices.push(0);
+         Cntr_Mesh.mesh_vertices.push(end); 
+         
+         Cntr_Mesh.vert_noramls.push(0);
+         Cntr_Mesh.vert_noramls.push(1);
+         Cntr_Mesh.vert_noramls.push(0);
+         
+        // Cntr_Mesh.vert_uvcoords.push(0);
+        // Cntr_Mesh.vert_uvcoords.push(0);
+         
+         Cntr_Mesh.vert_colours.push(cntr_colour[0]);
+         Cntr_Mesh.vert_colours.push(cntr_colour[1]);
+         Cntr_Mesh.vert_colours.push(cntr_colour[2]);
+         Cntr_Mesh.vert_colours.push(cntr_colour[3]);
+         
+         Cntr_Mesh.Indices.push(3);
+         Cntr_Mesh.Indices.push(0);
+
+
+        Cntr_Mesh.InitialiseBuffers();
+        Cntr_Mesh.meshType = MeshType.Lines;
       
 // The X Axis
   var xcolour = [1, 0, 0, 1]; 
@@ -199,6 +293,9 @@ var mvMatrixStack = [];
          XAxisMesh.vert_noramls.push(0);
          XAxisMesh.vert_noramls.push(1);
          XAxisMesh.vert_noramls.push(0);
+         
+         //XAxisMesh.vert_uvcoords.push(0);
+         //XAxisMesh.vert_uvcoords.push(0);
          
          XAxisMesh.vert_colours.push(xcolour[0]);
          XAxisMesh.vert_colours.push(xcolour[1]);
@@ -214,6 +311,9 @@ var mvMatrixStack = [];
          XAxisMesh.vert_noramls.push(0);
          XAxisMesh.vert_noramls.push(1);
          XAxisMesh.vert_noramls.push(0);
+         
+         //XAxisMesh.vert_uvcoords.push(0);
+         //XAxisMesh.vert_uvcoords.push(0);
          
          XAxisMesh.vert_colours.push(xcolour[0]);
          XAxisMesh.vert_colours.push(xcolour[1]);
@@ -235,6 +335,9 @@ var mvMatrixStack = [];
          YAxisMesh.vert_noramls.push(1);
          YAxisMesh.vert_noramls.push(0);
          
+         //YAxisMesh.vert_uvcoords.push(0);
+         //YAxisMesh.vert_uvcoords.push(0);
+         
          YAxisMesh.vert_colours.push(ycolour[0]);
          YAxisMesh.vert_colours.push(ycolour[1]);
          YAxisMesh.vert_colours.push(ycolour[2]);
@@ -249,6 +352,9 @@ var mvMatrixStack = [];
          YAxisMesh.vert_noramls.push(0);
          YAxisMesh.vert_noramls.push(1);
          YAxisMesh.vert_noramls.push(0);
+         
+         //YAxisMesh.vert_uvcoords.push(0);
+         //YAxisMesh.vert_uvcoords.push(0);
          
          YAxisMesh.vert_colours.push(ycolour[0]);
          YAxisMesh.vert_colours.push(ycolour[1]);
@@ -270,6 +376,9 @@ var mvMatrixStack = [];
          ZAxisMesh.vert_noramls.push(1);
          ZAxisMesh.vert_noramls.push(0);
          
+         //ZAxisMesh.vert_uvcoords.push(0);
+         //ZAxisMesh.vert_uvcoords.push(0);
+         
          ZAxisMesh.vert_colours.push(zcolour[0]);
          ZAxisMesh.vert_colours.push(zcolour[1]);
          ZAxisMesh.vert_colours.push(zcolour[2]);
@@ -284,6 +393,9 @@ var mvMatrixStack = [];
          ZAxisMesh.vert_noramls.push(0);
          ZAxisMesh.vert_noramls.push(1);
          ZAxisMesh.vert_noramls.push(0);
+         
+         //ZAxisMesh.vert_uvcoords.push(0);
+         //ZAxisMesh.vert_uvcoords.push(0);
          
          ZAxisMesh.vert_colours.push(zcolour[0]);
          ZAxisMesh.vert_colours.push(zcolour[1]);

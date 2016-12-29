@@ -36,6 +36,7 @@ function io_import_stl(files, FileName, InputFileText, reader)
       
   var model = new vxModel(FileName +":ascii");
   
+  
   var mesh = new vxMesh("mesh: " + FileName.substring(0, FileName.length-4));
 
   log("Loading file <b>'"+FileName+"'</b> as an <b>'ASCII .stl'</b> file...");
@@ -53,11 +54,16 @@ var norm = new vxVertex3D(0,0,0);
 
   //Zero out the number of elements
   numOfElements = 0;
+  var blockCount = 0;
+  var TotalVertCount = 0;
   
   //Set the Index. 0 is the background.
   //numOfFaces = 1 + MeshCollection.length;
 
   var treeItems = [];
+  
+  var CreateNewBlock = false;
+  var CanAddFace = false;
   
   //Re-zero out the model center
   modelprop_Center[0] = 0;
@@ -78,21 +84,44 @@ var norm = new vxVertex3D(0,0,0);
        //Add Normal
        case "facet":
 
-       // Set the Normal for this Current Face
-       norm.Set(inputLine[2], inputLine[3], inputLine[4]);
 
 
-       var selcol = new vxColour();
-        selcol.EncodeColour(numOfFaces);
+       //var selcol = new vxColour();
+        //selcol.EncodeColour(numOfFaces);
         
 //        console.log(numOfFaces);
 
-          mesh.AddEdge(vert1, vert2);
-          mesh.AddEdge(vert2, vert3);
-          mesh.AddEdge(vert3, vert1);
+          //mesh.AddEdge(vert1, vert2);
+          //mesh.AddEdge(vert2, vert3);
+          //mesh.AddEdge(vert3, vert1);
 
-         numOfFaces++;
+        if(CanAddFace)
+        {
+        // Once all of the data is in, create the new face
+        var selcol = new vxColour();
+        selcol.EncodeColour(numOfFaces);
+        mesh.AddFace(vert1, vert2, vert3, norm, meshcolor, selcol);
         
+         numOfFaces++;
+        }
+          
+          // There is a fundamental limit to the number of vertices, if it hits one, then
+          // create a new mesh
+          if(numOfElements > 65000/2)
+         {
+           blockCount++;
+            numOfElements = 0;
+            
+            // ass the current mesh to the model
+            model.AddMesh(mesh);
+            
+            // now create a new mesh
+            var mesh = new vxMesh("mesh: " + FileName.substring(0, FileName.length-4) + "[block:"+blockCount+"]");
+         }
+        
+        
+       // Set the Normal for this Current Face
+       norm.Set(inputLine[2], inputLine[3], inputLine[4]);
        break;
 
        
@@ -122,33 +151,28 @@ var norm = new vxVertex3D(0,0,0);
          modelprop_Center[1] -= inputLine[2];
          modelprop_Center[2] -= inputLine[3];
 
-         var vert = new vxVertex3D(inputLine[1], inputLine[2], inputLine[3]);
+         //var vert = new vxVertex3D(inputLine[1], inputLine[2], inputLine[3]);
          
-         mesh.AddVertices(vert, norm, meshcolor, selcol);
+         // Increment the 
           numOfElements++;
-          
-          if(numOfElements == 97752)
-          log(inputLine);
-        
+          TotalVertCount++;
+          CanAddFace = true;
        break;
      }
 
     }
 
-    modelprop_Center[0] /= numOfElements;
-    modelprop_Center[1] /= numOfElements;
-    modelprop_Center[2] /= numOfElements;
-        log(finalline);
-        log(numOfElements);
-        // Initialise the VBO Buffers 
-      //mesh.Initialise();
+    // Add the last face
+    var selcol = new vxColour();
+    selcol.EncodeColour(numOfFaces);
+    mesh.AddFace(vert1, vert2, vert3, norm, meshcolor, selcol);
+         numOfFaces++;
         
-        // Set the Name
-        //mesh.Name = "mesh: " + FileName.substring(0, FileName.length-4);
-        
-
-
-        
+    // Set the center
+    modelprop_Center[0] /= TotalVertCount;
+    modelprop_Center[1] /= TotalVertCount;
+    modelprop_Center[2] /= TotalVertCount;
+    
         // Now Set the View Parameters
         Zoom = -mesh.MaxPoint.Length()*1.75;
         rotX = -45;
@@ -177,6 +201,10 @@ function io_import_stl_binary(files, FileName, InputFileText)
 var vert2 = new vxVertex3D(0,0,0);
 var vert3 = new vxVertex3D(0,0,0);
 var norm = new vxVertex3D(0,0,0);
+
+  numOfElements = 0;
+  var blockCount = 0;
+  var TotalVertCount = 0;
   
     var binreader = new FileReader();
     //log(files[0]);
@@ -195,7 +223,7 @@ var norm = new vxVertex3D(0,0,0);
 
     // Read a 32 bit unsigned integer
     var triangles = dv.getUint32(0, isLittleEndian);
-    log("tris: "+triangles)
+    console.log("tris: "+triangles)
 
     var offset = 4;
     for (var i = 0; i < triangles; i++) {
@@ -212,6 +240,8 @@ var norm = new vxVertex3D(0,0,0);
         // by 3 32 bit floats.
         for (var j = 0; j < 3; j++) {
           
+         numOfElements++;
+         
          switch(j)
          {
             case 0:
@@ -243,6 +273,20 @@ var norm = new vxVertex3D(0,0,0);
         mesh.AddFace(vert1, vert2, vert3, norm, meshcolor, selcol);
           
          numOfFaces++;
+
+                   // There is a fundamental limit to the number of vertices, if it hits one, then
+          // create a new mesh
+          if(numOfElements > 65000/3)
+         {
+           blockCount++;
+            numOfElements = 0;
+            
+            // ass the current mesh to the model
+            model.AddMesh(mesh);
+            
+            // now create a new mesh
+            mesh = new vxMesh("mesh: " + FileName.substring(0, FileName.length-4) + "[block:"+blockCount+"]");
+         }
     }
     
             // Now Set the View Parameters

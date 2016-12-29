@@ -21,6 +21,25 @@ body {
   /*transition: color .5s;*/
 }
 
+.measure
+{
+  font-size: 11px;
+  background:#444;
+  color: #ccc;
+    padding: 2px 5px 3px 5px;
+    border-radius: 5px;
+    border: 1px solid #555;
+    opacity: 0.85;
+}
+.measure:hover
+{
+  opacity: 1;
+  color: white;
+}
+
+
+
+
 .footer
 {
     display: inline-block;
@@ -115,7 +134,104 @@ div.panel.show {
     max-height: 500px;
 }
 
+/*
 
+Top Right Corner Title
+
+*/
+.corner-title
+{
+  color:#333;
+  font-size: 13px;
+  border: none;
+  position:absolute;
+  top:5px; 
+  right:35px;
+}
+
+.img-header
+{
+  width:24px;
+  border: none;
+  position:absolute;
+  top:2px; 
+  right:5px;
+}
+
+
+.img-header[data-icon="logo"]
+{
+  content:url('../assets/icon_24.png');
+}
+
+/*
+
+Bottom Left Corner Status Text
+
+*/
+.corner-status-text
+{
+  color:#aaa;
+  border: none;
+  position:absolute;
+  bottom:1px; 
+  left:5px;
+}
+
+/*
+
+Footer images
+
+*/
+.img-footer
+{
+  width:24px;
+  border: none;
+  position:absolute;
+  bottom:0px; 
+  right:0px;
+}
+
+
+.img-footer[data-icon="fb"]
+{
+  content:url('../img/social/Facebook-Icon.png');
+}
+.img-footer[data-icon="fb"]:hover
+{
+  content:url('../img/social/Facebook-Icon-Hover.png');
+}
+
+.img-footer[data-icon="twtr"]
+{
+  content:url('../img/social/Twitter-Icon.png');
+  right:24px;
+}
+
+.img-footer[data-icon="twtr"]:hover
+{
+  content:url('../img/social/Twitter-Icon-Hover.png');
+  right:24px;
+}
+
+.img-footer[data-icon="github"]
+{
+  content:url('../img/social/Github-Icon.png');
+  right:48px;
+}
+.img-footer[data-icon="github"]:hover
+{
+  content:url('../img/social/Github-Icon-Hover.png');
+  right:48px;
+}
+
+.img-footer[data-icon="build"]
+{
+  width:initial;
+  content:url('../img/badges/build-status.svg');
+  bottom:1px; 
+  right:72px;
+}
 
 .tg  {
   /*

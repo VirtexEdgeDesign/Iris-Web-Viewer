@@ -34,33 +34,33 @@ rotX = 0;
 
 function SetShadingToEdge() {
 	RenderState = vxRenderState.ShadedEdge;
-	console.log(RenderState);
+	log("RenderState = " + RenderState);
 }
 
 function SetShadingToShaded() {
 	RenderState = vxRenderState.Shaded;
-	console.log(RenderState);
+	log("RenderState = " + RenderState);
 }
 
 function SetShadingToWireframe() {
 	RenderState = vxRenderState.Wireframe;
-	console.log(RenderState);
+	log("RenderState = " + RenderState);
 }
 
 function SetShadingToNormal() {
 	RenderState = vxRenderState.SurfaceNormal;
-	console.log(RenderState);
+	log("RenderState = " + RenderState);
 }
 
 
 function SetViewToPerspective() {
 	ProjectionType = vxProjectionType.Perspective;
-	console.log(ProjectionType);
+	log("ProjectionType = " + ProjectionType);
 }
 
 function SetViewToOrtho() {
 	ProjectionType = vxProjectionType.Ortho;
-	console.log(ProjectionType);
+	log("ProjectionType = " + ProjectionType);
 }
 
 

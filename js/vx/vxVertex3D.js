@@ -23,3 +23,9 @@ vxVertex3D.prototype.Set = function(x, y, z) {
   vxVertex3D.prototype.Length = function() {
     return Math.sqrt(this.X * this.X + this.Y * this.Y + this.Z * this.Z);
   };
+  
+  
+  // Returns the Cross product of two vectors
+  vxVertex3D.prototype.Cross = function(v1, v2) {
+    return 1;
+  };

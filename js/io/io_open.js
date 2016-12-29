@@ -52,8 +52,9 @@ function getFileExtention(fileName){
     var IsFileASCII = true;
     
      //First Find Which File Type it is.
-      var fileExtention = getFileExtention(evt.target.files[0].name).toLowerCase();
+      //var fileExtention = getFileExtention(evt.target.files[0].name).toLowerCase();
     
+    // Reset the file load index
     var CurFileIndex = 0;
     
     // Reset progress indicator on new file selection.
@@ -77,13 +78,18 @@ function getFileExtention(fileName){
     };
     
     
+    
+    
     //Function Executed After the File Has Been Loaded
     reader.onload = function(e) {
       
-      switch(fileExtention)
+            //console.log(e.target.result);
+      console.log("Loading: ");
+      console.log(evt.target.files[CurFileIndex]);
+      switch(getFileExtention(evt.target.files[CurFileIndex].name).toLowerCase())
       {
         case "obj":
-          io_import_obj(fileName, this.result, reader);
+          io_import_obj(evt.target.files, fileName, this.result, reader);
           break;
         case "stl":
           io_import_stl(evt.target.files, fileName, this.result, reader);
@@ -91,6 +97,11 @@ function getFileExtention(fileName){
         case "ply":
           io_import_ply(fileName, this.result);
           break;
+          case "png":
+            
+             var srcData = e.target.result; // <--- data: base64
+
+            break;
         default:
         //alert("File Type .'" + fileExtention + "' Not Supported.\nIf this is a 3D file format and you would like this file type added, please contact us!");
         log("File Type .'" + fileExtention + "' Not Supported.\nIf you would like this file type added, please contact us!");

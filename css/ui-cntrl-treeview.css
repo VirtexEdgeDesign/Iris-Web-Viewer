@@ -189,6 +189,12 @@
 
 .ui-cntrl-treeview label[for][data-icon="mesh"]{  background-image: url('../img/tree/node_mesh.png'); }
 
+.ui-cntrl-treeview label[for][data-icon="measure"]{  background-image: url('../img/tree/node_measure.png'); }
+.ui-cntrl-treeview label[for][data-icon="bullet_blue"]{  background-image: url('../img/tree/node_bullet_blue.png'); }
+.ui-cntrl-treeview label[for][data-icon="bullet_green"]{  background-image: url('../img/tree/node_bullet_green.png'); }
+.ui-cntrl-treeview label[for][data-icon="bullet_red"]{  background-image: url('../img/tree/node_bullet_red.png'); }
+.ui-cntrl-treeview label[for][data-icon="bullet_vector"]{  background-image: url('../img/tree/node_bullet_vector.png'); }
+
 
 
 

@@ -2,12 +2,32 @@
 // Side Bar
 //******************************************************************
 $( "#sidebar_file_new" ).click(function() {
+  window.open("www.google.com");
   chrome.runtime.reload();
 });
 $( "#sidebar_file_import" ).click(function() {
   $('#menu_file_openSelect').click();
   CloseSidebar();
 });
+
+$( "#btn_social_fb" ).click(function() {
+  chrome.browser.openTab({
+      url: 'https://www.facebook.com/r4tch31'
+    });
+});
+
+$( "#btn_social_twtr" ).click(function() {
+  chrome.browser.openTab({
+      url: 'https://twitter.com/r4tch31'
+    });
+});
+
+$( "#btn_social_gthb" ).click(function() {
+  chrome.browser.openTab({
+      url: 'https://github.com/r4tch31'
+    });
+});
+
 
 // File
 //******************************************************************
@@ -74,17 +94,26 @@ $( "#menu_view_surfaceNormal" ).click(function() {
 });
 
 
-// About
+// Tools
 //******************************************************************
+
+$( "#menu_tools_measure" ).click(function() {
+  CurrentCMD = null;
+  CurrentCMD = new vxMeasureCMD();
+  CurrentCMD.Init();
+});
+
 $( "#menu_tools_debug" ).click(function() {
   
      if(stats.dom.style.display == 'none')
     {
         stats.dom.style.display = 'block';
+        DoDebug = true;
     }
     else
     {
       stats.dom.style.display = "none";
+      DoDebug = false;
     }
 });
 

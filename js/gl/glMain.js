@@ -5,6 +5,7 @@
 
     var mvMatrix = mat4.create();
     var pMatrix = mat4.create();
+    var mvp = mat4.create();
 
     function webGLStart() {
         var canvas = document.getElementById("glcanvas3D");
@@ -21,7 +22,6 @@
         drawScene();
 
         setInterval(drawScene, 15);
-
     }
 
 
@@ -45,6 +45,11 @@
 
         vertexNormalAttribute = gl.getAttribLocation(shaderProgram, "aVertexNormal");
         gl.enableVertexAttribArray(vertexNormalAttribute);
+        
+        /*
+        textureCoordAttribute = gl.getAttribLocation(shaderProgram, "aTextureCoord");
+        gl.enableVertexAttribArray(textureCoordAttribute);
+        */
 
         vertexColorAttribute = gl.getAttribLocation(shaderProgram, "aVertexColor");
         gl.enableVertexAttribArray(vertexColorAttribute);
@@ -81,10 +86,16 @@
 
 
         var sel_colour = [0.1, 0.6, 1, 1];
+        HoveredMesh.HasTexture = false;
+        
         for (var i = 0; i < 3; i++) {
             HoveredMesh.mesh_vertices.push(0);
             HoveredMesh.mesh_vertices.push(0);
             HoveredMesh.mesh_vertices.push(0);
+            
+            
+           // HoveredMesh.vert_uvcoords.push(0);
+           // HoveredMesh.vert_uvcoords.push(1);
 
             HoveredMesh.vert_noramls.push(0);
             HoveredMesh.vert_noramls.push(1);
@@ -103,7 +114,9 @@
     }
 
     function drawScene() {
-
+      
+      if(safeToDraw == true)
+{
 stats.begin();
 
     // monitored code goes here
@@ -126,24 +139,27 @@ stats.begin();
         // scene. Our field of view is 45 degrees, with a width/height
         // ratio of 640:480, and we only want to see objects between 0.1 units
         // and 100 units away from the camera.
-        var factor = -curZoom / 400;
+        var factor = -curZoom / 800;
 
         if (ProjectionType == vxProjectionType.Perspective) {
             mat4.perspective(45, canvas.width / canvas.height, 0.1, 1000000.0, pMatrix);
         } else if (ProjectionType == vxProjectionType.Ortho) {
-            mat4.ortho(-factor * canvas.width / 2, factor * canvas.width / 2, -factor * canvas.height / 2, factor * canvas.height / 2, -10000, 10000);
+            mat4.ortho(-factor * canvas.width / 2, factor * canvas.width / 2, -factor * canvas.height / 2, factor * canvas.height / 2, -10000, 10000, pMatrix);
         }
-
+        
         // Set the drawing position to the "identity" point, which is
         // the center of the scene.
         mat4.identity(mvMatrix);
 
-        mat4.translate(mvMatrix, [-0.0, 0.0, curZoom]);
+        //mat4.translate(mvMatrix, [0, 0, curZoom]);
+        mat4.translate(mvMatrix, [panX/10, panY/10, curZoom]);
+        
         mat4.rotate(mvMatrix, currotY, [1, 0, 0]);
         mat4.rotate(mvMatrix, currotX, [0, 1, 0]);
-        
         mat4.translate(mvMatrix, Cur_Center);
-
+        
+        mat4.translate(mvMatrix, [-panX/10, -panY/10, 0]);
+        mat4.multiply(pMatrix, mvMatrix, mvp);
         // Save the current matrix, then rotate before we draw.
 
         mvPushMatrix();
@@ -182,7 +198,7 @@ stats.begin();
                 MeshCollection[i].Draw();
             }
         }
-        
+
         // Everything After this does not need shading
         gl.uniform1i(hasTextureAttribute, 2);
 
@@ -195,7 +211,7 @@ stats.begin();
           // Now check if the Hover index is within this mesh's bounds
           for (var i = 0; i < MeshCollection.length; i++) {
             
-            // Now check if the Hover Index is within this Mesh Collection    
+            // Now check if the Hover Index is within this Mesh Collection
             if(HoverIndex >= MeshCollection[i].IndexStart && HoverIndex < MeshCollection[i].IndexEnd)
             {
               //Now Finally Draw the Face
@@ -207,6 +223,7 @@ stats.begin();
               HoveredMesh.Model = MeshCollection[i].Model;
               
               HoveredMesh.InitialiseBuffers();
+              HoveredMesh.SetCenter();
             }
             
           // Keep running total
@@ -219,6 +236,7 @@ stats.begin();
                 HoveredMesh.mesh_vertices[i] = 0;
 
             HoveredMesh.InitialiseBuffers();
+            //
         }
 
         HoveredMesh.Draw();
@@ -232,10 +250,7 @@ stats.begin();
         }
 
 
-        //gl.uniform1i(hasTextureAttribute, 2);
-        XAxisMesh.Draw();
-        YAxisMesh.Draw();
-        ZAxisMesh.Draw();
+
 
         // Only Draw Edges if the Shaded Edge Settings is set
         for (var i = 0; i < MeshCollection.length; i++) {
@@ -246,7 +261,28 @@ stats.begin();
                 MeshCollection[i].DrawWireframe();
             }
         }
+        
+        
+        for (var i = 0; i < MeasureCollection.length; i++) {
+            MeasureCollection[i].Draw();
+        }
+        
+        //gl.uniform1i(hasTextureAttribute, 2);
+        XAxisMesh.Draw();
+        YAxisMesh.Draw();
+        ZAxisMesh.Draw();
+        
+        
+        var newCntr = [];
+        newCntr.push(-modelprop_Center[0]);
+        newCntr.push(-modelprop_Center[1]);
+        newCntr.push(-modelprop_Center[2]);
+        
+        
+        mat4.translate(mvMatrix,newCntr);
+        Cntr_Mesh.Draw();
 
+        
 
         mvPopMatrix();
 
@@ -259,9 +295,10 @@ stats.begin();
 
         if (ProjectionType == vxProjectionType.Perspective) {
             mat4.perspective(45, 1, 0.1, 10000.0, pMatrix);
+            
         } else if (ProjectionType == vxProjectionType.Ortho) {
             size = 15;
-            mat4.ortho(-size, size, -size, size, 0.1, 10000.0);
+            mat4.ortho(-size, size, -size, size,  -10000, 10000, pMatrix);
         }
 
 
@@ -275,16 +312,12 @@ stats.begin();
 
         setMatrixUniforms();
         
+        
         // Draw Axis
         XAxisMesh.Draw();
         YAxisMesh.Draw();
         ZAxisMesh.Draw();
         
-
-        var d = document.getElementById('footer_text');
-        
-        d.innerHTML = "Hovering: Face." + HoverIndex;
-
    stats.end();
-
+}
     }

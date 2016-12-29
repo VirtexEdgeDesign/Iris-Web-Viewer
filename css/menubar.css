@@ -179,6 +179,7 @@ nav a[data-icon="icon-view-normal"]::before { content: url('../img/tlbr/view/ren
 
 /* Tools Icons */
 nav a[data-icon="icon-tools-measure"]::before { content: url('../img/tlbr/tools/measure.png'); }
+nav a[data-icon="icon-tools-debug"]::before { content: url('../img/tlbr/tools/debug.png'); }
 
 /* About Menu*/
 nav a[data-icon="icon-logo-vrtx"]::before { content: url('../img/icon/vrtx_logo_16.png'); }

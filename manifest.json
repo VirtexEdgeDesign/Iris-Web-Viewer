@@ -1,19 +1,24 @@
 {
   "manifest_version": 2,
   "name": "Iris Web Viewer",
-  "short_name": "Iris Web Viewer",
+  "short_name": "Iris Viewer",
   "description": "A Web Based 3D Exchange Model Viewer.",
-  "version": "0.0.1",
+  "version": "0.1.3",
   "minimum_chrome_version": "38",
 
   "icons": {
     "16": "assets/icon_16.png",
-    "128": "assets/icon_128.png"
+    "24": "assets/icon_24.png",
+    "32": "assets/icon_32.png",
+    "64": "assets/icon_64.png",
+    "128": "assets/icon_128.png",
+    "256": "assets/icon_256.png"
   },
 
   "app": {
     "background": {
       "scripts": ["background.js"]
     }
-  }
+  },
+      "permissions": ["browser" ]
 }

@@ -11,6 +11,10 @@ function vxMesh (name) {
     // The Owning Model
     this.Model = null;
     
+    
+    // Mesh Chunk Collection for this mesh, because the Draw call can only handle 65000 indices
+    this.MesheChunks = [];
+    
     var col = 0.75;
     this.meshcolor = new vxColour(col, col, col, 1);
     
@@ -26,6 +30,10 @@ function vxMesh (name) {
     //Normal Array
     this.vert_noramls = [];
     this.edge_noramls = [];
+    
+    // UV Texture Coordinates
+    //this.vert_uvcoords = [];
+    //this.HasTexture = true;
     
     //Colour Array
     this.vert_colours = [];
@@ -43,6 +51,7 @@ function vxMesh (name) {
     this.meshVerticesBuffer = null;
     this.meshVerticesNormalBuffer= null;
     this.meshVerticesColorBuffer= null;
+    this.meshVerticesUVTexCoordBuffer= null;
     this.meshVerticesSelectionColorBuffer= null;
     this.meshVerticesWireframeColorBuffer= null;
     this.meshVerticesIndexBuffer= null;
@@ -58,6 +67,10 @@ function vxMesh (name) {
     //Should it be Drawn
     this.Enabled = true;
     
+    this.Texture = null;
+    
+  this.TextureImage = new Image();
+    
     // The Max Point of this Mesh
     this.MaxPoint = new vxVertex3D(0,0,0);
     
@@ -70,12 +83,36 @@ vxMesh.prototype.getInfo = function() {
     return 'Mesh Name: ' + this.Name;
 };
 
+vxMesh.prototype.SetCenter = function() {
+  var cnt = 0;
+    for (var i = 0; i < this.mesh_vertices.length; i+=3) {
+      cnt++;
+      this.Center[0] += this.mesh_vertices[i];
+      this.Center[1] += this.mesh_vertices[i+1];
+      this.Center[2] += this.mesh_vertices[i+2];
+    }
+    if(cnt > 0)
+    {
+      this.Center[0] /= cnt;
+      this.Center[1] /= cnt;
+      this.Center[2] /= cnt;
+    }
+};
+
+
+vxMesh.prototype.initTextures = function () {
+  
+};
+
+
+
 // Initialises the Mesh
 vxMesh.prototype.Init = function() {
   
   this.InitialiseBuffers();
   //this.IndexEnd = numOfFaces;
   this.IndexEnd = this.IndexStart + this.Indices.length/3;
+  
   
   // Now Add it to the MeshCollection
   MeshCollection.push(this);
@@ -91,6 +128,13 @@ vxMesh.prototype.InitialiseBuffers = function(){
   this.meshVerticesNormalBuffer = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, this.meshVerticesNormalBuffer);
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.vert_noramls), gl.STATIC_DRAW);
+  
+  /*
+  // Set up the UV Texture Coordinates
+  this.meshVerticesUVTexCoordBuffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, this.meshVerticesUVTexCoordBuffer);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.vert_uvcoords), gl.STATIC_DRAW);
+  */
   
   // Now set up the colors
   this.meshVerticesColorBuffer = gl.createBuffer();
@@ -141,6 +185,10 @@ vxMesh.prototype.InitialiseBuffers = function(){
   this.edgeVerticesIndexBuffer = gl.createBuffer();
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.edgeVerticesIndexBuffer);
   gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(this.EdgeIndices), gl.STATIC_DRAW);
+  
+  
+  
+  this.initTextures();
 };
 
 vxMesh.prototype.DrawSelPreProc = function(){
@@ -156,6 +204,16 @@ vxMesh.prototype.DrawSelPreProc = function(){
     // Bind the normals buffer to the shader attribute.
   gl.bindBuffer(gl.ARRAY_BUFFER, this.meshVerticesNormalBuffer);
   gl.vertexAttribPointer(vertexNormalAttribute, 3, gl.FLOAT, false, 0, 0);
+  
+  /*
+  // Bind Texture Coordinates
+  gl.bindBuffer(gl.ARRAY_BUFFER, this.meshVerticesUVTexCoordBuffer);
+  gl.vertexAttribPointer(textureCoordAttribute, 2, gl.FLOAT, false, 0, 0);
+  
+  gl.activeTexture(gl.TEXTURE0);
+  gl.bindTexture(gl.TEXTURE_2D, this.Texture);
+  gl.uniform1i(gl.getUniformLocation(shaderProgram, "uSampler"), 0);
+  */
   
   // Set the colors attribute for the vertices.
   gl.bindBuffer(gl.ARRAY_BUFFER, this.meshVerticesSelectionColorBuffer);
@@ -187,10 +245,21 @@ vxMesh.prototype.Draw = function(){
   gl.bindBuffer(gl.ARRAY_BUFFER, this.meshVerticesNormalBuffer);
   gl.vertexAttribPointer(vertexNormalAttribute, 3, gl.FLOAT, false, 0, 0);
   
+  /*
+  // Bind Texture Coordinates
+  gl.bindBuffer(gl.ARRAY_BUFFER, this.meshVerticesUVTexCoordBuffer);
+  gl.vertexAttribPointer(textureCoordAttribute, 2, gl.FLOAT, false, 0, 0);
+  
+  gl.activeTexture(gl.TEXTURE0);
+  gl.bindTexture(gl.TEXTURE_2D, this.Texture);
+  gl.uniform1i(gl.getUniformLocation(shaderProgram, "uSampler"), 0);
+  */
+
+  
   // Set the colors attribute for the vertices.
   gl.bindBuffer(gl.ARRAY_BUFFER, this.meshVerticesColorBuffer);
   gl.vertexAttribPointer(vertexColorAttribute, 4, gl.FLOAT, false, 0, 0);
-  
+  //console.log(this.Indices.length);
   // Draw the cube.
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.meshVerticesIndexBuffer);
   
@@ -218,6 +287,16 @@ vxMesh.prototype.DrawWireframe = function(){
     // Bind the normals buffer to the shader attribute.
   gl.bindBuffer(gl.ARRAY_BUFFER, this.edgeVerticesNormalBuffer);
   gl.vertexAttribPointer(vertexNormalAttribute, 3, gl.FLOAT, false, 0, 0);
+  
+  /*
+    // Bind Texture Coordinates
+  gl.bindBuffer(gl.ARRAY_BUFFER, this.meshVerticesUVTexCoordBuffer);
+  gl.vertexAttribPointer(textureCoordAttribute, 2, gl.FLOAT, false, 0, 0);
+  
+  gl.activeTexture(gl.TEXTURE0);
+  gl.bindTexture(gl.TEXTURE_2D, this.Texture);
+  gl.uniform1i(gl.getUniformLocation(shaderProgram, "uSampler"), 0);
+  */
   
   // Set the colors attribute for the vertices.
   gl.bindBuffer(gl.ARRAY_BUFFER, this.meshVerticesWireframeColorBuffer);
@@ -274,6 +353,9 @@ vxMesh.prototype.AddVertices = function(vertices, normal, colour, encodedIndexCo
          this.vert_noramls.push(normal.Y);
          this.vert_noramls.push(normal.Z);
          
+         
+         //this.vert_uvcoords.push(normal.X);
+         //this.vert_uvcoords.push(normal.Y);
          
          this.vert_colours.push(colour.R);
          this.vert_colours.push(colour.G);

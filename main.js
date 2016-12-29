@@ -4,6 +4,11 @@ var canvas;
 // The WebGL Context
 var gl;
 
+var safeToDraw = true;
+
+var cubeImage;
+var cubeTexture;
+
 // Properties GUI
 var gui;
 
@@ -12,6 +17,11 @@ var properties;
 
 // Stats Marker for FPS/MS etc...
 var stats = new Stats();
+
+var CurrentCMD;
+
+
+var DoDebug = false;
 
 // Model Center
 var modelprop_Center = [0, 0, 0];
@@ -45,7 +55,7 @@ vxShaderState = {
 var ShaderState = vxShaderState.Diffuse;
 
 
-// View Projection Type 
+// View Projection Type
 //**************************************************
 vxProjectionType = {
     Perspective: 0,
@@ -62,7 +72,7 @@ var HoverIndex = 0;
 var treeHasFocus = 0;
 
 
-//This is a collection of all of the current models. A model is defined as a 
+//This is a collection of all of the current models. A model is defined as a
 // individual file.
 var ModelCollection = [];
 
@@ -72,11 +82,19 @@ var MeshCollection = [];
 //This is a collection of all of the current meshes
 var SelectedMeshCollection = [];
 
+// Collection of Measurements
+var MeasureCollection = [];
+
+
 //Grid Variables
 var GridMesh = new vxMesh('GridMesh');
 var XAxisMesh = new vxMesh('X Axis');
 var YAxisMesh = new vxMesh('Y Axis');
 var ZAxisMesh = new vxMesh('Z Axis');
+
+
+var Cntr_Mesh = new vxMesh('Center');
+
 var HoveredMesh = new vxMesh('Hovered Mesh');
 
 var ViewCenter = new vxVertex3D();
@@ -85,6 +103,8 @@ var ViewCenter = new vxVertex3D();
 var numOfElements = 0;
 var rotX = -45;
 var rotY = 30;
+var panX = 0;
+var panY = 0;
 
 var currotX = 0;
 var currotY = 0;
@@ -107,6 +127,8 @@ var elmntID;
 var MouseState = {
     x: 0,
     y: 0,
+    prevX: 0,
+    prevY: 0,
     LeftButtonDown: false,
     MiddleButtonDown: false,
     RightButtonDown: false
@@ -119,9 +141,12 @@ var KeyboardState = {
 };
 
 var meshNodeId = "node_mesh";
+var measureNodeId = "node_measure";
+
+var status;
 
 
-
+var modalIntro = document.getElementById('modal_intro');
 
 
 window.onload = function() {
@@ -129,18 +154,18 @@ window.onload = function() {
   canvas = document.getElementById('glcanvas3D');
     
     
-    // Setup Stats Panel
-stats.showPanel( 0 ); // 0: fps, 1: ms, 2: mb, 3+: custom
-//log(stats.dom);
-stats.dom.style.top = window.innerHeight - 75+"px";
-//hide it normally
-stats.dom.style.display = 'none';
-//stats.dom.style.bottom = 32+"px"
-document.body.appendChild( stats.dom );
+  // Setup Stats Panel
+  stats.showPanel( 0 ); // 0: fps, 1: ms, 2: mb, 3+: custom
+  //log(stats.dom);
+  stats.dom.style.top = window.innerHeight - 75+"px";
+  //hide it normally
+  stats.dom.style.display = 'none';
+  //stats.dom.style.bottom = 32+"px"
+  document.body.appendChild( stats.dom );
 
 
 
-// Now Setup the Properties GUI
+  // Now Setup the Properties GUI
   gui = new dat.GUI({ autoplace: false, width: 300 });
 
   gui.domElement.id = 'prop_dat_gui';
@@ -148,55 +173,9 @@ document.body.appendChild( stats.dom );
     var prop = document.getElementById('cntrl_properties');
     var customContainer = $(prop).append($(gui.domElement));
     
-    /*
-    var propval = new PropertyData("Hello World");
-    propval.Set(gui);
-    propval.Clear(gui);
-    */
-    
+ //initialise model properties
  properties = new ModelProp(gui, "");
  
- /*
- square.removeAll();
- 
- square = new FaceProp(gui, "circle Hello World", 5);
- square.setAll();
- */
-
-/*
-  var text = new FizzyText();
-  var gui = new dat.GUI({ autoplace: false, width: 300 });
-  gui.add(text, 'message');
-  gui.add(text, 'speed', -5, 5);
-  gui.add(text, 'displayOutline');
-  gui.domElement.id = 'prop_dat_gui';
-  
-  
-    var prop = document.getElementById('cntrl_properties');
-      var customContainer = $(prop).append($(gui.domElement));
-      
-       var text2 = new FizzyText();
-  gui.add(text2, 'message');
-  gui.add(text2, 'speed', -5, 5);
-  gui.add(text2, 'displayOutline');
-  
-  gui.remove(item);
-  
-  gui = new dat.GUI({ autoplace: false, width: 300 });
-  gui.domElement.id = 'prop_dat_gui';
-  
-  var f1 = gui.addFolder('Flow Field');
-f1.add(text, 'speed');
-f1.add(text, 'message');
-
-var f2 = f1.addFolder('Letters');
-f2.add(text, 'message');
-f2.add(text, 'message');
-f2.add(text, 'message');
-
-f2.open();
-*/
-  //
     //Initialise Web GL
     webGLStart();
 
@@ -208,6 +187,10 @@ f2.open();
     canvas.onmousemove = handleMouseMove;
     document.addEventListener("wheel", MouseWheelHandler, {passive:true});
     
+    
+    status = document.getElementById('footer_text');
+    document.getElementById('footer_text').innerHTML = "Welcome to Iris";
+        
 //TODO: Old method of handling mouse scrolling
 /*
     //var myimage = document.getElementById(elmntID);
@@ -239,7 +222,7 @@ f2.open();
     <label for="node-0-1-0">My Music</label>
   </li>
     */
-    AddTreeNode("node_origin", "Origin", "tree_root", "folder", true);
+    //AddTreeNode("node_origin", "Origin", "tree_root", "folder", true);
     /*
     AddTreeNode("node_axis", "Axis'", "node_origin", "folder", true);
     
@@ -254,6 +237,8 @@ f2.open();
     AddTreeNode("node_origin_z", "XZ-Planes", "node_planes", "plane");
     */
     AddTreeNode(meshNodeId, "Meshes", "tree_root", "folder", true);
+    
+    AddTreeNode(measureNodeId, "Measurements", "tree_root", "folder", true);
 
 
 };
@@ -376,26 +361,46 @@ $(".ui-cntrl-treeview").delegate("label input:checkbox", "change", function() {
         nestedList = checkbox.parent().next().next(),
         selectNestedListCheckbox = nestedList.find("label:not([for]) input:checkbox");
 
-
+    // Toggle all Meshes
     if ($(checkbox).attr('id') == meshNodeId) {
         for (var i = 0; i < MeshCollection.length; i++) {
 
             MeshCollection[i].Enabled = checkbox.is(":checked");
         }
-    } else {
+    }
+    
+    // Toggle all Measurements
+    else if ($(checkbox).attr('id') == measureNodeId) {
+        for (var i = 0; i < MeasureCollection.length; i++) {
 
+            MeasureCollection[i].Enabled = checkbox.is(":checked");
+        }
+        
+    // Parse through individual collections
+    }else {
+        
+        //Check Meshes
         for (var i = 0; i < MeshCollection.length; i++) {
 
             if ("node_" + MeshCollection[i].Name == $(checkbox).attr('id')) {
                 MeshCollection[i].Enabled = checkbox.is(":checked");
             }
         }
+        //Check Models
         for (var i = 0; i < ModelCollection.length; i++) {
             
             ModelCollection[i].TrueFunc = !ModelCollection[i].TrueFunc;
             
             if ("node_" + ModelCollection[i].Name == $(checkbox).attr('id')) {
                 ModelCollection[i].SetEnabled(checkbox.is(":checked"));
+            }
+        }
+        
+        //Check Measurements
+        for (var i = 0; i < MeasureCollection.length; i++) {
+            
+            if ("node_" + MeasureCollection[i].Name == $(checkbox).attr('id')) {
+                MeasureCollection[i].Enabled = checkbox.is(":checked");
             }
         }
     }
@@ -414,10 +419,12 @@ $(".ui-cntrl-treeview").delegate("label input:checkbox", "change", function() {
 
 
 
-
 // Handles Logging of Text
 // *****************************************************************************************************
 function log(Text) {
+  
+  if(DoDebug === true)
+  {
     console.log(Text);
     //var TextSoFar = $('#console').html();
 
@@ -426,6 +433,7 @@ function log(Text) {
     //$('#console').html(TextSoFar);
 
     //$('#sonsoleDiv').animate({scrollTop: $('#sonsoleDiv').prop("scrollHeight")}, 50);
+  }
 }
 
 
@@ -452,7 +460,7 @@ function log(Text) {
   /**
    * Function to check if we clicked inside an element with a particular class
    * name.
-   * 
+   *
    * @param {Object} e The event
    * @param {String} className The class name to check against
    * @return {Boolean}
@@ -475,7 +483,7 @@ function log(Text) {
 
   /**
    * Get's exact position of event.
-   * 
+   *
    * @param {Object} e The event passed in
    * @return {Object} Returns the x and y position
    */
@@ -623,7 +631,7 @@ function log(Text) {
 
   /**
    * Positions the menu properly.
-   * 
+   *
    * @param {Object} e The event
    */
   function positionMenu(e) {
@@ -652,11 +660,11 @@ function log(Text) {
 
   /**
    * Dummy action function that logs an action when a menu item link is clicked
-   * 
+   *
    * @param {HTMLElement} link The link that was clicked
    */
   function menuItemListener( link ) {
-    console.log( "Task ID - " + taskItemInContext.getAttribute("data-id") + ", Task action - " + link.getAttribute("data-action"));
+    log( "Task ID - " + taskItemInContext.getAttribute("data-id") + ", Task action - " + link.getAttribute("data-action"));
     toggleMenuOff();
   }
 

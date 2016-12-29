@@ -1,4 +1,4 @@
-function io_import_obj(FileName, InputFileText, reader)
+function io_import_obj(files, FileName, InputFileText, reader)
 {
   log("Loading file <b>'"+FileName+"'</b> as an <b>'ascii .obj'</b> file...");
 
@@ -20,6 +20,14 @@ function io_import_obj(FileName, InputFileText, reader)
   var vert3 = new vxVertex3D(0,0,0);
   var norm = new vxVertex3D(0,0,0);
   
+   var textureCoordinates = [
+    // Front
+    0.0,  0.0,
+    1.0,  0.0,
+    1.0,  1.0,
+    0.0,  1.0
+    ];
+  var txtCnt = 0;
   
   //Zero out the number of elements
   numOfElements = 0;
@@ -135,6 +143,49 @@ function io_import_obj(FileName, InputFileText, reader)
         
           numOfFaces++;
          break;
+         
+         case 'mtllib':
+           // First rebuild the file name
+           var length = 6;
+           
+           // the file name is a substring of the line minus the initial 'mtllib ' characters
+           var mtlFileName = lines[line].substr(length+1, lines[line].length-length);
+           
+           //now loop through all files to find the required material file
+           for(var i = 0; i < files.length; i++)
+           {
+             
+             var searchedName = files[i].name.toString().trim();
+             var currentName = mtlFileName.toString().trim();
+             /*
+             console.log("Searching");
+             console.log("'"+searchedName+"'");
+             console.log("'"+currentName+"'");
+             */
+             if(searchedName == currentName)
+             {
+               //console.log(reader);
+               console.log("SUCCESS! - LOADING MATERIAL FILE: " + files[i].name);
+               //var material = new vxMaterial(files[i].name);
+               
+                  var mtlreader = new FileReader();
+                      mtlreader.onload = function(e) {
+                       // material.CreateFromMTLFile(this.result);
+                       model.LoadMaterialFromObjMtlFile(this.result);
+                      };
+                      
+                  mtlreader.readAsText(files[i]);
+             }
+           }
+           
+           break;
+           
+           
+         case 'usemtl':
+           //console.log(inputLine);
+           break;
+           
+           
      }
     }
 
