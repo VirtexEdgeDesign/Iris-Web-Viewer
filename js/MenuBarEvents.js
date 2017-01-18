@@ -2,8 +2,9 @@
 // Side Bar
 //******************************************************************
 $( "#sidebar_file_new" ).click(function() {
-  window.open("www.google.com");
-  chrome.runtime.reload();
+  
+  //chrome.runtime.reload();
+  window.location.reload(true);
 });
 $( "#sidebar_file_import" ).click(function() {
   $('#menu_file_openSelect').click();
