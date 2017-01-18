@@ -60,6 +60,11 @@ body {
     padding: 16px;
 }
 
+#sidebar_title::before
+{
+    content:url('../assets/icon_24.png');
+}
+
 @media screen and (max-height: 450px) {
   .ui-cntrl-sidenav {padding-top: 15px;}
   .ui-cntrl-sidenav a {font-size: 18px;}

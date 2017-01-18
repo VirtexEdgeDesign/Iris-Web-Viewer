@@ -176,6 +176,17 @@ nav a[data-icon="icon-view-shadededge"]::before { content: url('../img/tlbr/view
 nav a[data-icon="icon-view-shaded"]::before { content: url('../img/tlbr/view/render/shaded.png'); }
 nav a[data-icon="icon-view-wireframe"]::before { content: url('../img/tlbr/view/render/wireframe.png'); }
 nav a[data-icon="icon-view-normal"]::before { content: url('../img/tlbr/view/render/normal.png'); }
+/**/
+nav a[data-icon="icon-view-front"]::before { content: url('../img/tlbr/view/set/view_front.png'); }
+nav a[data-icon="icon-view-back"]::before { content: url('../img/tlbr/view/set/view_back.png'); }
+nav a[data-icon="icon-view-left"]::before { content: url('../img/tlbr/view/set/view_left.png'); }
+nav a[data-icon="icon-view-right"]::before { content: url('../img/tlbr/view/set/view_right.png'); }
+nav a[data-icon="icon-view-top"]::before { content: url('../img/tlbr/view/set/view_top.png'); }
+nav a[data-icon="icon-view-bottom"]::before { content: url('../img/tlbr/view/set/view_bottom.png'); }
+nav a[data-icon="icon-view-front"]::before { content: url('../img/tlbr/view/set/view_front.png'); }
+
+nav a[data-icon="icon-view-ortho"]::before { content: url('../img/tlbr/view/set/view_ortho.png'); }
+nav a[data-icon="icon-view-persp"]::before { content: url('../img/tlbr/view/set/view_perspective.png'); }
 
 /* Tools Icons */
 nav a[data-icon="icon-tools-measure"]::before { content: url('../img/tlbr/tools/measure.png'); }

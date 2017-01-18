@@ -10,29 +10,44 @@ $( "#sidebar_file_import" ).click(function() {
   CloseSidebar();
 });
 
+function openInNewTab(url) {
+  var win = window.open(url, '_blank');
+  win.focus();
+}
+
+$( "#btn_social_github" ).click(function() {
+  /*
+  chrome.browser.openTab({
+      url: 'https://github.com/r4tch31/Iris-Web-Viewer/wiki'
+    });
+*/
+  openInNewTab('https://github.com/r4tch31/Iris-Web-Viewer/wiki');
+});
+
 $( "#btn_social_fb" ).click(function() {
+  /*
   chrome.browser.openTab({
       url: 'https://www.facebook.com/r4tch31'
     });
+*/
+  openInNewTab('https://www.facebook.com/r4tch31');
 });
 
 $( "#btn_social_twtr" ).click(function() {
+  /*
   chrome.browser.openTab({
       url: 'https://twitter.com/r4tch31'
     });
-});
-
-$( "#btn_social_gthb" ).click(function() {
-  chrome.browser.openTab({
-      url: 'https://github.com/r4tch31'
-    });
+*/
+  openInNewTab('https://www.twitter.com/r4tch31');
 });
 
 
 // File
 //******************************************************************
 $( "#menu_file_new" ).click(function() {
-  chrome.runtime.reload();
+  //chrome.runtime.reload();
+  window.location.reload(true);
 });
 
 $( "#menu_file_open" ).click(function() {
@@ -138,9 +153,16 @@ span.onclick = function() {
 }
 */
 // When the user clicks anywhere outside of the modal, close it
+
+var modal_intro = document.getElementById('modal_intro');
+
 window.onclick = function(event) {
     if (event.target == modal) {
         modal.style.display = "none";
+    }
+
+    if (event.target == modal_intro) {
+        modal_intro.style.display = "none";
     }
 };
 
@@ -190,6 +212,8 @@ function CloseSidebar()
 
 
 
+
+
 // Context Menu
 // ***************************************************************
 $( "#SetViewToSel" ).click(function() {
@@ -217,3 +241,7 @@ function CloseProperties()
 {
   document.getElementById("cntrl_properties").style.marginRight = "0px";
 }
+
+
+// Show Intro Modal at Start
+modal_intro.style.display = "block";

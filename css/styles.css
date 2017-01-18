@@ -228,7 +228,8 @@ Footer images
 .img-footer[data-icon="build"]
 {
   width:initial;
-  content:url('../img/badges/build-status.svg');
+  /*content:url('../img/badges/build-status.svg');*/
+  content:url('https://img.shields.io/badge/build-beta%20%5Bv.%200.2.1%5D-blue.svg');
   bottom:1px; 
   right:72px;
 }

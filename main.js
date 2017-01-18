@@ -1,3 +1,17 @@
+
+// System Variables
+var iris = {
+
+  name: "Iris Web Viewer",
+  version: "0.2.1",
+
+  shortdescription: "3D Model Exchange Format Viewer",
+
+  description: "A light weight 3D Model Viewer for viewing Exchange Format files without the need for larger packages to be preinstalled on a computer. For use in viewing *.stl and *.obj files.",
+
+  disclaimer: "Note: This app is still in 'Beta' and should not be used for final production decisions. It should only be used for non-critical reference and conceptual views. You can file any bugs found on our Github page.",
+}
+
 // The WebGL Canvas
 var canvas;
 
@@ -35,6 +49,7 @@ var Cur_Center = [0, 0, 0];
 var modelprop_Radius = 1;
 
 var numOfFaces = 1;
+
 
 
 // Render State, Shaded, Wireframe, etc...
@@ -91,7 +106,6 @@ var GridMesh = new vxMesh('GridMesh');
 var XAxisMesh = new vxMesh('X Axis');
 var YAxisMesh = new vxMesh('Y Axis');
 var ZAxisMesh = new vxMesh('Z Axis');
-
 
 var Cntr_Mesh = new vxMesh('Center');
 
@@ -151,6 +165,19 @@ var modalIntro = document.getElementById('modal_intro');
 
 window.onload = function() {
 
+
+
+  // First set up Splash Screen (modal_intro)
+  document.getElementById("intro_text_title").innerHTML = iris.name;
+  document.getElementById("intro_text_version").innerHTML = "[v. " + iris.version + " - Beta]";
+  document.getElementById("intro_text_subtitle").innerHTML = iris.shortdescription;
+  
+  document.getElementById("intro_text_description").innerHTML = iris.description;
+  document.getElementById("intro_text_disclaimer").innerHTML = "Note: This app is still in 'Beta' and should not be used for final production decisions. It should only be used for non-critical reference and conceptual views. You can file any bugs found on our Github page.";
+
+  document.getElementById("menubar_text_cornerTitle").innerHTML = iris.name + " - [v. " + iris.version + " - Beta]";
+
+  // Now set up the 3D info
   canvas = document.getElementById('glcanvas3D');
     
     

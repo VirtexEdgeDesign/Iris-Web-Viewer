@@ -1,12 +1,27 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Iris Viewer [Alpha]</title>
+  <title>Iris Viewer [Beta]</title>
+
+<!-- Google Analytics -->
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-90534840-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
   
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+
   <!-- Styles -->
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/menubar.css">
   <link rel="stylesheet" href="css/modal.css">
+  <link rel="stylesheet" href="css/modal_intro.css">
   <link rel="stylesheet" href="css/contextmenu.css">
   
   <link rel="stylesheet" href="css/ui-cntrl-treeview.css">
@@ -164,14 +179,14 @@
 </div>
 <div class="footer" id="div_footer" style="border: none;position:absolute;bottom:0px; left:0;"><a class="corner-status-text" id="footer_text">footer-text</a></div>
 
-<div ><a class="corner-title" id="btn_social_gthb">Iris Viewer [v 0.1] </a></div>
+<div ><a class="corner-title" id="menubar_text_cornerTitle">Iris Viewer [v 0.1] </a></div>
 <div><a class="img-header" data-icon="logo" ></a></div>
 
 <!-- Footer Images -->
 <div ><a class="img-footer" data-icon="fb" id="btn_social_fb" href=#></a></div>
 <div ><a class="img-footer" data-icon="twtr" id="btn_social_twtr" href=#></a></div>
-<div ><a class="img-footer" data-icon="github" id="btn_social_gthb" href=#></a></div>
-<div ><a class="img-footer" data-icon="build" id="btn_social_gthb" href=#></a></div>
+<div ><a class="img-footer" data-icon="github" id="btn_social_github" href=#></a></div>
+<div ><a class="img-footer" data-icon="build" href=#></a></div>
 <!--<div><a class="img-footer" data-icon="build" id="btn_social_build"/></div>
 
 <!-- This is the mouse div 
@@ -182,65 +197,13 @@
   </div>        
 -->
 
+
+<!-- Treeview Control 
+====================================================================== -->
 <div id="model_treeview" class="ui-cntrl-treeview" style="position:absolute; top:32px; left:0;">
         <li>
             <input type="checkbox" id="tree_root" checked="checked" /><label><input type="checkbox" checked="checked" /><span></span></label><label data-icon="envrroot" for="tree_root">Enviroment</label>
             <ul id="tree_root_ul">
-              <!--
-                <li>
-                    <input type="checkbox" id="node-0-0" checked="checked" /><label><input type="checkbox" /><span></span></label><label data-type="rt" for="node-0-0">       Documents</label>
-                    <ul>
-                        <li>
-                          acidjs-css3-treeview
-                            <input type="checkbox" id="node-0-0-0" checked="checked" /><label><input type="checkbox" /><span></span></label><label for="node-0-0-0">My Documents</label>
-                            <ul>
-                                <li>
-                                    <input type="checkbox" id="node-0-0-0-0" /><label><input type="checkbox" /><span></span></label><label for="node-0-0-0-0">Downloads</label>
-                                </li>
-                                <li>
-                                    <input type="checkbox" id="node-0-0-0-1" /><label><input type="checkbox" /><span></span></label><label for="node-0-0-0-1">Projects</label>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <input type="checkbox" id="node-0-1" /><label><input type="checkbox" /><span></span></label><label for="node-0-1">Music</label>
-                    <ul>
-                        <li>
-                            <input type="checkbox" id="node-0-1-0" /><label><input type="checkbox" /><span></span></label><label for="node-0-1-0">My Music</label>
-                        </li>
-                        <li>
-                            <input type="checkbox" id="node-0-1-1" /><label><input type="checkbox" /><span></span></label><label for="node-0-1-1">Public Music</label>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <input type="checkbox" id="node-0-2" /><label><input type="checkbox" /><span></span></label><label for="node-0-2">Pictures</label>
-                    <ul>
-                        <li>
-                            <input type="checkbox" id="node-0-2-0" /><label><input type="checkbox" /><span></span></label><label for="node-0-2-0">My Pictures</label>
-                        </li>
-                        <li>
-                            <input type="checkbox" id="node-0-2-1" /><label><input type="checkbox" /><span></span></label><label for="node-0-2-1">Public Pictures</label>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <input type="checkbox" id="node-0-3" checked="checked" /><label><input type="checkbox" checked="checked" /><span></span></label><label for="node-0-3">Video</label>
-                    <ul id = "testnode">
-                        <li>
-                            <input type="checkbox" id="node-0-3-0" /><label><input type="checkbox" checked="checked" /><span></span></label><label for="node-0-3-0">My Videos</label>
-                        </li>
-                        <li>
-                            <input type="checkbox" id="node-0-3-1" /><label><input type="checkbox" checked="checked" /><span></span></label><label for="node-0-3-1">Public Videos</label>
-                        </li>
-                        <li>
-                            <input type="checkbox" id="node-0-3-2" /><label><input type="checkbox" checked="checked" /><span></span></label><label for="node-0-3-2">Public Videos</label>
-                        </li>
-                    </ul>
-                </li>
-               -->
             </ul>
         </li>
     </ul>
@@ -248,7 +211,10 @@
     
 </div>
 
-        <input id="menu_file_openSelect" multiple="multiple" type="file" style="display:none" />
+
+<!-- Open File Control
+====================================================================== -->
+<input id="menu_file_openSelect" multiple="multiple" type="file" style="display:none" />
 <div class="menubar" id="top_menu" style="border: none;position:absolute; top:0px; left:0;">
   <!-- Top Menu Bar -->
   <nav class="menubar">
@@ -257,22 +223,6 @@
   <label for="drop" class="toggle">Menu</label>
   <input type="checkbox" id="drop" />
   <ul class="menu">
-    
-    <!--
-    <li><a href="#">Menu</a>
-      <ul>
-        <li><a id="menu_file_new" data-icon="icon-new" href="#">New</a></li>
-        <li><a id="menu_file_open" data-icon="icon-open" href="#">Open</a></li>
-        <input id="menu_file_openSelect" type="file" style="display:none" />
-        
-        <li><hr id="splitter" /></li>
-        <li><a id="menu_file_import" data-icon="icon-import" href="#">Import</a></li>
-        <li><a id="menu_file_export" data-icon="icon-export" href="#">Export</a></li>
-        <li><hr id="splitter" /></li>
-        <li><a id="menu_file_quit" data-icon="icon-quit" href="#">Quit</a></li>
-      </ul>
-    </li>
-    -->
     <li> 
       <!-- First Tier Drop Down -->
       <label for="drop-1" class="toggle">Service +</label>
@@ -280,8 +230,8 @@
       <input type="checkbox" id="drop-1"/>
       <ul>
         
-            <li><a id="menu_view_perspec" href="#">Perspective</a></li>
-            <li><a id="menu_view_ortho" href="#">Orthogonal</a></li>
+            <li><a id="menu_view_perspec" data-icon="icon-view-persp" href="#">Perspective</a></li>
+            <li><a id="menu_view_ortho" data-icon="icon-view-ortho" href="#">Orthogonal</a></li>
             
         <li><hr id="splitter" /></li>
         <!-- Second Tier Drop Down -->
@@ -290,12 +240,12 @@
           <a href="#">Set View to...    </a>
           <input type="checkbox" id="drop-3"/>
           <ul>
-            <li><a id="menu_view_top" href="#">Top</a></li>
-            <li><a id="menu_view_bottom" href="#">Bottom</a></li>
-            <li><a id="menu_view_front" href="#">Front</a></li>
-            <li><a id="menu_view_back" href="#">Back</a></li>
-            <li><a id="menu_view_left" href="#">Left</a></li>
-            <li><a id="menu_view_right" href="#">Right</a></li>
+            <li><a id="menu_view_top" data-icon="icon-view-top" href="#">Top</a></li>
+            <li><a id="menu_view_bottom" data-icon="icon-view-bottom" href="#">Bottom</a></li>
+            <li><a id="menu_view_front" data-icon="icon-view-front"  href="#">Front</a></li>
+            <li><a id="menu_view_back" data-icon="icon-view-back" href="#">Back</a></li>
+            <li><a id="menu_view_left" data-icon="icon-view-left" href="#">Left</a></li>
+            <li><a id="menu_view_right" data-icon="icon-view-right" href="#">Right</a></li>
           </ul>
         </li>
         <!-- Second Tier Drop Down -->
@@ -319,7 +269,7 @@
       <a href="#">Rendering</a>
       <input type="checkbox" id="drop-3"/>
       <ul>
-            <li><a id="menu_view_textured" data-icon="icon-view-textured" href="#">Textured</a></li>
+            <!--<li><a id="menu_view_textured" data-icon="icon-view-textured" href="#">Textured</a></li>-->
             <li><a id="menu_view_shadedEdge" data-icon="icon-view-shadededge" href="#">Shaded Edge</a></li>
             <li><a id="menu_view_shaded" data-icon="icon-view-shaded" href="#">Shaded</a></li>
             <li><a id="menu_view_wireframe" data-icon="icon-view-wireframe" href="#">Wireframe</a></li>
@@ -355,64 +305,36 @@
 
 </body>
 
-<!-- The Intro Modal -->
-<div id="modal_intro" class="modal">
+<!-- The Intro Modal 
+====================================================================== -->
+<div id="modal_intro" class="modal_intro">
 
   <!-- Modal content -->
-  <div class="modal-content">
-    <div class="modal-header">
-      <span class="close">&times;</span>
-      <h2>Iris Web Viewer Chrome Extention [v 0.1 - Beta]</h2>
+<div class="modal_intro-content">
+  <div id ="into_title">
+    <tr>
+      <th>
+        <h1 id="intro_text_title">(title)</h1>
+      </th>
+      <th><p id="intro_text_subtitle">(short description)</p></th>
+      <th><p id="intro_text_version">[v X.X.X.X - Beta]</p></th>
+      <th><br></th>
+      <th><p id="intro_text_description">(description)</p></th>
+    </tr>
+  </div>
+    <div class="modal_intro-body">
+    <img id="intro_logo" src="assets/icon_128.png" alt="logo pic" style="width:128px;height:128px;">
     </div>
-    <div class="modal-body">
-<table class="tg">
-  <tr>
-    <th class="tg-031e">
-      <img src="assets/icon_128.png" alt="Mountain View" style="width:128px;height:128px;">
-    </th>
-    <th class="tg-yw4l">
-     Welcome to Iris Web Viewer
-     <br/><br/>
-       A cross platform 3D Model Viewer for exchange formats.
-     <br/><br/>
-    </th>
-  </tr>
-  <tr>
-    <td class="tg-yw4l" style="width:150px">Supported Formats</td>
-    <td class="tg-yw4l">
-      <ul>
-        <li>*.stl</li>
-        <li>*.obj</li>
-        <!--
-        <li>*.ply</li>
-        <li>*.fbx (PRO version)</li>
-        -->
-      </ul>
-    </td>
-  </tr>
-  <tr>
-    <td class="tg-yw4l"></td>
-    <td class="tg-yw4l">
-     <br/><br/>
-     </td>
-  </tr>
-  <tr>
-    <td class="tg-yw4l"></td>
-    <td class="tg-yw4l">
-     <br/><br/>
-     </td>
-  </tr>
-</table>
-
-
-    </div>
-    <div class="modal-footer">
+    <div class="modal_intro-footer">
+    <p id="intro_text_disclaimer">(disclaimer)</p>
+    <br/>
       <p>(C) Virtex Edge Design</p>
     </div>
   </div>
 </div>
 
-<!-- The Modal -->
+<!-- The Modal 
+====================================================================== -->
 <div id="myModal" class="modal">
 
   <!-- Modal content -->
@@ -474,7 +396,7 @@
 
 <div id="mySidenav" class="ui-cntrl-sidenav">
   <div id="mnd">
-      <a style="border: none;position:absolute; top:0px; left:0;">Iris Viewer</a>
+      <a style="border: none;position:absolute; top:10px; left:0;" id="sidebar_title">   Iris Viewer</a>
   <a href="#" class="closebtn" id="btn_closeSidebar">&times;</a>
   <a id="sidebar_file_new" href="#">New</a>
   <a id="sidebar_file_import" data-icon="icon-import" href="#">Import</a>
