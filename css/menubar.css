@@ -46,7 +46,7 @@ h1 {
 #Hamburger>a:before {
   
     vertical-align: center;
-    content: url('../img/gui/Hamburger.png');
+    content: url('../img/gui/burger.png');
     position: absolute;
     top: 0px;
     left: 0px;
