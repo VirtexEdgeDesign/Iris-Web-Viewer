@@ -54,7 +54,7 @@ h1 {
 
 #Hamburger>a:hover:before {
   color: #aaa;
-    content: url('../img/gui/Hamburger_hover.png');
+    content: url('../img/gui/burger_hover.png');
 }
 
 
