@@ -1,5 +1,9 @@
 <!DOCTYPE html>
 <html>
+<div id="loading" background-color="#2a2a2a">
+  <p>loading...</p>
+<img background-color="#1b1b1b" id="loading-image" src="img/loading/box.gif" alt="Loading..."/>
+</div>
 <head>
   <title>Iris Viewer [Beta]</title>
 
@@ -22,6 +26,7 @@
   <link rel="stylesheet" href="css/menubar.css">
   <link rel="stylesheet" href="css/modal.css">
   <link rel="stylesheet" href="css/modal_intro.css">
+  <link rel="stylesheet" href="css/modal_about.css">
   <link rel="stylesheet" href="css/contextmenu.css">
   
   <link rel="stylesheet" href="css/ui-cntrl-treeview.css">
@@ -165,6 +170,7 @@
 
       }
 </script>
+
 </head>
 
 <body>
@@ -320,6 +326,13 @@
       <th><p id="intro_text_version">[v X.X.X.X - Beta]</p></th>
       <th><br></th>
       <th><p id="intro_text_description">(description)</p></th>
+      <th><br/></th>
+     <!--
+      <th><p>
+      <img src="https://img.shields.io/badge/build-beta%20%5Bv.%200.2.2%5D-blue.svg"/>
+      <iframe src="https://ghbtns.com/github-btn.html?user=r4tch31&repo=Iris-Web-Viewer&type=star&count=true" frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
+      </p></th>-->
+      <!--<a class="twitter-follow-button" href="https://twitter.com/r4tch31"> Follow @r4tch31</a></p></th>-->
     </tr>
   </div>
     <div class="modal_intro-body">
@@ -328,67 +341,107 @@
     <div class="modal_intro-footer">
     <p id="intro_text_disclaimer">(disclaimer)</p>
     <br/>
+    <table style="width:100%">
+    <tr>
+    <th  style="text-align:left">
       <p>(C) Virtex Edge Design</p>
+      </th>
+      <th style="float:right">
+            <img src="https://img.shields.io/badge/build-beta%20%5Bv.%200.2.2%5D-blue.svg"/>
+      <iframe src="https://ghbtns.com/github-btn.html?user=r4tch31&repo=Iris-Web-Viewer&type=star&count=true" frameborder="0" scrolling="0" width="72px" height="20px"></iframe>
+      </th>
+      </tr>
+      </table>
     </div>
   </div>
 </div>
 
+      <script>window.twttr = (function(d, s, id) {
+         var js, fjs = d.getElementsByTagName(s)[0],
+           t = window.twttr || {};
+         if (d.getElementById(id)) return t;
+         js = d.createElement(s);
+         js.id = id;
+         js.src = "https://platform.twitter.com/widgets.js";
+         fjs.parentNode.insertBefore(js, fjs);
+         
+         t._e = [];
+         t.ready = function(f) {
+           t._e.push(f);
+         };
+         
+         return t;
+         }(document, "script", "twitter-wjs"));
+      </script>
+
 <!-- The Modal 
 ====================================================================== -->
-<div id="myModal" class="modal">
+<div id="myModal" class="modal_about">
 
   <!-- Modal content -->
-  <div class="modal-content">
-    <div class="modal-header">
+  <div class="modal_about-content">
+    <div class="modal_about-header">
       <span class="close">&times;</span>
-      <h2>Iris Web Viewer Chrome Extention [v 0.1 - Beta]</h2>
+      <h2>Iris Web Viewer - About</h2>
     </div>
-    <div class="modal-body">
+    <div class="modal_about-body">
 <table class="tg">
   <tr>
     <th class="tg-031e">
       <img src="assets/icon_128.png" alt="Mountain View" style="width:128px;height:128px;">
     </th>
-    <th class="tg-yw4l">
+    <td class="tg-yw4l" style="width:150px">
+
      Iris Web Viewer is a cross platform 3D Model Viewer for exchange formats.
-     <br/><br/>
-      It allows for a number of different model formats to be viewed
-      as well as exposes the raw data of the model such as Vertice/Normal data, 
-      UV Texture Coordinates among other things, without the need for expensive and large
-      3D modeling systems.
-     <br/><br/>
+    <br/>
+    <br/>
     </th>
-  </tr>
-  <tr>
-    <td class="tg-yw4l" style="width:150px">Supported Formats</td>
-    <td class="tg-yw4l">
-      <ul>
-        <li>*.stl</li>
-        <li>*.obj</li>
-        <!--
-        <li>*.ply</li>
-        <li>*.fbx (PRO version)</li>
-        -->
-      </ul>
+
+    <h2>Supported Formats</h2>
+    <br/>
+    The entire point of IRIS is to allow for a central location to view 3D file formats. If there's a format you want added, contact us below and we'll do our best to add it in.
+    <br/>
+    <br/>
+    Currently IRIS supports:
+    <br/>
+    - *.stl (both ASCII and binary)
+    <br/>
+    - *.obj 
+    <br/>
+    <br/>
     </td>
   </tr>
   <tr>
-    <td class="tg-yw4l"></td>
+    <td class="tg-yw4l" style="width:150px"></td>
     <td class="tg-yw4l">
-     <br/><br/>
-     </td>
+      <h2>Contact and Follow</h2>
+    <br/>
+    Problem, question, concern? IRIS is opensource and hosted on Github, check the issues section or post a question there. If you want to reach me directly you can tweet to me on twitter.
+    <br/>
+    <br/>
+<p>
+    <iframe src="https://ghbtns.com/github-btn.html?user=r4tch31&repo=Iris-Web-Viewer&type=follow&count=true" frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
+    <iframe src="https://ghbtns.com/github-btn.html?user=r4tch31&repo=Iris-Web-Viewer&type=star&count=true" frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
+    <br/>
+      <a class="twitter-follow-button" href="https://twitter.com/r4tch31"> Tweet @r4tch31</a></p>
+    </td>
   </tr>
+  <!--
   <tr>
     <td class="tg-yw4l"></td>
     <td class="tg-yw4l">
-     <br/><br/>
-     </td>
+      <h3>Contact and Follow</h3>
+      <br/>
+      <th><p><iframe src="https://ghbtns.com/github-btn.html?user=r4tch31&repo=Iris-Web-Viewer&type=star&count=true" frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
+
+      <a class="twitter-follow-button" href="https://twitter.com/r4tch31"> Follow @r4tch31</a></p></th>
   </tr>
+  -->
 </table>
 
 
     </div>
-    <div class="modal-footer">
+    <div class="modal_about-footer">
       <p>(C) Virtex Edge Design</p>
     </div>
   </div>

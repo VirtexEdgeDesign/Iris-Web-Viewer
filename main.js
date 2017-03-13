@@ -3,7 +3,7 @@
 var iris = {
 
   name: "Iris Web Viewer",
-  version: "0.2.1",
+  version: "0.2.2",
 
   shortdescription: "3D Model Exchange Format Viewer",
 
@@ -268,6 +268,7 @@ window.onload = function() {
     AddTreeNode(measureNodeId, "Measurements", "tree_root", "folder", true);
 
 
+    $('#loading').fadeOut();
 };
 
 function AddTreeNode(id, labelText, rootToAddTo) {

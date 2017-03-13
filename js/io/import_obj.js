@@ -6,8 +6,10 @@ function io_import_obj(files, FileName, InputFileText, reader)
   var model = new vxModel(FileName);
   
   // Now create the first mesh variable
-    var NewMesh = new vxMesh();
-    NewMesh.Name = FileName;
+    var mesh = new vxMesh();
+    mesh.Name = FileName;
+
+  var blockCount = 0;
     
   //First initialise Arrarys
   /*******************************/
@@ -39,7 +41,7 @@ function io_import_obj(files, FileName, InputFileText, reader)
   modelprop_Center[1] = 0;
   modelprop_Center[2] = 0;
   
-  
+  var CurrentGroupName = "default name";
   
       // Print out Result line By Line
     var lines = InputFileText.split('\n');
@@ -72,11 +74,11 @@ function io_import_obj(files, FileName, InputFileText, reader)
        case 'g':
          
          // Each Group, create a New Mesh
-         if(NewMesh.mesh_vertices.length> 0){
-            model.AddMesh(NewMesh);
+         if(mesh.mesh_vertices.length> 0){
+            model.AddMesh(mesh);
          }
-        
-        NewMesh = new vxMesh('mesh: ' + inputLine[1]);
+        CurrentGroupName = inputLine[1];
+        mesh = new vxMesh('mesh: ' + inputLine[1]);
         
          break;
        
@@ -87,6 +89,19 @@ function io_import_obj(files, FileName, InputFileText, reader)
         //Loop through each vertice collection in each line
         for(var vrt = 1; vrt < inputLine.length; vrt++){
           if(inputLine[vrt] !== ""){
+
+            // First Check if it's past the limit
+            if(numOfElements > 65000/2)
+            {
+              blockCount++;
+              numOfElements = 0;
+            
+              // ass the current mesh to the model
+              model.AddMesh(mesh);
+            
+              // now create a new mesh
+              mesh = new vxMesh("mesh: " + CurrentGroupName + "[block:"+blockCount+"]");
+         }
           
           //Index Array
           var indexArray = inputLine[vrt] .split("/");
@@ -139,10 +154,10 @@ function io_import_obj(files, FileName, InputFileText, reader)
         // Once all of the data is in, create the new face
         var selcol = new vxColour();
         selcol.EncodeColour(numOfFaces);
-          NewMesh.AddFace(vert1, vert2, vert3, norm, meshcolor, selcol);
+        mesh.AddFace(vert1, vert2, vert3, norm, meshcolor, selcol);
         
-          numOfFaces++;
-         break;
+        numOfFaces++;
+        break;
          
          case 'mtllib':
            // First rebuild the file name
@@ -195,13 +210,13 @@ function io_import_obj(files, FileName, InputFileText, reader)
     modelprop_Center[1] /= numOfElements;
     modelprop_Center[2] /= numOfElements;
     
-        Zoom = -NewMesh.MaxPoint.Length()*1.75;
+        Zoom = -mesh.MaxPoint.Length()*1.75;
         rotX = -45;
         rotY = 30;
     
     numOfElements = 0;
     
-  model.AddMesh(NewMesh);
+  model.AddMesh(mesh);
   
   InitialiseModel(model);
 

@@ -276,7 +276,7 @@ var norm = new vxVertex3D(0,0,0);
 
                    // There is a fundamental limit to the number of vertices, if it hits one, then
           // create a new mesh
-          if(numOfElements > 65000/3)
+          if(numOfElements > 65000/2)
          {
            blockCount++;
             numOfElements = 0;
