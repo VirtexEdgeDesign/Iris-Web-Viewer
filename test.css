@@ -1,0 +1,18 @@
+.Container
+{
+    height: 200px;
+    overflow-x: auto;
+}
+.Content
+{
+    height: 300px;
+}
+
+.Flipped
+{
+    direction: rtl;
+}
+.Content
+{
+    direction: ltr;
+}

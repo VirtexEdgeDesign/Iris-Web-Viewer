@@ -22,10 +22,9 @@
     margin: ;
     list-style: none;
     transition: margin-left .5s;
-    overflow:none;
-    
   transition: background-color 1s ease;
   background-color:rgba(0, 0, 0, 0);
+    text-shadow: 0px 0px 8px black;
 }
  
 .ui-cntrl-treeview label[for]::before,
@@ -80,7 +79,7 @@
  
 .ui-cntrl-treeview
 {
-    font: normal 11px/16px "Segoe UI", Arial, Sans-serif;
+    font: normal 12px/16px "Segoe UI", Arial, Sans-serif;
 }
  
 .ui-cntrl-treeview li

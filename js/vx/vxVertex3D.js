@@ -24,6 +24,14 @@ vxVertex3D.prototype.Set = function(x, y, z) {
     return Math.sqrt(this.X * this.X + this.Y * this.Y + this.Z * this.Z);
   };
   
+  // Normalises this Vector with respect to it's length.
+  // X = X/L, Y = Y/L, Z = Z/L
+  vxVertex3D.prototype.Normalise = function() {
+    var length = this.Length();
+    this.X = this.X/length;
+    this.Y = this.Y/length;
+    this.Z = this.Z/length;
+  };
   
   // Returns the Cross product of two vectors
   vxVertex3D.prototype.Cross = function(v1, v2) {

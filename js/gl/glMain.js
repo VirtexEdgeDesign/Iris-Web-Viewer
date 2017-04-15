@@ -203,31 +203,31 @@ stats.begin();
         gl.uniform1i(hasTextureAttribute, 2);
 
         // Only find index is selection is greater than 0
-        if (HoverIndex > 0 && MeshCollection.length > 0) {
+        if (HoverIndex > 0 && MeshCollectionPart.length > 0) {
           
           //Keep a running count of the total
           var runningtotal = 0;
           
           // Now check if the Hover index is within this mesh's bounds
-          for (var i = 0; i < MeshCollection.length; i++) {
+          for (var i = 0; i < MeshCollectionPart.length; i++) {
             
             // Now check if the Hover Index is within this Mesh Collection
-            if(HoverIndex >= MeshCollection[i].IndexStart && HoverIndex < MeshCollection[i].IndexEnd)
+            if(HoverIndex >= MeshCollectionPart[i].IndexStart && HoverIndex < MeshCollectionPart[i].IndexEnd)
             {
               //Now Finally Draw the Face
               for (var j = 0; j < 9; j++)
               {
-                HoveredMesh.mesh_vertices[j] = MeshCollection[i].mesh_vertices[(HoverIndex - 1 - runningtotal) * 9 + j];
-                HoveredMesh.vert_noramls[j] = MeshCollection[i].vert_noramls[(HoverIndex - 1 - runningtotal) * 9 + j];
+                HoveredMesh.mesh_vertices[j] = MeshCollectionPart[i].mesh_vertices[(HoverIndex - 1 - runningtotal) * 9 + j];
+                HoveredMesh.vert_noramls[j] = MeshCollectionPart[i].vert_noramls[(HoverIndex - 1 - runningtotal) * 9 + j];
               }
-              HoveredMesh.Model = MeshCollection[i].Model;
+              HoveredMesh.Model = MeshCollectionPart[i].Model;
               
               HoveredMesh.InitialiseBuffers();
               HoveredMesh.SetCenter();
             }
             
           // Keep running total
-          runningtotal = runningtotal + (MeshCollection[i].IndexEnd - MeshCollection[i].IndexStart);
+          runningtotal = runningtotal + (MeshCollectionPart[i].IndexEnd - MeshCollectionPart[i].IndexStart);
           
           }
           

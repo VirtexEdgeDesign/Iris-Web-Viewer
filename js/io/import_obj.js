@@ -73,12 +73,27 @@ function io_import_obj(files, FileName, InputFileText, reader)
        case 'o':
        case 'g':
          
+         var newName = "mesh: " + inputLine[1].trim();
+         var DoNewMesh = true;
+
          // Each Group, create a New Mesh
-         if(mesh.mesh_vertices.length> 0){
+         if(mesh.MeshParts[0].mesh_vertices.length> 0){
+            
+            if(newName in model.Meshes) // true, regardless of the actual value)
+            {
+                DoNewMesh = false;
+                mesh = model.Meshes[newName];
+                break;
+            }
+
+
+          if(DoNewMesh === true)
             model.AddMesh(mesh);
          }
         CurrentGroupName = inputLine[1];
-        mesh = new vxMesh('mesh: ' + inputLine[1]);
+
+        if(DoNewMesh === true)
+          mesh = new vxMesh(newName);
         
          break;
        
@@ -89,19 +104,6 @@ function io_import_obj(files, FileName, InputFileText, reader)
         //Loop through each vertice collection in each line
         for(var vrt = 1; vrt < inputLine.length; vrt++){
           if(inputLine[vrt] !== ""){
-
-            // First Check if it's past the limit
-            if(numOfElements > 65000/2)
-            {
-              blockCount++;
-              numOfElements = 0;
-            
-              // ass the current mesh to the model
-              model.AddMesh(mesh);
-            
-              // now create a new mesh
-              mesh = new vxMesh("mesh: " + CurrentGroupName + "[block:"+blockCount+"]");
-         }
           
           //Index Array
           var indexArray = inputLine[vrt] .split("/");
@@ -154,6 +156,7 @@ function io_import_obj(files, FileName, InputFileText, reader)
         // Once all of the data is in, create the new face
         var selcol = new vxColour();
         selcol.EncodeColour(numOfFaces);
+
         mesh.AddFace(vert1, vert2, vert3, norm, meshcolor, selcol);
         
         numOfFaces++;
@@ -210,9 +213,6 @@ function io_import_obj(files, FileName, InputFileText, reader)
     modelprop_Center[1] /= numOfElements;
     modelprop_Center[2] /= numOfElements;
     
-        Zoom = -mesh.MaxPoint.Length()*1.75;
-        rotX = -45;
-        rotY = 30;
     
     numOfElements = 0;
     
@@ -220,6 +220,9 @@ function io_import_obj(files, FileName, InputFileText, reader)
   
   InitialiseModel(model);
 
+        Zoom = -mesh.MaxPoint.Length()*1.75; 
+        rotX = -45;
+        rotY = 30;
   
   //$('#modelForm_Open').window('close');
   log("Done!");

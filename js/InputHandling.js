@@ -28,7 +28,7 @@ $(document).keyup(function (e) {
       SelectedMeshCollection.length = 0;
 
       if(HoverIndex > 0){
-        var newMesh = new vxMesh();
+        var newMesh = new vxMeshPart();
         
         newMesh.Name = "Face." + HoverIndex;
         
@@ -80,7 +80,7 @@ $(document).keyup(function (e) {
       properties = new FaceProperty(gui, newMesh);
       //properties.setAll();
       
-      if(CurrentCMD !== null)
+      if(CurrentCMD)
         CurrentCMD.HandleMouseClick(newMesh);
       
       }

@@ -3,7 +3,7 @@ var MeshType = {
     Lines: 1
 };
 
-function vxMeasure (name, pt1, pt2) {
+function vxMeasure (name, pt1, pt2, nrml) {
   
     // Mesh Name
     this.Name = name;
@@ -69,6 +69,14 @@ function vxMeasure (name, pt1, pt2) {
     
     this.Point1 = pt1;
     this.Point2 = pt2;
+
+    // Get the average vector of the face and then normalise it.
+    this.Direction = nrml;
+    this.Direction.Normalise();
+
+    // If two vectors are parrellal, then the average will 0 out. this is a check for that.
+    if(this.Direction.X==0 && this.Direction.Y==0 && this.Direction.Z==0)
+      this.Direction.Y = 1;
     
     this.DeltaX = this.Point2[0] - this.Point1[0];
     this.DeltaY = this.Point2[1] - this.Point1[1];
@@ -82,25 +90,37 @@ function vxMeasure (name, pt1, pt2) {
       // height of the distance marker line
     this.leaderHeight = this.vertLineHeight;
     
-      log("Point1 = " + this.Point1);
-      log("Point2 = " + this.Point2);
+      console.log("Measurement");
+      console.log("=================================");
+      //console.log("Point1 = " + this.Point1);
+      //console.log("Point2 = " + this.Point2);
+      //console.log("---------------------------------");
+      //console.log("Direction = " + this.Direction.Z);
+      console.log("Length = " + this.Length);
+      console.log("=================================");
       
-      log("Length = " + this.Length);
-      
-      
-      this.leaderPadding = 0.1;
+      this.leaderPadding = 1.0;
+
+      this.Direction.X = this.leaderHeight * this.Direction.X;
+      this.Direction.Y = this.leaderHeight * this.Direction.Y;
+      this.Direction.Z = this.leaderHeight * this.Direction.Z;
       
       // Top Distance Line
-      this.AddVertices(-this.Point1[0], -this.Point1[1] + this.leaderHeight, -this.Point1[2]);
-      this.AddVertices(-this.Point2[0], -this.Point2[1] + this.leaderHeight, -this.Point2[2]);
+      this.AddVertices(-this.Point1[0] + this.Direction.X, -this.Point1[1] + this.Direction.Y, -this.Point1[2] + this.Direction.Z);
+      this.AddVertices(-this.Point2[0] + this.Direction.X, -this.Point2[1] + this.Direction.Y, -this.Point2[2] + this.Direction.Z);
       
+
+      this.Direction.X = this.leaderPadding * this.Direction.X;
+      this.Direction.Y = this.leaderPadding * this.Direction.Y;
+      this.Direction.Z = this.leaderPadding * this.Direction.Z;
+
       // First Leader Line
       this.AddVertices(-this.Point1[0], -this.Point1[1], -this.Point1[2]);
-      this.AddVertices(-this.Point1[0], -this.Point1[1] + this.leaderHeight + this.leaderPadding, -this.Point1[2]);
+      this.AddVertices(-this.Point1[0] + this.Direction.X, -this.Point1[1] + this.Direction.Y, -this.Point1[2] + this.Direction.Z);
       
       // Second Leader Line
       this.AddVertices(-this.Point2[0], -this.Point2[1], -this.Point2[2]);
-      this.AddVertices(-this.Point2[0], -this.Point2[1] + this.leaderHeight + this.leaderPadding, -this.Point2[2]);
+      this.AddVertices(-this.Point2[0] + this.Direction.X, -this.Point2[1] + this.Direction.Y, -this.Point2[2] + this.Direction.Z);
       
       
         this.InitialiseBuffers();
@@ -116,11 +136,10 @@ function vxMeasure (name, pt1, pt2) {
     AddTreeNode("node_"+name+"_deltaz", 'Delta Z: '+ this.DeltaZ, "node_"+name+"_dist", "bullet_blue");
     
     this.TextPos = [0,0,0,0];
-    this.TextCenter = [(-this.Point1[0] - this.Point2[0])/2, (-this.Point1[1] - this.Point2[1])/2 + this.leaderHeight, (-this.Point1[2] - this.Point2[2])/2];
+    this.TextCenter = [(-this.Point1[0] - this.Point2[0])/2 + this.Direction.X, (-this.Point1[1] - this.Point2[1])/2 + this.Direction.Y, (-this.Point1[2] - this.Point2[2])/2+ this.Direction.Z];
     
     var maindiv = document.getElementById("div_canvas");
     
-
     this.text = document.createElement("a");
      this.text.style.position = "absolute";
      this.text.style.top = "200px";
@@ -130,8 +149,6 @@ function vxMeasure (name, pt1, pt2) {
     this.text.setAttribute("class", "measure"); // added line
     
     maindiv.appendChild( this.text);
-    
-    
 }
 
 vxMeasure.prototype.getInfo = function() {

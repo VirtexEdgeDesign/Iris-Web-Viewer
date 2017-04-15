@@ -3,7 +3,7 @@
 var iris = {
 
   name: "Iris Web Viewer",
-  version: "0.2.2",
+  version: "0.3.0",
 
   shortdescription: "3D Model Exchange Format Viewer",
 
@@ -94,6 +94,8 @@ var ModelCollection = [];
 //This is a collection of all of the current meshes
 var MeshCollection = [];
 
+var MeshCollectionPart = [];
+
 //This is a collection of all of the current meshes
 var SelectedMeshCollection = [];
 
@@ -102,14 +104,14 @@ var MeasureCollection = [];
 
 
 //Grid Variables
-var GridMesh = new vxMesh('GridMesh');
-var XAxisMesh = new vxMesh('X Axis');
-var YAxisMesh = new vxMesh('Y Axis');
-var ZAxisMesh = new vxMesh('Z Axis');
+var GridMesh = new vxMeshPart('GridMesh');
+var XAxisMesh = new vxMeshPart('X Axis');
+var YAxisMesh = new vxMeshPart('Y Axis');
+var ZAxisMesh = new vxMeshPart('Z Axis');
 
-var Cntr_Mesh = new vxMesh('Center');
+var Cntr_Mesh = new vxMeshPart('Center');
 
-var HoveredMesh = new vxMesh('Hovered Mesh');
+var HoveredMesh = new vxMeshPart('Hovered Mesh');
 
 var ViewCenter = new vxVertex3D();
 
@@ -343,6 +345,7 @@ function InitialiseModel(model)
   ModelCollection.push(model);
   
 }
+
 /*
 
 V 293256
@@ -410,14 +413,14 @@ $(".ui-cntrl-treeview").delegate("label input:checkbox", "change", function() {
         //Check Meshes
         for (var i = 0; i < MeshCollection.length; i++) {
 
-            if ("node_" + MeshCollection[i].Name == $(checkbox).attr('id')) {
+            if (MeshCollection[i].TreeNodeID == $(checkbox).attr('id')) {
                 MeshCollection[i].Enabled = checkbox.is(":checked");
             }
         }
         //Check Models
         for (var i = 0; i < ModelCollection.length; i++) {
             
-            ModelCollection[i].TrueFunc = !ModelCollection[i].TrueFunc;
+            //ModelCollection[i].TrueFunc = !ModelCollection[i].TrueFunc;
             
             if ("node_" + ModelCollection[i].Name == $(checkbox).attr('id')) {
                 ModelCollection[i].SetEnabled(checkbox.is(":checked"));
