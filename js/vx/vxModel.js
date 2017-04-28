@@ -94,9 +94,18 @@ vxModel.prototype.AddMesh = function(newMesh) {
   newMesh.Model = this;
   
   newMesh.Init();
+
+  var cnt = 1;
+  var newMeshName = newMesh.Name.trim();
   
-    //this.Meshes.push(newMesh);
-    this.Meshes[newMesh.Name] = newMesh;
+  // Now loop through all Meshes, if the mesh name is present, then increment up 'cnt'
+    while(newMeshName in this.Meshes)
+    {
+      newMeshName = newMesh.Name+"("+cnt+")";
+      cnt++;
+    }
+    newMesh.Name = newMeshName.trim();
+    this.Meshes[newMeshName] = newMesh;
 };
 
 vxModel.prototype.Init = function() {

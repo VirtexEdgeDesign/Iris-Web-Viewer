@@ -170,14 +170,24 @@ window.onload = function() {
 
 
   // First set up Splash Screen (modal_intro)
+  window.document.title = "IRIS Viewer  - [v. " + iris.version + " - Beta]"
   document.getElementById("intro_text_title").innerHTML = iris.name;
-  document.getElementById("intro_text_version").innerHTML = "[v. " + iris.version + " - Beta]";
+  //document.getElementById("intro_text_version").innerHTML = "[v. " + iris.version + " - Beta]";
   document.getElementById("intro_text_subtitle").innerHTML = iris.shortdescription;
   
   document.getElementById("intro_text_description").innerHTML = iris.description;
   document.getElementById("intro_text_disclaimer").innerHTML = "Note: This app is still in 'Beta' and should not be used for final production decisions. It should only be used for non-critical reference and conceptual views. You can file any bugs found on our Github page.";
 
-  document.getElementById("menubar_text_cornerTitle").innerHTML = iris.name + " - [v. " + iris.version + " - Beta]";
+//  document.getElementById("menubar_text_cornerTitle").innerHTML = iris.name + " - [v. " + iris.version + " - Beta]";
+
+  var versionSVGURL = "https://img.shields.io/badge/build-beta%20%5Bv.%20"+iris.version+"%5D-green.svg";
+  
+  // Set Version Text Elements
+  var image = document.getElementById("img_version_launch");
+  image.src = versionSVGURL;
+
+  var version_image = document.getElementById("img_version_footer");
+  version_image.src = versionSVGURL;
 
   // Now set up the 3D info
   canvas = document.getElementById('glcanvas3D');
@@ -281,7 +291,9 @@ function AddTreeNode(id, labelText, rootToAddTo, icon) {
     AddTreeNode(id, labelText, rootToAddTo, "", true);
 }
 
+var nodeCount = 0;
 function AddTreeNode(id, labelText, rootToAddTo, icon, isExpanded) {
+  
   
     // First get the tree root
     var rootNode = document.getElementById(rootToAddTo + "_ul");

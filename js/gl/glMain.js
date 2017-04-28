@@ -14,7 +14,7 @@
         initBuffers();
 
 
-        gl.clearColor(0.20, 0.20, 0.20, 1.0); // Clear to black, fully opaque
+        gl.clearColor(0.15, 0.15, 0.15, 1.0); // Clear to black, fully opaque
         gl.clearDepth(1.0); // Clear everything
         gl.enable(gl.DEPTH_TEST); // Enable depth testing
         gl.depthFunc(gl.LEQUAL); // Near things obscure far things
@@ -181,8 +181,8 @@ stats.begin();
         HoverIndex = 0;
         HoverIndex = pixels[0] + pixels[1] * 255 + pixels[2] * 255 * 255;
 
-
-        gl.clearColor(0.15, 0.15, 0.15, 1.0); // Clear to black, fully opaque
+        var backCol = 0.125;
+        gl.clearColor(backCol, backCol, backCol, 1.0); // Clear to black, fully opaque
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
         // Always draw the grid normally

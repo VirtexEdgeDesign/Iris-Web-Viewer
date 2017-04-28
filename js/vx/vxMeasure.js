@@ -14,7 +14,7 @@ function vxMeasure (name, pt1, pt2, nrml) {
     var col = 0.75;
     this.meshcolor = new vxColour(col, col, col, 1);
     
-    this.colour = [0.1, 1, 0.25, 1];
+    this.colour = [0, 162/255, 1, 1];
     
     // Place holders to determine if the Hover index is with in this
     // mesh or not.

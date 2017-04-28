@@ -213,6 +213,15 @@ Footer images
   right:0px;
 }
 
+.img-footer[data-icon="build"]
+{
+  border: none;
+  position:absolute;
+  width:initial;
+  bottom:1px; 
+  right:72px;
+}
+
 
 .img-footer[data-icon="fb"]
 {
@@ -246,14 +255,13 @@ Footer images
   right:48px;
 }
 
-.img-footer[data-icon="build"]
+/*.img-footer[data-icon="build"]
 {
   width:initial;
-  /*content:url('../img/badges/build-status.svg');*/
   content:url('https://img.shields.io/badge/build-beta%20%5Bv.%200.2.2%5D-blue.svg');
   bottom:1px; 
   right:72px;
-}
+}*/
 
 .tg  {
   /*

@@ -90,7 +90,7 @@ $( "#menu_view_back" ).click(function() {
 $( "#menu_view_left" ).click(function() {
   SetViewToLeft();
 });
-$( "#menu_view_normal" ).click(function() {
+$( "#menu_view_right" ).click(function() {
   SetViewToRight();
 });
 

@@ -1,8 +1,9 @@
-# v 0.3 April 15th 2017
+# v 0.3 April 28th 2017
 * Added Mesh Parts to allow for internal handling of large meshes past the ~65000 element count.
 * Changed Mesh Lists to Dictionaries.
+* Fixed bug with Right View not working.
 
-# v 0.22 March 13th 2017
+## v 0.22 March 13th 2017
 * Fixed bug where OBJ files would not load after ~65000 elements.
 * Added About page.
 
