@@ -9,7 +9,8 @@ You can always access it here: [Iris Web Viewer](https://r4tch31.github.io/Iris-
 
 ![image_intro](img/ref/scrnsht_intro.png "Intro")
 
-## Disclaimer
+## License & Disclaimer
+Iris is released under the [MIT License](https://github.com/r4tch31/Iris-Web-Viewer/blob/master/License.md)
 Note though, this is currently both experimental and currently in Beta, and therefore naturally has some bugs in it. It's not a perfect system and is therefore only useful for general views and for working out rough ideas. It comes with no warrenty what so ever. Any models should be viewed and infomation verfied through a secondary programand before any designs are finalised. That said, it's open source, so feel free to commit and add to it as you see fit!
 
 # Features
