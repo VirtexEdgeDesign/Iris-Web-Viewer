@@ -3,7 +3,7 @@
 var iris = {
 
   name: "Iris Web Viewer",
-  version: "0.3.0",
+  version: "0.3.1",
 
   shortdescription: "3D Model Exchange Format Viewer",
 
@@ -184,10 +184,10 @@ window.onload = function() {
   
   // Set Version Text Elements
   var image = document.getElementById("img_version_launch");
-  image.src = versionSVGURL;
+  //image.src = versionSVGURL;
 
   var version_image = document.getElementById("img_version_footer");
-  version_image.src = versionSVGURL;
+  //version_image.src = versionSVGURL;
 
   // Now set up the 3D info
   canvas = document.getElementById('glcanvas3D');

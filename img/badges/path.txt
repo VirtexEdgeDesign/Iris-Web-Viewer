@@ -1,0 +1,1 @@
+https://img.shields.io/badge/build-beta%20[v0.3.0]-green.svg
