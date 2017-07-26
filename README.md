@@ -5,12 +5,12 @@
 
 Iris Web Viewer is an open source experimental online model viewer. It allows you to view 3D Exchange format files through a web browser with out the need for larger packages to be installed on your or someone elses computer. It runs through Javascript and WebGL and is there fore cross paltform and available through a number of different browsers.
 
-You can always access it here: [Iris Web Viewer](https://r4tch31.github.io/Iris-Web-Viewer/)
+You can always access it here: [Iris Web Viewer](https://virtexedgedesign.github.io/Iris-Web-Viewer/)
 
 ![image_intro](img/ref/scrnsht_intro.png "Intro")
 
 ## License & Disclaimer
-Iris is released under the [MIT License](https://github.com/r4tch31/Iris-Web-Viewer/blob/master/License.md).
+Iris is released under the [MIT License](https://github.com/virtexedgedesign/Iris-Web-Viewer/blob/master/License.md).
 
 Note though, that Iris is currently both experimental and in Beta, and therefore naturally has some bugs in it. It's not a perfect system and is therefore only useful for general views and for working out rough ideas. It comes with no warrenty what so ever (refer to license). Any models should be viewed and infomation verfied through a secondary programand before any designs are finalised. That said it's meant for informal viewing of 3D files in non-critical applciations as well as it's open source, so feel free to commit and add to it as you see fit!
 
