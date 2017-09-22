@@ -1,4 +1,66 @@
-function io_import_obj(files, FileName, InputFileText, reader)
+var ioMaterials = {};
+var mtlFileName = "";
+
+function io_import_obj_mtl(filename, fileText)
+{
+ console.log("Loading Material File: "+filename);
+  console.log("----------------------------------------");
+
+    var mtlFile ={};
+    // Split the lines based off of the carriage return
+    var lines = fileText.split('\n');
+
+    // now split the line by spaces
+    var re = /\s* \s*/;
+    var temp_matl;
+    var currentMaterial = "default";
+    for(var line = 0; line < lines.length; line++){
+
+      // split the lines based off of spaces.
+      var inputLine = lines[line].split(re);
+
+      // now remove any stray spaces.
+      var str = inputLine[0].replace(/\s/g, '');
+      
+      switch(str)
+      {
+        // A New Material
+        case "newmtl":
+          currentMaterial = inputLine[1].toString().trim().valueOf();
+          
+          temp_matl = new vxMaterial(currentMaterial);
+          
+          ioMaterials[currentMaterial] = temp_matl;
+        break;
+/*
+        // setup Ambient Colour
+        case "Ka":
+          this.Materials[currentMaterial].AmbientColour = new vxColour(parseFloat(inputLine[1]), parseFloat(inputLine[2]), parseFloat(inputLine[3]), 1);
+        break;
+*/
+        // Setup Diffuse Colour
+        case "Kd":
+          ioMaterials[currentMaterial].DiffuseColour = new vxColour(parseFloat(inputLine[1]), parseFloat(inputLine[2]), parseFloat(inputLine[3]), 1);
+        break;
+/*
+        // Setup Specular Colour
+        case "Ks":
+          this.Materials[currentMaterial].SpecularColour = new vxColour(parseFloat(inputLine[1]), parseFloat(inputLine[2]), parseFloat(inputLine[3]), 1);
+        break;
+        */
+      }
+
+      //console.log(inputLine);
+    }
+    console.log("----------------------------------------");
+    //ioMaterials[filename] = mtlFile;
+    //console.log(ioMaterials);
+
+    //console.log(this.getMaterial("Shoes")); 
+}
+
+
+function io_import_obj(files, FileName, InputFileText)
 {
   log("Loading file <b>'"+FileName+"'</b> as an <b>'ascii .obj'</b> file...");
 
@@ -11,6 +73,7 @@ function io_import_obj(files, FileName, InputFileText, reader)
 
   var blockCount = 0;
     
+  var activeMaterial = "default";
   //First initialise Arrarys
   /*******************************/
   var temp_vertices = [];      //Vertices List for initial loading
@@ -20,6 +83,7 @@ function io_import_obj(files, FileName, InputFileText, reader)
   var vert1 = new vxVertex3D(0,0,0);
   var vert2 = new vxVertex3D(0,0,0);
   var vert3 = new vxVertex3D(0,0,0);
+  var vert4 = new vxVertex3D(0,0,0);
   var norm = new vxVertex3D(0,0,0);
   
    var textureCoordinates = [
@@ -50,7 +114,6 @@ function io_import_obj(files, FileName, InputFileText, reader)
      //First Split the Current Line into an Array split by any number of spaces
      var re = /\s* \s*/;
      var inputLine = lines[line].split(re);
-     
      
      switch (inputLine[0])
      {
@@ -99,15 +162,16 @@ function io_import_obj(files, FileName, InputFileText, reader)
        
       //Add Face
        case 'f':
-         
+         var hasFourthVert = false;
           //console.log('indexArray');
         //Loop through each vertice collection in each line
         for(var vrt = 1; vrt < inputLine.length; vrt++){
-          if(inputLine[vrt] !== ""){
+          if(inputLine[vrt] != ""){
           
+          vert4.Set(0,0,0);
           //Index Array
           var indexArray = inputLine[vrt] .split("/");
-          
+    
           //TODO: Add in Texture Support
 
 
@@ -143,6 +207,10 @@ function io_import_obj(files, FileName, InputFileText, reader)
           case 2:
             vert3.Set(temp_vertices[(indexArray[0]-1)*3], temp_vertices[(indexArray[0]-1)*3+1], temp_vertices[(indexArray[0]-1)*3+2]);
           break;
+          case 3:
+            vert4.Set(temp_vertices[(indexArray[0]-1)*3], temp_vertices[(indexArray[0]-1)*3+1], temp_vertices[(indexArray[0]-1)*3+2]);
+            hasFourthVert = true;
+          break;
          }
 
 
@@ -157,50 +225,43 @@ function io_import_obj(files, FileName, InputFileText, reader)
         var selcol = new vxColour();
         selcol.EncodeColour(numOfFaces);
 
+        // if there's a material that has the name, then set the mesh colour to it
+        if(ioMaterials[activeMaterial] != null)
+        {
+          meshcolor =  ioMaterials[activeMaterial].DiffuseColour;
+        }
         mesh.AddFace(vert1, vert2, vert3, norm, meshcolor, selcol);
-        
         numOfFaces++;
+
+        if(hasFourthVert == true)
+        {
+          numOfElements++;
+          selcol = new vxColour();
+          selcol.EncodeColour(numOfFaces);
+          numOfFaces++;
+          mesh.AddFace(vert1, vert3, vert4, norm, meshcolor, selcol);
+        }
+        
         break;
          
          case 'mtllib':
+
+         
            // First rebuild the file name
            var length = 6;
            
            // the file name is a substring of the line minus the initial 'mtllib ' characters
            var mtlFileName = lines[line].substr(length+1, lines[line].length-length);
-           
-           //now loop through all files to find the required material file
-           for(var i = 0; i < files.length; i++)
-           {
-             
-             var searchedName = files[i].name.toString().trim();
-             var currentName = mtlFileName.toString().trim();
-             /*
-             console.log("Searching");
-             console.log("'"+searchedName+"'");
-             console.log("'"+currentName+"'");
-             */
-             if(searchedName == currentName)
-             {
-               //console.log(reader);
-               console.log("SUCCESS! - LOADING MATERIAL FILE: " + files[i].name);
-               //var material = new vxMaterial(files[i].name);
-               
-                  var mtlreader = new FileReader();
-                      mtlreader.onload = function(e) {
-                       // material.CreateFromMTLFile(this.result);
-                       model.LoadMaterialFromObjMtlFile(this.result);
-                      };
-                      
-                  mtlreader.readAsText(files[i]);
-             }
-           }
-           
+          
+            console.log("Set Material: "+mtlFileName);
+           //model.Materials = $.extend(true, {}, ioMaterials[mtlFileName]);
+
            break;
            
            
          case 'usemtl':
-           //console.log(inputLine);
+         // set active material
+           activeMaterial = inputLine[1].toString().trim().valueOf();
            break;
            
            
@@ -220,7 +281,7 @@ function io_import_obj(files, FileName, InputFileText, reader)
   
   InitialiseModel(model);
 
-        Zoom = -mesh.MaxPoint.Length()*1.75; 
+        Zoom = -model.MaxPoint.Length()*1.5-1; 
         rotX = -45;
         rotY = 30;
   

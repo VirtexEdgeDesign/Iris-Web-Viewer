@@ -2,14 +2,26 @@
 // Side Bar
 //******************************************************************
 $( "#sidebar_file_new" ).click(function() {
-  
-  //chrome.runtime.reload();
+  // Reload the window
   window.location.reload(true);
 });
 $( "#sidebar_file_import" ).click(function() {
-  $('#menu_file_openSelect').click();
+  //$('#menu_file_openSelect').click();
+  modalOpenFile.style.display = "block";
+
   CloseSidebar();
 });
+
+
+// Handle Location To Open File From
+$( "#btn_openfile_local" ).click(function() {
+  $('#menu_file_openSelect').click();
+});
+
+$( "#btn_openfile_gdrive" ).click(function() {
+  loadPicker();
+});
+
 
 function openInNewTab(url) {
   var win = window.open(url, '_blank');
@@ -22,25 +34,15 @@ $( "#btn_social_github" ).click(function() {
       url: 'https://github.com/r4tch31/Iris-Web-Viewer/wiki'
     });
 */
-  openInNewTab('https://github.com/r4tch31/Iris-Web-Viewer/wiki');
+  openInNewTab('https://github.com/VirtexEdgeDesign/Iris-Web-Viewer/wiki');
 });
 
 $( "#btn_social_fb" ).click(function() {
-  /*
-  chrome.browser.openTab({
-      url: 'https://www.facebook.com/r4tch31'
-    });
-*/
-  openInNewTab('https://www.facebook.com/r4tch31');
+  openInNewTab('https://www.facebook.com/VirtexEdgeDesign');
 });
 
 $( "#btn_social_twtr" ).click(function() {
-  /*
-  chrome.browser.openTab({
-      url: 'https://twitter.com/r4tch31'
-    });
-*/
-  openInNewTab('https://www.twitter.com/r4tch31');
+  openInNewTab('https://www.twitter.com/VirtexEdge');
 });
 
 
@@ -58,6 +60,7 @@ $( "#menu_file_open" ).click(function() {
 $( "#menu_file_quit" ).click(function() {
   window.close();
 });
+
 
 
 
@@ -164,6 +167,11 @@ window.onclick = function(event) {
 
     if (event.target == modal_intro) {
         modal_intro.style.display = "none";
+    }
+
+
+    if (event.target == modalOpenFile) {
+        modalOpenFile.style.display = "none";
     }
 };
 

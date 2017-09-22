@@ -1,0 +1,113 @@
+/* The Modal 50% Opace Black background */
+.modal_loadFile {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+
+}
+
+
+/* Modal Content */
+.modal_loadFile-content {
+    position: relative;
+    background-color: #2e2e2e;
+    margin: auto;
+    padding: 10px;
+    border: 1px solid #555;
+    width: 500px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.75),0 6px 20px 0 rgba(0,0,0,0.75);
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.4s;
+    animation-name: animatetop;
+    animation-duration: 0.75s;
+    font-size: 12px;
+    color: #CCC;
+    line-height: 16px;
+    text-align: left;
+}
+
+/* Add Animation */
+@-webkit-keyframes animatetop {
+    from {top:0px; opacity:0}
+    to {top:0; opacity:1}
+}
+
+@keyframes animatetop {
+    from {top:0px; opacity:0}
+    to {top:0; opacity:1}
+}
+.modal_loadFile-txt {
+    vertical-align: middle;
+    font-size: 12px;
+    color: #ccc;
+}
+
+.modal_loadFile-title {
+    color: white;
+    font-size: 18px;
+    text-align: left;
+}
+
+.modal_loadFile-subtitle {
+    color: #aaa;
+    font-size: 16px;
+}
+
+.modal_loadFile-description {
+    color: #888;
+}
+
+.modal_loadFile hr#splitter {
+    padding: 0px 10px 0px 10px;
+    margin: 0px 5px 0px 5px;
+    color: #555;
+    background-color: #777;
+    font-size:1%;
+    height:1px; 
+    border: 0;
+}
+
+
+
+/* Open File Buttons */
+.modal_loadFile-btn {
+   display:block; /* change this from inline-block */
+    width:200px; /* setting the width */
+    margin:0 auto; /* this will center  it */
+    position:relative;
+    background-color: #2e2e2e;
+    border: 1px solid #555;
+    padding: 5px;
+    height: 48px;
+    font-size: 12px;
+    color: #ccc;
+    vertical-align: middle;
+    transition: all 0.3s ease;
+}
+
+.modal_loadFile-btn:hover {
+    background-color: #444;
+    border: 1px solid #00bfff;
+    box-shadow: 4px rgba(0,0,0,0.75);
+}
+
+.modal_loadFile-btn-img {
+    margin-right: 5px;    
+    vertical-align: middle;
+}
+.modal_loadFile-btn-img[data-icon="load_cancel"]{
+    content: url('../img/io/open_local.png');
+}
+
+
+.modal_loadFile-btn-txt {
+    vertical-align: middle;
+}

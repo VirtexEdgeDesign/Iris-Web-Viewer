@@ -388,6 +388,11 @@ vxMeshPart.prototype.AddFace = function(vert1, vert2, vert3, normal, colour, enc
   this.AddVertices(vert2, normal, colour, encodedIndexColor);
   this.AddVertices(vert3, normal, colour, encodedIndexColor);
 
+  this.meshcolor.R = colour.R;
+  this.meshcolor.G = colour.G;
+  this.meshcolor.B = colour.B;
+  this.meshcolor.A = 1;
+
   this.AddEdge(vert1, vert2);
   this.AddEdge(vert2, vert3);
   this.AddEdge(vert3, vert1);

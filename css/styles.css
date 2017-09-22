@@ -22,9 +22,15 @@ text-align: center;
 background-color: #2a2a2a;
 color: #2a2a2a;
 position: absolute;
-top: 50%;
-left: 50%;
+top: 20%;
+left: 44%;
 z-index: 600;
+}
+#loading-text{
+  color: #888;
+  position: absolute;
+  top: 95%;
+  left: 48%;
 }
 body {
   background: #333;
@@ -281,8 +287,5 @@ Footer images
     content: '\02795';
   
 }
-
-
-
 
 

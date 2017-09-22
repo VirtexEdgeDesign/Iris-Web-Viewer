@@ -3,7 +3,7 @@
 var iris = {
 
   name: "Iris Web Viewer",
-  version: "0.3.1",
+  version: "0.3.2",
 
   shortdescription: "3D Model Exchange Format Viewer",
 
@@ -11,6 +11,25 @@ var iris = {
 
   disclaimer: "Note: This app is still in 'Beta' and should not be used for final production decisions. It should only be used for non-critical reference and conceptual views. You can file any bugs found on our Github page.",
 }
+
+var User = {
+  LoggedIn : false,
+  
+  ID: "xxxxxxxx-id-xxxxxxxx",
+
+  Name:"default user name",
+
+  ImgUrl: "",
+
+  Email: ""
+}
+
+/* Uncomment for Debuging
+var originalLog = log
+log=function(obj){
+    originalLog(JSON.parse(JSON.stringify(obj)))
+}
+*/
 
 // The WebGL Canvas
 var canvas;
@@ -162,12 +181,23 @@ var measureNodeId = "node_measure";
 var status;
 
 
-var modalIntro = document.getElementById('modal_intro');
+//var modalIntro = document.getElementById('modal_intro');
+
+//var modalOpenFile = document.getElementById('modal_openFile');
 
 
-window.onload = function() {
+var modalIntro = document.getElementById('modal_openFile');
+
+var modalOpenFile = document.getElementById('modal_intro');
+
+var modalLoadFile = document.getElementById('modal_loadFile');
 
 
+
+var loadingPrgrsBar = document.getElementById('loading-prgrsbar');
+
+function InitVariables() {
+log("InitVariables()");
 
   // First set up Splash Screen (modal_intro)
   window.document.title = "IRIS Viewer  - [v. " + iris.version + " - Beta]"
@@ -189,10 +219,27 @@ window.onload = function() {
   var version_image = document.getElementById("img_version_footer");
   //version_image.src = versionSVGURL;
 
+
+  // Setup Signin Info
+  var dev_signedIn = document.getElementById("dev_signedIn");
+  dev_signedIn.style.display = 'none';
+
+  var btn_googleSignIn = document.getElementById("btn_googleSignIn");
+  btn_googleSignIn.style.display = 'block';
+
+
+    status = document.getElementById('footer_text');
+    document.getElementById('footer_text').innerHTML = "Welcome to Iris";
+
   // Now set up the 3D info
   canvas = document.getElementById('glcanvas3D');
-    
-    
+    loadingPrgrsBar.style.width="20%";
+
+  setTimeout(function(){InitDebugStats();}, 10);
+}
+
+function InitDebugStats(){
+    log("InitDebugStats()");
   // Setup Stats Panel
   stats.showPanel( 0 ); // 0: fps, 1: ms, 2: mb, 3+: custom
   //log(stats.dom);
@@ -201,9 +248,13 @@ window.onload = function() {
   stats.dom.style.display = 'none';
   //stats.dom.style.bottom = 32+"px"
   document.body.appendChild( stats.dom );
+    loadingPrgrsBar.style.width="30%";
 
+setTimeout(function(){InitProperties();}, 100);
+}
 
-
+function InitProperties(){
+log("InitProperties()");
   // Now Setup the Properties GUI
   gui = new dat.GUI({ autoplace: false, width: 300 });
 
@@ -214,9 +265,26 @@ window.onload = function() {
     
  //initialise model properties
  properties = new ModelProp(gui, "");
- 
+    loadingPrgrsBar.style.width="40%";
+setTimeout(function(){InitWebGL();}, 100);
+
+}
+
+
+function InitWebGL(){
+log("InitWebGL()");
+
     //Initialise Web GL
     webGLStart();
+    loadingPrgrsBar.style.width="65%";
+
+setTimeout(function(){InitListerners();}, 200);
+
+}
+
+function InitListerners(){
+log("InitListerners()");
+
 
     //Initialise Input Handlers
     InitInputHandlers();
@@ -225,62 +293,38 @@ window.onload = function() {
     document.onmouseup = handleMouseUp;
     canvas.onmousemove = handleMouseMove;
     document.addEventListener("wheel", MouseWheelHandler, {passive:true});
-    
-    
-    status = document.getElementById('footer_text');
-    document.getElementById('footer_text').innerHTML = "Welcome to Iris";
-        
-//TODO: Old method of handling mouse scrolling
-/*
-    //var myimage = document.getElementById(elmntID);
-    if (canvas.addEventListener) {
-        // IE9, Chrome, Safari, Opera
-        canvas.addEventListener("mousewheel", MouseWheelHandler, false);
-        // Firefox
-        canvas.addEventListener("DOMMouseScroll", MouseWheelHandler, false);
-    }
-    // IE 6/7/8
-    else canvas.attachEvent("onmousewheel", MouseWheelHandler);
-*/
-    Resize();
+    loadingPrgrsBar.style.width="75%";
 
-    /*
-    <input type="checkbox" id="node-0-0" checked="checked" />
-    <label><input type="checkbox" />
-    <span></span></label>
-    <label for="node-0-0">Documents</label>
-    
-  <li>
-    <input type="checkbox" id="node-0-1-0" />
-    
-    <label>
-      <input type="checkbox" />
-      <span></span>
-    </label>
-    
-    <label for="node-0-1-0">My Music</label>
-  </li>
-    */
-    //AddTreeNode("node_origin", "Origin", "tree_root", "folder", true);
-    /*
-    AddTreeNode("node_axis", "Axis'", "node_origin", "folder", true);
-    
-    AddTreeNode("node_axis_x", "X-Axis", "node_axis", "axis");
-    AddTreeNode("node_axis_y", "Y-Axis", "node_axis", "axis");
-    AddTreeNode("node_axis_z", "Z-Axis", "node_axis", "axis");
-    
-    AddTreeNode("node_planes", "Planes", "node_origin", "folder", true);
-    
-    AddTreeNode("node_origin_x", "XY-Planes", "node_planes", "plane");
-    AddTreeNode("node_origin_y", "YZ-Planes", "node_planes", "plane");
-    AddTreeNode("node_origin_z", "XZ-Planes", "node_planes", "plane");
-    */
+setTimeout(function(){InitTreeNodes();}, 10);
+
+}
+
+function InitTreeNodes(){
+log("InitTreeNodes()");
+    Resize();
+    loadingPrgrsBar.style.width="70%";
     AddTreeNode(meshNodeId, "Meshes", "tree_root", "folder", true);
     
     AddTreeNode(measureNodeId, "Measurements", "tree_root", "folder", true);
+loadingPrgrsBar.style.width="100%";
 
+      var dev_signedIn = document.getElementById("profile_img");
+      dev_signedIn.style.display = 'none';
 
+setTimeout(function(){FinaliseInit();}, 150);
+
+}
+
+function FinaliseInit(){
+log("FinaliseInit()");
     $('#loading').fadeOut();
+}
+
+
+window.onload = function() {
+
+setTimeout(function(){InitVariables();}, 10);
+
 };
 
 function AddTreeNode(id, labelText, rootToAddTo) {
@@ -448,8 +492,8 @@ $(".ui-cntrl-treeview").delegate("label input:checkbox", "change", function() {
         }
     }
     /*
-          console.log($(checkbox).attr('id'));
-        console.log(checkbox.is(":checked"));
+          log($(checkbox).attr('id'));
+        log(checkbox.is(":checked"));
         */
     if (checkbox.is(":checked")) {
         return selectNestedListCheckbox.prop("checked", true);
@@ -465,10 +509,10 @@ $(".ui-cntrl-treeview").delegate("label input:checkbox", "change", function() {
 // Handles Logging of Text
 // *****************************************************************************************************
 function log(Text) {
-  
+  //console.log(">> "+Text);
   if(DoDebug === true)
   {
-    console.log(Text);
+    log(Text);
     //var TextSoFar = $('#console').html();
 
     //TextSoFar += new Date() + ">> " + Text + "<br/>";

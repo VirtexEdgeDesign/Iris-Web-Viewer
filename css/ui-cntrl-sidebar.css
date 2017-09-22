@@ -69,3 +69,10 @@ body {
   .ui-cntrl-sidenav {padding-top: 15px;}
   .ui-cntrl-sidenav a {font-size: 18px;}
 }
+
+
+.ui-cntrl-sidenav .profileInfo
+{
+  color:#333;
+}
+

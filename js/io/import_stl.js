@@ -1,4 +1,4 @@
-function io_import_stl(files, FileName, InputFileText, reader)
+function io_import_stl(files, FileName, InputFileText)
 {
   
     // First get split the file line By Line
@@ -84,17 +84,6 @@ var norm = new vxVertex3D(0,0,0);
        //Add Normal
        case "facet":
 
-
-
-       //var selcol = new vxColour();
-        //selcol.EncodeColour(numOfFaces);
-        
-//        console.log(numOfFaces);
-
-          //mesh.AddEdge(vert1, vert2);
-          //mesh.AddEdge(vert2, vert3);
-          //mesh.AddEdge(vert3, vert1);
-
         if(CanAddFace)
         {
         // Once all of the data is in, create the new face
@@ -165,23 +154,22 @@ var norm = new vxVertex3D(0,0,0);
     // Add the last face
     var selcol = new vxColour();
     selcol.EncodeColour(numOfFaces);
+    
     mesh.AddFace(vert1, vert2, vert3, norm, meshcolor, selcol);
-         numOfFaces++;
-        
+    numOfFaces++;
     // Set the center
     modelprop_Center[0] /= TotalVertCount;
     modelprop_Center[1] /= TotalVertCount;
     modelprop_Center[2] /= TotalVertCount;
-    
-        // Now Set the View Parameters
-        Zoom = -mesh.MaxPoint.Length()*1.75;
-        rotX = -45;
-        rotY = 30;
         
   model.AddMesh(mesh);
   
    InitialiseModel(model);
-    
+
+         // Now Set the View Parameters
+        Zoom = -model.MaxPoint.Length()*1.5-1;
+        rotX = -45;
+        rotY = 30;
 
   //$('#modelForm_Open').window('close');
   log("Done!");
@@ -197,7 +185,7 @@ function io_import_stl_binary(files, FileName, InputFileText)
   
   var mesh = new vxMesh("mesh: " + FileName.substring(0, FileName.length-4));
   
-  var vert1 = new vxVertex3D(0,0,0);
+var vert1 = new vxVertex3D(0,0,0);
 var vert2 = new vxVertex3D(0,0,0);
 var vert3 = new vxVertex3D(0,0,0);
 var norm = new vxVertex3D(0,0,0);
@@ -289,15 +277,17 @@ var norm = new vxVertex3D(0,0,0);
          }
     }
     
-            // Now Set the View Parameters
-        Zoom = -mesh.MaxPoint.Length()*1.75;
-        rotX = -45;
-        rotY = 30;
+
         
     model.AddMesh(mesh);
   
    InitialiseModel(model);
     
+                // Now Set the View Parameters
+        Zoom = -mesh.MaxPoint.Length()*1.5 - 1;
+        rotX = -45;
+        rotY = 30;
+
     };
 
     // Read in the image file as a binary string.

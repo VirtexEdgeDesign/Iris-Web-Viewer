@@ -8,13 +8,15 @@ function vxModel (name) {
     //this.Meshes = [];
 
     // Material Collection
-    this.Materials = [];
+    this.Materials = {};
+    //this.Materials = new Map();
     
     //Should it be Drawn
     this.Enabled = true;
 
     // The Max Point of this Mesh
     this.MaxPoint = new vxVertex3D(0,0,0);
+
 }
 
 vxModel.prototype.getInfo = function() {
@@ -25,29 +27,31 @@ vxModel.prototype.getInfo = function() {
 
 // Material Methods
 // ***************************************************************************
-vxModel.prototype.GetMaterial = function(matName) {
-    for(var i = 0; i < this.Materials.length; i++)
-    {
-      if(matName.trim() == this.Materials[i].Name.trim())
+vxModel.prototype.getMaterial = function(matName) {
+
+//var mtlTest = new String(matName);
+//console.log("Type of call "+ typeof mtlTest);
+//console.log("==============================================");
+    var mtl;
+    for(var key in this.Materials) {
+       
+      console.log(JSON.stringify(key));
+      console.log(JSON.stringify(matName));
+      if(JSON.stringify(key) === JSON.stringify(matName))
       {
-        return this.Materials[i];
+         mtl = this.Materials[key];
+         console.log("Match");
       }
-    }
-    
-      return null;
+    }    
+      //console.log("==============================================");
+      return mtl;
+
 };
 
 
 vxModel.prototype.LoadMaterialFromObjMtlFile = function(fileText) {
   
-  console.log("Loading Material File: " + fileText.name);
-  console.log("----------------------------------------");
-  console.log(fileText);
-      var lines = fileText.split('\n');
-    for(var line = 0; line < lines.length; line++){
-      console.log(lines[line]);
-    }
-    console.log("----------------------------------------");
+  
   };
 
 vxModel.prototype.GetNumberOfMeshes = function() {
@@ -163,6 +167,8 @@ vxModel.prototype.Init = function() {
         AddTreeNode("node_"+this.Name+"_"+mesh.Name+"_numOfVerts", numOfVerts, geomNod, "axis");
         AddTreeNode("node_"+this.Name+"_"+mesh.Name+"_numOfFcs", numOfFcs, geomNod, "plane");
  
+        //Finally close the Model Loading Modal.
+    modalLoadFile.style.display = "none";
 }
   /*
   for (var i = 0; i < this.Meshes.length; i++) {

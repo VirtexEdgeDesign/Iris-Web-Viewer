@@ -1,7 +1,12 @@
 function vxMaterial (name) {
   this.Name = name;
-}
 
-vxMaterial.prototype.CreateFromMTLFile = function(fileText) {
-  
-  };
+  //Ambient Colour
+  this.AmbientColour = new vxColour(1,1,1,1);
+
+  //Diffuse Colour
+  this.DiffuseColour = new vxColour(1,1,1,1);
+
+  //Specular Colour
+  this.SpecularColour = new vxColour(1,1,1,1);
+}
