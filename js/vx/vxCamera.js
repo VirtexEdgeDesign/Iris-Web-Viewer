@@ -1,22 +1,37 @@
 function vxCamera (view, projection) {
   
   // View matrix
-  this.View = view;
+  this.view = view;
   
   // Projection Matrix
-  this.Projection = projection;
+  this.projection = projection;
+
+  this.nearPlane = 1;
+
+  this.farPlane = 100000;
   
   // Zoom Amount
-  this.Zoom = 10;
+  this.zoom = 10;
+
+  // Roatation about the Y-Axis
+  // This must be between 0 < theta < 2*PI
+  this.theta = 0;
   
   // Angle about the X-Axis
-  this.Theta = 0;
-  
-  // Angle about the Y-Axis
-  this.Phi = 0;
+  // This must be between 0 < phi < PI
+  this.phi = 0;
   
   // View Target Position
-  this.Target = new vxVertex3D();
+  this.target = new vxVertex3D();
+
+  // The foward vector
+  this.forward = new vxVertex3D();
+
+  // The up vector
+  this.up = new vxVertex3D();
+
+  // The right vector
+  this.right = new vxVertex3D();
 }
 
 vxCamera.prototype.Pan = function(deltaX, deltaY) {

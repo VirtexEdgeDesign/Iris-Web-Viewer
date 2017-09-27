@@ -179,6 +179,7 @@
   background-position: 0px 0px;
 }
 
+.ui-cntrl-treeview label[for][data-status="texture"]{  background-image: url(''); }
 .ui-cntrl-treeview label[for][data-icon="envrroot"]{  background-image: url('../img/tree/node_envr.png'); }
 .ui-cntrl-treeview label[for][data-icon="axis"]{  background-image: url('../img/tree/node_axis.png'); }
 .ui-cntrl-treeview label[for][data-icon="plane"]{  background-image: url('../img/tree/node_plane.png'); }
@@ -189,27 +190,15 @@
 .ui-cntrl-treeview label[for][data-icon="mesh"]{  background-image: url('../img/tree/node_mesh.png'); }
 
 .ui-cntrl-treeview label[for][data-icon="measure"]{  background-image: url('../img/tree/node_measure.png'); }
+.ui-cntrl-treeview label[for][data-icon="measure_angle"]{  background-image: url('../img/tree/node_measure_angle.png'); }
 .ui-cntrl-treeview label[for][data-icon="bullet_blue"]{  background-image: url('../img/tree/node_bullet_blue.png'); }
 .ui-cntrl-treeview label[for][data-icon="bullet_green"]{  background-image: url('../img/tree/node_bullet_green.png'); }
 .ui-cntrl-treeview label[for][data-icon="bullet_red"]{  background-image: url('../img/tree/node_bullet_red.png'); }
 .ui-cntrl-treeview label[for][data-icon="bullet_vector"]{  background-image: url('../img/tree/node_bullet_vector.png'); }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+.ui-cntrl-treeview label[for][data-icon="material"]{  background-image: url('../img/tree/node_material.png'); }
+.ui-cntrl-treeview label[for][data-icon="materials"]{  background-image: url('../img/tree/node_materials.png'); }
+.ui-cntrl-treeview label[for][data-icon="colour_wheel"]{  background-image: url('../img/tree/node_colour_wheel.png'); }
+.ui-cntrl-treeview label[for][data-icon="colour_rgb"]{  background-image: url('../img/tree/node_colour_rgb.png'); }
+.ui-cntrl-treeview label[for][data-icon="image"]{  background-image: url('../img/tree/node_image.png'); }
+.ui-cntrl-treeview label[for][data-icon="hash"]{  background-image: url('../img/tree/node_hash.png'); }
 

@@ -48,7 +48,7 @@ vec3.angle = function(a, b) {
       }     
   };
 
-function vxMeasure (name, pt1, pt2, nrml1, nrml2) {
+function vxMeasureAngle (name, pt1, pt2, nrml1, nrml2) {
   
     // Mesh Name
     this.Name = name;
@@ -59,12 +59,14 @@ function vxMeasure (name, pt1, pt2, nrml1, nrml2) {
     var col = 0.75;
     this.meshcolor = new vxColour(col, col, col, 1);
     
-    this.colour = [0, 162/255, 1, 1];
+    this.colour = [1, 0, 1, 1];
     
     // Place holders to determine if the Hover index is with in this
     // mesh or not.
     this.IndexStart = 0;
     this.IndexEnd = 0;
+
+    this.Angle = 0;
 
     //Vertice Array
     this.mesh_vertices = [];
@@ -126,62 +128,13 @@ function vxMeasure (name, pt1, pt2, nrml1, nrml2) {
     // Get the average vector of the face and then normalise it.
     this.Direction = new vxVertex3D(0,0,0);
 
-    // setup the cross product
-    this.CrossProd = [0,0,0];
-
-    this.Delta = [0,0,0];
-    this.Delta[0] = this.Point2[0] - this.Point1[0];
-    this.Delta[1] = this.Point2[1] - this.Point1[1];
-    this.Delta[2] = this.Point2[2] - this.Point1[2];
-
-    this.NormalAvg = [0,0,0];
-
-
-    vec3.cross(this.CrossProd, nrml1, nrml2);
-    vec3.avg(this.NormalAvg, nrml1, nrml2);
-
-
-    // If two vectors are parrellal, then we need to shift the normal direction slightly and re try the cross prod
-    if(this.CrossProd[0]==0 && this.CrossProd[1]==0 && this.CrossProd[1]==0) {
-        
-          nrml2[0] = 1;
-          nrml2[1] = 0;
-          nrml2[2] = 0;
-
-          vec3.cross(this.CrossProd, nrml1, nrml2);
-          vec3.avg(this.NormalAvg, nrml1, nrml2);
-
-          if(this.CrossProd[0]==0 && this.CrossProd[1]==0 && this.CrossProd[1]==0) {
-            
-              nrml2[0] = 0;
-              nrml2[1] = 0;
-              nrml2[2] = 1;
-
-              vec3.cross(this.CrossProd, nrml1, nrml2);
-              vec3.avg(this.NormalAvg, nrml1, nrml2);
-          }
-      }
-
-      // Now we have a vector which is 90 degrees to both normals, which means it's also
-      // tangent to both faces. With this we can then calculate a new cross product between
-      // the tanget vector, and the vector between the two points.
-      this.FinalCrossProd = [0,0,0];
-
-    vec3.cross(this.FinalCrossProd, this.CrossProd, this.Delta);
-
     // Now check the angle between the Final Cross prod and the average normal this is
     // to prevent the leader lines going into the mesh. 
-    var rad = vec3.angle(this.FinalCrossProd, this.NormalAvg);
-    var angle = rad * 180/3.14159;
-    var dirFactor = 1;
-    if(angle > 90)
-      dirFactor = -1;
+    var rad = vec3.angle(nrml1, nrml2);
+    var angle = rad * 180 / 3.14159;
 
-    // First try setting the direction as the average of the two faces.
-    this.Direction.X = this.FinalCrossProd[0] * dirFactor;
-    this.Direction.Y = this.FinalCrossProd[1] * dirFactor;
-    this.Direction.Z = this.FinalCrossProd[2] * dirFactor;
-
+    this.Angle = angle;
+    
     this.Direction.Normalise();
 
 
@@ -208,26 +161,38 @@ function vxMeasure (name, pt1, pt2, nrml1, nrml2) {
       //log("Length = " + this.Length);
       //log("=================================");
       
-      this.leaderPadding = this.Length * 0.12525;
+      this.leaderPadding = this.Length * 0.8;
 
-      console.log(this.Direction);
-      this.Direction.X = this.leaderHeight * this.Direction.X;
-      this.Direction.Y = this.leaderHeight * this.Direction.Y;
-      this.Direction.Z = this.leaderHeight * this.Direction.Z;
+      
+      this.Direction.X = this.leaderHeight * nrml1[0];
+      this.Direction.Y = this.leaderHeight * nrml1[1];
+      this.Direction.Z = this.leaderHeight * nrml1[2];
       
       // Top Distance Line
       this.AddVertices(-this.Point1[0] + this.Direction.X, -this.Point1[1] + this.Direction.Y, -this.Point1[2] + this.Direction.Z);
+      
+
+
+
+      this.Direction.X = this.leaderHeight * nrml2[0];
+      this.Direction.Y = this.leaderHeight * nrml2[1];
+      this.Direction.Z = this.leaderHeight * nrml2[2];
+
       this.AddVertices(-this.Point2[0] + this.Direction.X, -this.Point2[1] + this.Direction.Y, -this.Point2[2] + this.Direction.Z);
       
 
-      this.Direction.X += this.leaderPadding * this.Direction.X;
-      this.Direction.Y += this.leaderPadding * this.Direction.Y;
-      this.Direction.Z += this.leaderPadding * this.Direction.Z;
+      this.Direction.X = this.leaderPadding * nrml1[0];
+      this.Direction.Y = this.leaderPadding * nrml1[1];
+      this.Direction.Z = this.leaderPadding * nrml1[2];
 
       // First Leader Line
       this.AddVertices(-this.Point1[0], -this.Point1[1], -this.Point1[2]);
       this.AddVertices(-this.Point1[0] + this.Direction.X, -this.Point1[1] + this.Direction.Y, -this.Point1[2] + this.Direction.Z);
       
+
+      this.Direction.X = this.leaderPadding * nrml2[0];
+      this.Direction.Y = this.leaderPadding * nrml2[1];
+      this.Direction.Z = this.leaderPadding * nrml2[2];
       // Second Leader Line
       this.AddVertices(-this.Point2[0], -this.Point2[1], -this.Point2[2]);
       this.AddVertices(-this.Point2[0] + this.Direction.X, -this.Point2[1] + this.Direction.Y, -this.Point2[2] + this.Direction.Z);
@@ -237,15 +202,15 @@ function vxMeasure (name, pt1, pt2, nrml1, nrml2) {
         //distanceMesh.meshType = MeshType.Lines;
         
         //this.Center = this.Point1[0];
-
-        var lengthShort = this.Length.toString().substr(0, this.Length.toString().indexOf(".")+5);
         
-    AddTreeNode("node_"+name, name, measureNodeId, "measure");
-    AddTreeNode("node_"+name+"_dist", 'Distance: '+ lengthShort, "node_"+name, "bullet_vector");
-    AddTreeNode("node_"+name+"_length", 'Length: '+ this.Length, "node_"+name+"_dist", "hash");
-    AddTreeNode("node_"+name+"_deltax", 'Delta X: '+ this.DeltaX, "node_"+name+"_dist", "bullet_red");
-    AddTreeNode("node_"+name+"_deltay", 'Delta Y: '+ this.DeltaY, "node_"+name+"_dist", "bullet_green");
-    AddTreeNode("node_"+name+"_deltaz", 'Delta Z: '+ this.DeltaZ, "node_"+name+"_dist", "bullet_blue");
+        
+        
+    AddTreeNode("node_"+name, name, measureNodeId, "measure_angle");
+    AddTreeNode("node_"+name+"_name", 'Angle: '+ this.Angle.toString().substr(0, this.Angle.toString().indexOf(".")+5) + " Degrees", "node_"+name, "bullet_vector");
+    AddTreeNode("node_"+name+"_deg", 'Degrees: '+ this.Angle, "node_"+name+"_name", "hash");
+    AddTreeNode("node_"+name+"_rad", 'Radians: '+ rad, "node_"+name+"_name", "hash");
+    //AddTreeNode("node_"+name+"_deltay", 'Delta Y: '+ this.DeltaY, "node_"+name+"_dist", "bullet_green");
+    //AddTreeNode("node_"+name+"_deltaz", 'Delta Z: '+ this.DeltaZ, "node_"+name+"_dist", "bullet_blue");
     
     this.TextPos = [0,0,0,0];
     this.TextCenter = [(-this.Point1[0] - this.Point2[0])/2 + this.Direction.X, (-this.Point1[1] - this.Point2[1])/2 + this.Direction.Y, (-this.Point1[2] - this.Point2[2])/2+ this.Direction.Z];
@@ -256,7 +221,7 @@ function vxMeasure (name, pt1, pt2, nrml1, nrml2) {
      this.text.style.position = "absolute";
      this.text.style.top = "200px";
      this.text.style.left = "300px";
-     this.text.innerHTML = this.Name +" = "+ lengthShort;
+     this.text.innerHTML = this.Name +" = "+ this.Angle.toString().substr(0, this.Length.toString().indexOf(".")+5);
     //inp1.setAttribute("id", id); // added line
     this.text.setAttribute("class", "measure"); // added line
     
@@ -264,11 +229,11 @@ function vxMeasure (name, pt1, pt2, nrml1, nrml2) {
 }
 
 
-vxMeasure.prototype.getInfo = function() {
+vxMeasureAngle.prototype.getInfo = function() {
     return 'Mesh Name: ' + this.Name;
 };
 
-vxMeasure.prototype.SetCenter = function() {
+vxMeasureAngle.prototype.SetCenter = function() {
   var cnt = 0;
     for (var i = 0; i < this.mesh_vertices.length; i+=3) {
       cnt++;
@@ -285,7 +250,7 @@ vxMeasure.prototype.SetCenter = function() {
 };
 
 // Initialises the Mesh
-vxMeasure.prototype.Init = function() {
+vxMeasureAngle.prototype.Init = function() {
   
   this.InitialiseBuffers();
   //this.IndexEnd = numOfFaces;
@@ -295,7 +260,7 @@ vxMeasure.prototype.Init = function() {
   //MeshCollection.push(this);
 };
 
-vxMeasure.prototype.initBasicTexture = function()
+vxMeasureAngle.prototype.initBasicTexture = function()
 {
     this.Texture = gl.createTexture();
   gl.bindTexture(gl.TEXTURE_2D, this.Texture);
@@ -312,7 +277,7 @@ vxMeasure.prototype.initBasicTexture = function()
                 pixel);
 }
 
-vxMeasure.prototype.InitialiseBuffers = function(){
+vxMeasureAngle.prototype.InitialiseBuffers = function(){
   
   this.initBasicTexture();
   console.log("initBasicTexture");
@@ -385,7 +350,7 @@ vxMeasure.prototype.InitialiseBuffers = function(){
   gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(this.EdgeIndices), gl.STATIC_DRAW);
 };
 
-vxMeasure.prototype.DrawSelPreProc = function(){
+vxMeasureAngle.prototype.DrawSelPreProc = function(){
 
   if(this.Enabled === true){
 
@@ -424,7 +389,7 @@ vxMeasure.prototype.DrawSelPreProc = function(){
 };
 
 
-vxMeasure.prototype.Draw = function(){
+vxMeasureAngle.prototype.Draw = function(){
 
 
   // Set Text Position
@@ -490,7 +455,7 @@ vxMeasure.prototype.Draw = function(){
 };
 
 
-vxMeasure.prototype.AddVertices = function(vert1, vert2, vert3){
+vxMeasureAngle.prototype.AddVertices = function(vert1, vert2, vert3){
  
          this.mesh_vertices.push(vert1);
          this.mesh_vertices.push(vert2);

@@ -48,6 +48,10 @@ function vxMesh (name) {
     // the temp mesh part
     this.tempMeshPart = new vxMeshPart();
     this.MeshParts.push(this.tempMeshPart);
+
+    this.Materials={};
+
+    this.MaterialName = "";
 }
 
 vxMesh.prototype.getInfo = function() {
@@ -77,10 +81,17 @@ return indCount;
 };
 
 
-vxMesh.prototype.initTextures = function () {
-  
+vxMesh.prototype.initMaterials = function () {
+  for (var i = 0; i < this.MeshParts.length; i++) {
+    this.MeshParts[i].initMaterials(this);
+  }
 };
 
+vxMesh.prototype.initBasicTexture = function () {
+  for (var i = 0; i < this.MeshParts.length; i++) {
+    this.MeshParts[i].initBasicTexture(this);
+  }
+};
 
 
 // Initialises the Mesh
@@ -88,8 +99,9 @@ vxMesh.prototype.Init = function() {
 
   this.IndexEnd = numOfFaces;
   for (var i = 0; i < this.MeshParts.length; i++) {
+
     this.MeshParts[i].Model = this.Model;
-            this.MeshParts[i].Init();
+    this.MeshParts[i].Init();
 
     if(this.MeshParts[i].MaxPoint.Length() > this.MaxPoint.Length())
       this.MaxPoint.Set(this.MeshParts[i].MaxPoint.X, this.MeshParts[i].MaxPoint.Y, this.MeshParts[i].MaxPoint.Z);
@@ -107,7 +119,7 @@ vxMesh.prototype.InitialiseBuffers = function(){
 };
 
 
-vxMesh.prototype.AddVertices = function(vertices, normal, colour, encodedIndexColor){
+vxMesh.prototype.AddVertices = function(vertices, normal, texCoord, colour, encodedIndexColor){
         
   this.tempMeshPart.AddEdge.push(vertices, normal, colour, encodedIndexColor);
   
@@ -118,9 +130,10 @@ vxMesh.prototype.AddVertices = function(vertices, normal, colour, encodedIndexCo
   }
 };
 
-vxMesh.prototype.AddFace = function(vert1, vert2, vert3, normal, colour, encodedIndexColor){
 
-  this.tempMeshPart.AddFace(vert1, vert2, vert3, normal, colour, encodedIndexColor);
+vxMesh.prototype.AddFace = function(vert1, vert2, vert3, norm1, norm2, norm3, uv1, uv2, uv3, colour, encodedIndexColor){
+
+  this.tempMeshPart.AddFace(vert1, vert2, vert3, norm1, norm2, norm3,uv1, uv2, uv3, colour, encodedIndexColor);
 
   // First Check if it's past the limit
   if(this.ElementCount > 65000/6)
@@ -132,8 +145,7 @@ vxMesh.prototype.AddFace = function(vert1, vert2, vert3, normal, colour, encoded
     this.MeshParts.push(this.tempMeshPart);
   }   
   this.ElementCount++;
-
-};
+  };
 
 vxMesh.prototype.AddEdge = function(vert1, vert2){
 

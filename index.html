@@ -60,11 +60,11 @@
   <script type="text/javascript" src="lib/stats.min.js"></script>
   
   <script src="js/gl/glUtilities.js" type="text/javascript"></script>
-  <script src="js/gl/glView.js" type="text/javascript"></script>
   <script src="js/gl/glMain.js" type="text/javascript"></script>
     
   <!-- Base vx3D code -->
   <script src="js/vx/vxColour.js" type="text/javascript"></script>
+  <script src="js/vx/vxVertex2D.js" type="text/javascript"></script>
   <script src="js/vx/vxVertex3D.js" type="text/javascript"></script>
   <script src="js/vx/vxCommand.js" type="text/javascript"></script>
   <script src="js/vx/vxPropteries.js" type="text/javascript"></script>
@@ -73,160 +73,37 @@
   <script src="js/vx/vxMesh.js" type="text/javascript"></script>
   <script src="js/vx/vxModel.js" type="text/javascript"></script>
   <script src="js/vx/vxMeasure.js" type="text/javascript"></script>
+  <script src="js/vx/vxMeasureAngle.js" type="text/javascript"></script>
   
   <script src="js/InputHandling.js"></script>
     
     <!-- Inport Scripts -->
-    <script src="js/io/import_png.js" type="text/javascript"></script>
+    <script src="js/io/import_img.js" type="text/javascript"></script>
     <script src="js/io/import_obj.js" type="text/javascript"></script>
     <script src="js/io/import_stl.js" type="text/javascript"></script>
     <script src="js/io/import_ply.js" type="text/javascript"></script>
-    
-  <!-- Shaders -->
-<script id="shader-fs" type="x-shader/x-fragment">
-    	varying highp vec4 vColor;
-      varying highp vec3 vLighting;
-      
-      //varying highp vec2 vTextureCoord;
-      //uniform sampler2D uSampler;
-      
-      
-      void main(void) {
-        //gl_FragColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));//vec4(vColor.rgb * vLighting, vColor.a);
-        gl_FragColor = vec4(vColor.rgb * vLighting, vColor.a);
-		}
-</script>
-
-<script id="shader-vs" type="x-shader/x-vertex">
-    attribute vec3 aVertexPosition;
-      attribute vec4 aVertexColor;
-      attribute vec4 aVertexSelColor;
-      
-      //attribute vec2 aTextureCoord;
-
-	  attribute highp vec3 aVertexNormal;
-    uniform int aHasTexture;
-
-      uniform highp mat4 uMVMatrix;
-      uniform highp mat4 uPMatrix;
-    uniform highp mat3 uNMatrix;
-      
-      
-			varying highp vec4 vColor;
-			varying highp vec3 vLighting;
-			
-      varying highp vec2 vTextureCoord;
-      
-      void main(void) {
-        gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1);
-        
-        //vTextureCoord = aTextureCoord;
-        
-
-    // 1 is a basic Diffuse Shader
-	  if (aHasTexture == 1) {
-        vColor = aVertexColor;
-		
-        // Apply lighting effect
-        
-        highp vec3 ambientLight = vec3(0.5);
-        highp vec3 directionalLightColor = vec3(0.5, 0.5, 0.75);
-        highp vec3 directionalVector = vec3(0.85, 0.8, 0.75);
-        
-        highp vec3 transformedNormal = uNMatrix * aVertexNormal;
-        
-        highp float directional = max(dot(transformedNormal, directionalVector), 0.0);
-        vLighting = ambientLight + (directionalLightColor * directional);
-    }
-    // 2 is a colourless shading
-    else if (aHasTexture == 2) {
-    	vLighting = vec3(1);
-    	vColor = aVertexColor;
-    }
-    // 3 - Nnormal shader
-    else if (aHasTexture == 3) {
-    	vLighting = vec3(1);
-    	vec3 normal = vec3(aVertexNormal.x*0.5, aVertexNormal.y*0.5, aVertexNormal.z*0.5) + vec3(0.5);
-    	vColor =  vec4(normalize(normal), 1);
-    }
-    
-    // 4 - Toon Shader
-    else if (aHasTexture == 4) {
-      vColor = aVertexColor;
-		
-        // Apply lighting effect
-        
-        highp vec3 ambientLight = vec3(0.5);
-        highp vec3 directionalLightColor = vec3(0.5, 0.5, 0.75);
-        highp vec3 directionalVector = vec3(0.85, 0.8, 0.75);
-        
-        highp vec3 transformedNormal = uNMatrix * aVertexNormal;
-        
-        highp float directional = max(dot(transformedNormal, directionalVector), 0.0);
-        vLighting = ambientLight + (directionalLightColor * directional);
-        
-        float intensity = dot(directionalVector, transformedNormal);
-        
-        	if (intensity > 0.95)
-		vLighting = vec3(1.0,1, 1);
-	else if (intensity > 0.5)
-		vLighting = vec3(0.6,0.6,0.6);
-	else if (intensity > 0.25)
-		vLighting = vec3(0.2,0.2,0.2);
-	else
-		vLighting = vec3(0.1,0.1,0.10);
-		
-    }
-    
-    else{
-    	vLighting = vec3(1);
-    	vColor = aVertexColor;
-    }
-
-      }
-</script>
-
 </head>
 
+<!-- Main Body of Code -->
 <body>
-  
-  
-
 <div id="div_main">
   <div id="header" style="border: none;position:absolute; top:0px; left:0;height:32px;width:100%;background:darkorange"></div>
-<div>
-<div id="div_canvas">
-  <canvas id="glcanvas3D" class="glcanvas3D" style="border: none;position:absolute; top:32px; left:0;" width="500" height="500"></canvas>
-</div>
-<div class="footer" id="div_footer" style="border: none;position:absolute;bottom:0px; left:0;"><a class="corner-status-text" id="footer_text">footer-text</a></div>
-
-<!--<div ><a class="corner-title" id="menubar_text_cornerTitle">Iris Viewer [v 0.x.x.x] </a></div>-->
-<!--<div ><img class="corner-title"  id="img_footer_build" src="https://img.shields.io/badge/build-beta%20%5Bv.%200.3.1%5D-blue.svg"/></div>-->
-<!--
-<div><a id="img_profile" class="img-header" data-icon="logo" ></a></div>
--->
-<div><img id="img_profile" src="assets/icon_24.png" style="position:absolute;top:4px; right:4px; width:24px;height:24px;"></img></div>
-
-<!-- GOOGLE SIGN IN
-<div id="btn_googleSignIn" class="g-signin2" data-onsuccess="onSignIn" style="position:absolute;top:0px; right:0;height:32px"></div>
--->
+    <div>
+      <div id="div_canvas">
+        <canvas id="glcanvas3D" class="glcanvas3D" style="border: none;position:absolute; top:32px; left:0;" width="500" height="500"></canvas>
+      </div>
+    <div class="footer" id="div_footer" style="border: none;position:absolute;bottom:0px; left:0;">
+      <a class="corner-status-text" id="footer_text">footer-text</a>
+    </div>
+    <div>
+      <img id="img_profile" src="assets/icon_24.png" style="position:absolute;top:4px; right:4px; width:24px;height:24px;"></img>
+    </div>
 
 <!-- Footer Images -->
 <div ><a class="img-footer" data-icon="fb" id="btn_social_fb" href=#></a></div>
 <div ><a class="img-footer" data-icon="twtr" id="btn_social_twtr" href=#></a></div>
 <div ><a class="img-footer" data-icon="github" id="btn_social_github" href=#></a></div>
 <div><img class="img-footer" data-icon="build"  id="img_version_footer" src="img/badges/build_status.svg"/></div>
-<!--<div ><a class="img-footer" data-icon="build" href=#></a></div>-->
-<!--<div><img class="img-footer" data-icon="build"  id="img_version_footer" src="https://img.shields.io/badge/build-retreiving-blue.svg"/></div>-->
-<!--<div><a class="img-footer" data-icon="build" id="btn_social_build"/></div>
-
-<!-- This is the mouse div 
-  <div id="div_mstext"  style="border: none;position:absolute;top:30px; left:0;" >
-  <a>Model: newModel</a>
-  <br/>
-  <a>Mesh: newMesh</a>
-  </div>        
--->
 
 
 <!-- Treeview Control 
@@ -255,7 +132,7 @@
   <ul class="menu">
     <li> 
       <!-- First Tier Drop Down -->
-      <label for="drop-1" class="toggle">Service +</label>
+      <label for="drop-1" class="toggle">View</label>
       <a href="#">View</a>
       <input type="checkbox" id="drop-1"/>
       <ul>
@@ -308,11 +185,12 @@
       </ul>
     </li>
     <li> 
-      <label for="drop-2" class="toggle">Portfolio +</label>
+      <label for="drop-2" class="toggle">Tools</label>
       <a href="#">Tools</a>
       <input type="checkbox" id="drop-2"/>
       <ul>
-        <li><a  id="menu_tools_measure" data-icon="icon-tools-measure" href="#">Measure</a></li>
+        <li><a  id="menu_tools_measure" data-icon="icon-tools-measure" href="#">Measure Distance</a></li>
+        <li><a  id="menu_tools_measure_angle" data-icon="icon-tools-measure-angle" href="#">Measure Angle</a></li>
         <li><hr id="splitter" /></li>
         <li><a  id="menu_tools_debug" data-icon="icon-tools-debug" href="#">Toggle Debug Info</a></li>
       </ul>
@@ -337,7 +215,7 @@
 
 <!-- The Intro Modal 
 ====================================================================== -->
-<div id="modal_intro_orig" class="modal_intro">
+<div id="modal_intro" class="modal_intro">
 
   <!-- Modal content -->
 <div class="modal_intro-content">
@@ -456,9 +334,7 @@
 
 <!-- The Open File Modal 
 ====================================================================== -->
-<!--<div id="modal_openFile" class="modal_openFile">-->
-<div id="modal_intro" class="modal_openFile">
- 
+<div id="modal_openFile" class="modal_openFile">
   <!-- Modal content -->
   <div class="modal_openFile-content">
      <table style="width: 100%">
@@ -544,7 +420,7 @@
 
 
 
-<!-- The Load File Modal 
+<!-- The Google Drive File Picker Modal 
 ====================================================================== -->
 <div id="modal_GDrivePicker" class="modal_loadFile">
  
@@ -575,6 +451,64 @@
           <div class="meter deepskyblue" style="width:75%;margin:auto;top:70%;height:8px;padding:4px;">
             <span id="modal_GDrivePicker-prgrsbar" style="width:0%"></span>
           </div>
+        </th>
+      </tr>
+    </table>
+  </div>
+</div>
+
+
+
+
+<!-- The File Load Results Warnings and Errors Modal
+====================================================================== -->
+<div id="modal_openFileResults" class="modal_openFile">
+  <!-- Modal content -->
+  <div class="modal_openFile-content" style="width:600px">
+     <table style="width: 100%">
+      <tr>
+        <th>
+          <span class="modal_openFile-title">Iris Viewer - File Load Results</span>
+          <hr id="splitter" />
+          <span class="modal-body" style="font-size: 12px">
+            There were some issues loading the files you selected. Please review them below:
+          </span>
+          <br/>
+          <br/>
+        </th>
+      </tr>
+      <tr>
+        <th>
+          <div id="div_results" style="overflow-y: scroll; height:250px;">             
+            <div class="modal-result-item" type="error" >
+              <img class ="modal-result-item-img" data-icon="error"/>
+              <span class="modal-result-item-title">Error Loading File</span>
+              <span class="modal-result-item-file">filename.txt</span>
+              <hr id="splitter" />
+              <span class="modal-result-item-txt">There was an error when loading the file default.txt. "Could not find material file 'None.mtl' referenced in cube.obj. Make sure you've selected all referenced files when selecting."</span>
+            </div>
+            <div class="modal-result-item" type="warning" >
+              <img class ="modal-result-item-img" data-icon="warning"/>
+              <span class="modal-result-item-txt">Warning Loading File</span>
+            </div>
+             <div class="modal-result-item" type="warning" >
+              <img class ="modal-result-item-img" data-icon="warning"/>
+              <span class="modal-result-item-txt">Another Warning Loading File</span>
+            </div>
+          </div>
+          <br/>
+          <hr id="splitter" />
+        </th>
+      </tr>
+      <tr>
+        <th>
+          <br/>
+          <button class="modal-btn" id="btn_fileLoadResults_Close" align="right">               
+            <div id="btn_container">
+              <img class ="modal-btn-img" data-icon="cancel"/>
+              <span class="modal-btn-txt">Close</span>
+            </div>
+          </button>
         </th>
       </tr>
     </table>
@@ -679,7 +613,6 @@
   </nav>
 <!--multiple="multiple"-->
   <script src="js/main.js"></script>
-  <script src="js/MenuBarEvents.js"></script>
   <script src="js/io/io_open.js" type="text/javascript"></script>
     <script src="https://apis.google.com/js/client:plusone.js" type="text/javascript"></script>
 </html>

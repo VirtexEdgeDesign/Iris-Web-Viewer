@@ -46,6 +46,9 @@ $(document).keyup(function (e) {
           center[0] += parseFloat(HoveredMesh.mesh_vertices[i]);
           center[1] += parseFloat(HoveredMesh.mesh_vertices[i+1]);
           center[2] += parseFloat(HoveredMesh.mesh_vertices[i+2]);
+
+         newMesh.vert_uvcoords.push(0);
+         newMesh.vert_uvcoords.push(0);
         
           newMesh.vert_noramls.push(HoveredMesh.vert_noramls[i]); 
           newMesh.vert_noramls.push(HoveredMesh.vert_noramls[i+1]);
@@ -60,6 +63,7 @@ $(document).keyup(function (e) {
           ind++;
         }
 
+        newMesh.initBasicTexture();
         newMesh.InitialiseBuffers();
         newMesh.SetCenter();
         
@@ -136,8 +140,7 @@ function handleMouseDown(event) {
   function handleMouseMove(event) {
     
     var rect = canvas.getBoundingClientRect();
-    
-    
+
     MouseState.prevX = MouseState.x;
     MouseState.prevY = MouseState.y;
 
@@ -181,14 +184,8 @@ function handleMouseDown(event) {
       // Handle Panning
       else
       {
-        //var newPanX = event.clientX;
-        //var newPanY = event.clientY;
-
-	      panX += MouseState.x - MouseState.prevX;
-        panY -= MouseState.y - MouseState.prevY;
- 
-        //lastPanX = newPanX;
-        //lastPanY = newPanY;
+	      panX = (MouseState.x - MouseState.prevX)/500 * Zoom;
+        panY = (MouseState.y - MouseState.prevY)/500 * Zoom;
       }
     }
   }
@@ -219,7 +216,7 @@ if(treeHasFocus === 1)
    var tree = document.getElementById('model_treeview');
   
   //Set the position based off of the delta
-  treepos += delta*4;
+  treepos += delta*14;
   //set the min as the bar height
   treepos = Math.min(32, treepos);
   

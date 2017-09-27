@@ -172,6 +172,7 @@ nav a[data-icon="icon-export"]::before { content: url('../img/tlbr/file/export.p
 nav a[data-icon="icon-quit"]::before { content: url('../img/tlbr/file/exit.png'); }
 
 /* View Icons */
+nav a[data-icon="icon-view-textured"]::before { content: url('../img/tlbr/view/render/texture.png'); }
 nav a[data-icon="icon-view-shadededge"]::before { content: url('../img/tlbr/view/render/edge.png'); }
 nav a[data-icon="icon-view-shaded"]::before { content: url('../img/tlbr/view/render/shaded.png'); }
 nav a[data-icon="icon-view-wireframe"]::before { content: url('../img/tlbr/view/render/wireframe.png'); }
@@ -190,6 +191,7 @@ nav a[data-icon="icon-view-persp"]::before { content: url('../img/tlbr/view/set/
 
 /* Tools Icons */
 nav a[data-icon="icon-tools-measure"]::before { content: url('../img/tlbr/tools/measure.png'); }
+nav a[data-icon="icon-tools-measure-angle"]::before { content: url('../img/tree/node_measure_angle.png'); }
 nav a[data-icon="icon-tools-debug"]::before { content: url('../img/tlbr/tools/debug.png'); }
 
 /* About Menu*/

@@ -3,9 +3,6 @@ var mtlFileName = "";
 
 function io_import_obj_mtl(filename, fileText)
 {
- console.log("Loading Material File: "+filename);
-  console.log("----------------------------------------");
-
     var mtlFile ={};
     // Split the lines based off of the carriage return
     var lines = fileText.split('\n');
@@ -32,31 +29,31 @@ function io_import_obj_mtl(filename, fileText)
           
           ioMaterials[currentMaterial] = temp_matl;
         break;
-/*
+
         // setup Ambient Colour
         case "Ka":
-          this.Materials[currentMaterial].AmbientColour = new vxColour(parseFloat(inputLine[1]), parseFloat(inputLine[2]), parseFloat(inputLine[3]), 1);
+          ioMaterials[currentMaterial].AmbientColour = new vxColour(parseFloat(inputLine[1]), parseFloat(inputLine[2]), parseFloat(inputLine[3]), 1);
         break;
-*/
+
         // Setup Diffuse Colour
         case "Kd":
           ioMaterials[currentMaterial].DiffuseColour = new vxColour(parseFloat(inputLine[1]), parseFloat(inputLine[2]), parseFloat(inputLine[3]), 1);
         break;
-/*
+
         // Setup Specular Colour
         case "Ks":
-          this.Materials[currentMaterial].SpecularColour = new vxColour(parseFloat(inputLine[1]), parseFloat(inputLine[2]), parseFloat(inputLine[3]), 1);
+          ioMaterials[currentMaterial].SpecularColour = new vxColour(parseFloat(inputLine[1]), parseFloat(inputLine[2]), parseFloat(inputLine[3]), 1);
         break;
-        */
+
+        // Gets the Diffuse Texture
+        case "map_Kd":
+          var texturename = inputLine[1];
+
+          // only save the name for now, the actual texture data will be loaded once all files have been loaded.
+          ioMaterials[currentMaterial].DiffuseTexture.name = texturename;
+        break;
       }
-
-      //console.log(inputLine);
     }
-    console.log("----------------------------------------");
-    //ioMaterials[filename] = mtlFile;
-    //console.log(ioMaterials);
-
-    //console.log(this.getMaterial("Shoes")); 
 }
 
 
@@ -78,21 +75,26 @@ function io_import_obj(files, FileName, InputFileText)
   /*******************************/
   var temp_vertices = [];      //Vertices List for initial loading
   var temp_Normals = [];      //Normals List for initial loading
+  var temp_UVs = [];      //Normals List for initial loading
+  var temp_UV = [];      //Normals List for initial loading
   var temp_Normal = [];        //To hold the Normal for that entire face.
   
   var vert1 = new vxVertex3D(0,0,0);
   var vert2 = new vxVertex3D(0,0,0);
   var vert3 = new vxVertex3D(0,0,0);
   var vert4 = new vxVertex3D(0,0,0);
-  var norm = new vxVertex3D(0,0,0);
+
+  var norm1 = new vxVertex3D(0,0,0);
+  var norm2 = new vxVertex3D(0,0,0);
+  var norm3 = new vxVertex3D(0,0,0);
+  var norm4 = new vxVertex3D(0,0,0);
+
+  var texCoord1 = new vxVertex2D(0,0);
+  var texCoord2 = new vxVertex2D(0,0);
+  var texCoord3 = new vxVertex2D(0,0);
+  var texCoord4 = new vxVertex2D(0,0);
   
-   var textureCoordinates = [
-    // Front
-    0.0,  0.0,
-    1.0,  0.0,
-    1.0,  1.0,
-    0.0,  1.0
-    ];
+
   var txtCnt = 0;
   
   //Zero out the number of elements
@@ -122,6 +124,11 @@ function io_import_obj(files, FileName, InputFileText)
         temp_vertices.push(inputLine[1]);
         temp_vertices.push(inputLine[2]);
         temp_vertices.push(inputLine[3]);
+       break;
+
+       case 'vt':
+        temp_UVs.push(inputLine[1]);
+        temp_UVs.push(inputLine[2]);
        break;
        
        //Add Normal
@@ -172,7 +179,19 @@ function io_import_obj(files, FileName, InputFileText)
           //Index Array
           var indexArray = inputLine[vrt] .split("/");
     
-          //TODO: Add in Texture Support
+
+          var temp_UV = [0,0];
+          //Handle Texture Support
+          if(indexArray[1]=="")
+          {
+            temp_UV[0] = 0;
+            temp_UV[1] = 0;
+          }
+          else
+          {
+            temp_UV[0] = temp_UVs[(indexArray[1]-1)*2];
+            temp_UV[1] = 1-temp_UVs[(indexArray[1]-1)*2+1];
+          }
 
 
           //Temp Normal
@@ -185,13 +204,12 @@ function io_import_obj(files, FileName, InputFileText)
             temp_Normal[2] = temp_Normals[(indexArray[2]-1)*3+2];
             //console.log((indexArray[2]-1));
             
-            
-            // Set the Normal for this Current Face
-            norm.Set(temp_Normal[0], temp_Normal[1], temp_Normal[2]);
           }
           else
           {
-            norm.Set(0,1,0);
+            temp_Normal[0] = 0;
+            temp_Normal[1] = 1;
+            temp_Normal[2] = 0;
           }
           numOfElements++;
 
@@ -200,15 +218,23 @@ function io_import_obj(files, FileName, InputFileText)
          {
           case 0:
             vert1.Set(temp_vertices[(indexArray[0]-1)*3], temp_vertices[(indexArray[0]-1)*3+1], temp_vertices[(indexArray[0]-1)*3+2]);
+            norm1.Set(temp_Normal[0], temp_Normal[1], temp_Normal[2]);
+            texCoord1.Set(temp_UV[0], temp_UV[1]);
           break;
           case 1:
             vert2.Set(temp_vertices[(indexArray[0]-1)*3], temp_vertices[(indexArray[0]-1)*3+1], temp_vertices[(indexArray[0]-1)*3+2]);
+            norm2.Set(temp_Normal[0], temp_Normal[1], temp_Normal[2]);
+            texCoord2.Set(temp_UV[0], temp_UV[1]);
           break;
           case 2:
             vert3.Set(temp_vertices[(indexArray[0]-1)*3], temp_vertices[(indexArray[0]-1)*3+1], temp_vertices[(indexArray[0]-1)*3+2]);
+            norm3.Set(temp_Normal[0], temp_Normal[1], temp_Normal[2]);
+            texCoord3.Set(temp_UV[0], temp_UV[1]);
           break;
           case 3:
             vert4.Set(temp_vertices[(indexArray[0]-1)*3], temp_vertices[(indexArray[0]-1)*3+1], temp_vertices[(indexArray[0]-1)*3+2]);
+            norm4.Set(temp_Normal[0], temp_Normal[1], temp_Normal[2]);
+            texCoord4.Set(temp_UV[0], temp_UV[1]);
             hasFourthVert = true;
           break;
          }
@@ -229,8 +255,10 @@ function io_import_obj(files, FileName, InputFileText)
         if(ioMaterials[activeMaterial] != null)
         {
           meshcolor =  ioMaterials[activeMaterial].DiffuseColour;
+          mesh.Materials[activeMaterial] = ioMaterials[activeMaterial];
         }
-        mesh.AddFace(vert1, vert2, vert3, norm, meshcolor, selcol);
+
+        mesh.AddFace(vert1, vert2, vert3, norm1, norm2, norm3, texCoord1, texCoord2, texCoord3, meshcolor, selcol);
         numOfFaces++;
 
         if(hasFourthVert == true)
@@ -239,21 +267,18 @@ function io_import_obj(files, FileName, InputFileText)
           selcol = new vxColour();
           selcol.EncodeColour(numOfFaces);
           numOfFaces++;
-          mesh.AddFace(vert1, vert3, vert4, norm, meshcolor, selcol);
+          mesh.AddFace(vert1, vert3, vert4, norm1, norm3, norm4, texCoord1, texCoord3, texCoord4, meshcolor, selcol);
         }
         
         break;
          
          case 'mtllib':
 
-         
            // First rebuild the file name
            var length = 6;
            
            // the file name is a substring of the line minus the initial 'mtllib ' characters
            var mtlFileName = lines[line].substr(length+1, lines[line].length-length);
-          
-            console.log("Set Material: "+mtlFileName);
            //model.Materials = $.extend(true, {}, ioMaterials[mtlFileName]);
 
            break;
@@ -262,9 +287,17 @@ function io_import_obj(files, FileName, InputFileText)
          case 'usemtl':
          // set active material
            activeMaterial = inputLine[1].toString().trim().valueOf();
+
+           mesh.MaterialName = activeMaterial;
+
+            // if the material can't be found, inform the user.
+            if(ioMaterials[activeMaterial] == null)
+            {
+              //logLoadError(fileName, "Material '"+activeMaterial+"' not found!", "Could not find material file '"+activeMaterial+".mtl' referenced in "+fileName+". Make sure you've selected all referenced files when selecting.");
+              logLoadError(fileName, "Material '"+activeMaterial+"' not found!", "The referenced material '"+activeMaterial+"' can't be found! This is usually caused by a missing '*.mtl' file.");
+            }
+
            break;
-           
-           
      }
     }
 
@@ -281,10 +314,5 @@ function io_import_obj(files, FileName, InputFileText)
   
   InitialiseModel(model);
 
-        Zoom = -model.MaxPoint.Length()*1.5-1; 
-        rotX = -45;
-        rotY = 30;
-  
-  //$('#modelForm_Open').window('close');
   log("Done!");
 }

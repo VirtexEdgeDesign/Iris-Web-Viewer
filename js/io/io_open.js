@@ -5,6 +5,40 @@ var fileExtention;
 
 var fileName;
 
+
+var FileLoadNoteType = {
+    // Error
+    ERR: 0,
+
+    // Warning
+    WRN: 1
+};
+
+var FileLoadNotes = {};
+var fileLoadNotesCount = 0;
+
+function logLoadError(filename, title, descp){
+fileLoadNotesCount++;
+FileLoadNotes[fileLoadNotesCount]={
+    type: FileLoadNoteType.ERR,
+    fileName: filename,
+    title: title,
+    descp: descp,
+    };
+}
+
+
+function logLoadWarning(filename, title, descp){
+fileLoadNotesCount++;
+FileLoadNotes[fileLoadNotesCount]={
+    type: FileLoadNoteType.WRN,
+    fileName: filename,
+    title: title,
+    descp: descp,
+    };
+}
+
+
 var EnumFileType = {
     STL: 0,
     OBJ: 1
@@ -53,6 +87,10 @@ function ProcessFiles(files) {
     // Reset the file load index
     var CurFileIndex = 0;
 
+    // First, clear out any previous errors
+for(var key in FileLoadNotes) {
+      delete FileLoadNotes[key];
+  }
 
     //The File Reader
     reader = new FileReader();
@@ -98,7 +136,6 @@ function ProcessFiles(files) {
         switch (ext) {
             case "obj":
                 io_import_obj(files, fileName, this.result);
-                console.log(ioImgs);
                 break;
 
                 // a material file in an obj file.
@@ -112,15 +149,19 @@ function ProcessFiles(files) {
                 io_import_ply(fileName, this.result);
                 break;
             case "png":
-                io_import_png(fileName, this.result);
+            case "jpeg":
+            case "jpg":
+            case "tga":
+                io_import_img(fileName, this.result);
                 //var srcData = e.target.result; // <--- data: base64
                 break;
             default:
                 //alert("File Type .'" + fileExtention + "' Not Supported.\nIf this is a 3D file format and you would like this file type added, please contact us!");
-                console.log("File Type .'" + ext + "' Not Supported.\nIf you would like this file type added, please contact us!");
+                //console.log("File Type .'" + ext + "' Not Supported.\nIf you would like this file type added, please contact us!");
+                logLoadWarning(fileName,"'" + ext +"' File Type Not Supported", "If you would like this file type added, please contact us!");
                 break;
         }
-
+        console.log(fileName+" Loaded.")
         CurFileIndex++;
         if (CurFileIndex < files.length) {
 
@@ -136,6 +177,9 @@ function ProcessFiles(files) {
               
             switch (getFileExtention(files[CurFileIndex].name).toLowerCase()) {
               case "png":
+              case "jpeg":
+              case "jpg":
+              case "tga":
               reader.readAsDataURL(files[CurFileIndex]);
                 break;
               default:
@@ -143,9 +187,11 @@ function ProcessFiles(files) {
                 break;
               }
             }, 100);
-
         }
-
+        // Finished Loading all files
+        else{
+            onAllFilesLoaded();
+        }
     };
 
 
@@ -158,6 +204,9 @@ function ProcessFiles(files) {
 
             switch (getFileExtention(files[CurFileIndex].name).toLowerCase()) {
               case "png":
+              case "jpeg":
+              case "jpg":
+              case "tga":
               reader.readAsDataURL(files[CurFileIndex]);
                 break;
               default:
@@ -167,6 +216,26 @@ function ProcessFiles(files) {
 }
 
 
+// Fired when all files have been loaded
+function onAllFilesLoaded(){
+
+    // Remove the Loading File Modal
+    modalLoadFile.style.display = "none";
+
+    console.log("All Files Loaded");
+
+    InitialiseFiles();
+
+    // Show Loading Notes
+    /*
+    for(var key in FileLoadNotes) {
+      var note = FileLoadNotes[key];
+      console.log(note);
+  }
+  */
+}
+
+// fired when a local file has been selected
 function handleLocalFileSelect(evt) {
     var IsFileASCII = true;
     modalOpenFile.style.display = "none";
@@ -175,7 +244,6 @@ function handleLocalFileSelect(evt) {
     document.getElementById('modal_loadFile_file-prgrsbar').style.width = (1 / evt.target.files.length * 100) + "%";
     document.getElementById('modal_loadFile_file-name').innerHTML = "File Name: " + evt.target.files[0].name;
     document.getElementById('modal_loadFile_file-size').innerHTML = "Size: " + parseInt(evt.target.files[0].size / 10000) / 100 + " Mb";
-
 
     // reorder files
     //var SortedFiles = {};

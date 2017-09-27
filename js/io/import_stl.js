@@ -89,11 +89,11 @@ var norm = new vxVertex3D(0,0,0);
         // Once all of the data is in, create the new face
         var selcol = new vxColour();
         selcol.EncodeColour(numOfFaces);
-        mesh.AddFace(vert1, vert2, vert3, norm, meshcolor, selcol);
-        
+
+        mesh.AddFace(vert1, vert2, vert3, norm, norm, norm,new vxVertex2D(0,0),new vxVertex2D(0,0),new vxVertex2D(0,0), meshcolor, selcol);
          numOfFaces++;
         }
-          
+          /*
           // There is a fundamental limit to the number of vertices, if it hits one, then
           // create a new mesh
           if(numOfElements > 65000/2)
@@ -107,7 +107,7 @@ var norm = new vxVertex3D(0,0,0);
             // now create a new mesh
             var mesh = new vxMesh("mesh: " + FileName.substring(0, FileName.length-4) + "[block:"+blockCount+"]");
          }
-        
+        */
         
        // Set the Normal for this Current Face
        norm.Set(inputLine[2], inputLine[3], inputLine[4]);
@@ -155,7 +155,7 @@ var norm = new vxVertex3D(0,0,0);
     var selcol = new vxColour();
     selcol.EncodeColour(numOfFaces);
     
-    mesh.AddFace(vert1, vert2, vert3, norm, meshcolor, selcol);
+    mesh.AddFace(vert1, vert2, vert3, norm, norm, norm,new vxVertex2D(0,0),new vxVertex2D(0,0),new vxVertex2D(0,0), meshcolor, selcol);
     numOfFaces++;
     // Set the center
     modelprop_Center[0] /= TotalVertCount;
@@ -258,10 +258,11 @@ var norm = new vxVertex3D(0,0,0);
         // Once all of the data is in, create the new face
         var selcol = new vxColour();
         selcol.EncodeColour(numOfFaces);
-        mesh.AddFace(vert1, vert2, vert3, norm, meshcolor, selcol);
+        mesh.AddFace(vert1, vert2, vert3, norm, norm, norm,new vxVertex2D(0,0),new vxVertex2D(0,0),new vxVertex2D(0,0), meshcolor, selcol);
           
          numOfFaces++;
 
+/*
                    // There is a fundamental limit to the number of vertices, if it hits one, then
           // create a new mesh
           if(numOfElements > 65000/2)
@@ -275,13 +276,17 @@ var norm = new vxVertex3D(0,0,0);
             // now create a new mesh
             mesh = new vxMesh("mesh: " + FileName.substring(0, FileName.length-4) + "[block:"+blockCount+"]");
          }
+         */
     }
     
 
         
     model.AddMesh(mesh);
   
-   InitialiseModel(model);
+    InitialiseModel(model);
+
+    // this needs to be called here since the Binary file is read later on.
+    InitialiseFiles();
     
                 // Now Set the View Parameters
         Zoom = -mesh.MaxPoint.Length()*1.5 - 1;

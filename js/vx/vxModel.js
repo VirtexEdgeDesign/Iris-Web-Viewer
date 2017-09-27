@@ -17,6 +17,8 @@ function vxModel (name) {
     // The Max Point of this Mesh
     this.MaxPoint = new vxVertex3D(0,0,0);
 
+    // Has it been initialised.
+    this.IsInit = false;
 }
 
 vxModel.prototype.getInfo = function() {
@@ -29,9 +31,7 @@ vxModel.prototype.getInfo = function() {
 // ***************************************************************************
 vxModel.prototype.getMaterial = function(matName) {
 
-//var mtlTest = new String(matName);
-//console.log("Type of call "+ typeof mtlTest);
-//console.log("==============================================");
+
     var mtl;
     for(var key in this.Materials) {
        
@@ -43,7 +43,6 @@ vxModel.prototype.getMaterial = function(matName) {
          console.log("Match");
       }
     }    
-      //console.log("==============================================");
       return mtl;
 
 };
@@ -114,11 +113,11 @@ vxModel.prototype.AddMesh = function(newMesh) {
 
 vxModel.prototype.Init = function() {
   
- this.modelNode = "node_"+this.Name;
+  if(this.IsInit == false)
+  {
+    this.IsInit  = true;
+  this.modelNode = "node_"+this.Name;
   AddTreeNode(this.modelNode, this.Name, "node_mesh", "envrroot");
- 
-
-
 
 
    // Add Global Model Geometry Nodes
@@ -144,31 +143,93 @@ vxModel.prototype.Init = function() {
 
 
   for(var key in this.Meshes) {
-  var mesh = this.Meshes[key];
 
-  // Check the Max Point
+    // get the current Mesh
+    var mesh = this.Meshes[key];
+
+    // Check the Max Point
     if(mesh.MaxPoint.Length() > this.MaxPoint.Length())
       this.MaxPoint.Set(mesh.MaxPoint.X, mesh.MaxPoint.Y, mesh.MaxPoint.Z);
- 
 
- // Add Nodes
-  mesh.TreeNodeID = "node_"+this.Name+"_"+mesh.Name;
- var geomNod = mesh.TreeNodeID + "_geometry";
 
-        AddTreeNode(mesh.TreeNodeID, mesh.Name, this.meshNode, "mesh");
+    // Add Nodes
+    mesh.TreeNodeID = "node_"+this.Name+"_"+mesh.Name;
 
-        //  var center = "Model Center: : (" +modelprop_Center[0] +","+ modelprop_Center[1] +","+ modelprop_Center[2]+")";
-        var numOfVerts = "# of Vertices :" + mesh.GetVerticesCount();
-        var numOfFcs = "# of Faces      :"+ mesh.GetIndicesCount()/3;
+    // setup mesh node id's
+    var geomNod = mesh.TreeNodeID + "_geometry";
+    var nodeID_Mtls = mesh.TreeNodeID + "_materials";
+
+    AddTreeNode(mesh.TreeNodeID, mesh.Name, this.meshNode, "mesh");
+
+
+    
+    // Now add Tree Node Info
+
+    // Add in Mesh Geometry
+    AddTreeNode(geomNod, "Geometry", mesh.TreeNodeID, "properties");
+
+      var numOfVerts = "# of Vertices :" + mesh.GetVerticesCount();
+      var numOfFcs = "# of Faces      :"+ mesh.GetIndicesCount()/3;
+      AddTreeNode("node_"+this.Name+"_"+mesh.Name+"_numOfVerts", numOfVerts, geomNod, "axis");
+      AddTreeNode("node_"+this.Name+"_"+mesh.Name+"_numOfFcs", numOfFcs, geomNod, "plane");
+
+    
+    // Add in Mesh Materials
+    AddTreeNode(nodeID_Mtls, "Materials", mesh.TreeNodeID, "materials");
+
+    for(var key in mesh.Materials) {
+      var material = mesh.Materials[key];
+      var nodeID_MtlInfo = "node_"+this.Name+"_"+mesh.Name+"_"+material.Name;
+        AddTreeNode(nodeID_MtlInfo, "Material: "+material.Name, nodeID_Mtls, "material");
+
+            AddColorTreeNode(nodeID_MtlInfo+"_ambient", "Ambient Colour", material.AmbientColour, nodeID_MtlInfo);
+            AddColorTreeNode(nodeID_MtlInfo+"_diffuse", "Diffuse Colour", material.DiffuseColour, nodeID_MtlInfo);
+            AddColorTreeNode(nodeID_MtlInfo+"_specular", "Specular Colour", material.SpecularColour, nodeID_MtlInfo);
+
+          if(material.DiffuseTexture.name !== "")
+          {
+            AddTreeNode(nodeID_MtlInfo+"_txtrs", "Textures", nodeID_MtlInfo, "image");
+              AddTextureTreeNode(nodeID_MtlInfo+"_txtrs_diff", "Diffuse: ",material.DiffuseTexture, nodeID_MtlInfo+"_txtrs");
+          }
+          
+    }
+ }
         
-        // Now add Tree Node Info
-        AddTreeNode(geomNod, "Geometry", mesh.TreeNodeID, "properties");
-        // AddTreeNode("node_"+FileName+"_numOfVerts", center, "node_"+FileName+"_properties");
-        AddTreeNode("node_"+this.Name+"_"+mesh.Name+"_numOfVerts", numOfVerts, geomNod, "axis");
-        AddTreeNode("node_"+this.Name+"_"+mesh.Name+"_numOfFcs", numOfFcs, geomNod, "plane");
- 
-        //Finally close the Model Loading Modal.
-    modalLoadFile.style.display = "none";
+}
+
+
+function AddTextureTreeNode(nodeName, name, texture, parentNode){
+        AddTreeNode(nodeName, name + texture.name, parentNode, "image");
+        var imgNodeID = nodeName+"_"+texture.name;
+        var img = new Image();
+
+//console.log(texture);
+//console.log(ioImgs);
+var size = "128px";
+    img.setAttribute("src", ioImgs[texture.name.toString().trim().valueOf()]);
+    img.style.width = size;
+    img.style.height = size;
+    img.style.position = "relative";
+    img.style.left = "-18px";
+
+img.onload = function(e) {
+        console.log("Img "+texture.name+" Applied to model");
+        AddTreeNodeTexture(imgNodeID, nodeName, img,  size);
+          AddTreeNode(imgNodeID+"_w", "Width: "+img.width, imgNodeID, "hash");
+          AddTreeNode(imgNodeID+"_h", "Height: "+img.height, imgNodeID, "hash");
+};
+
+}
+
+function AddColorTreeNode(nodeName, name, color, parentNode)
+{
+  AddTreeNode(nodeName, name, parentNode, "colour_wheel");
+            AddTreeNode(nodeName+"_rgb", color.toString(), nodeName, "colour_rgb");
+              AddTreeNode(nodeName+"_R", "R: "+color.R, nodeName+"_rgb", "bullet_red");
+              AddTreeNode(nodeName+"_G", "G: "+color.G, nodeName+"_rgb", "bullet_green");
+              AddTreeNode(nodeName+"_B", "B: "+color.B, nodeName+"_rgb", "bullet_blue");
+            AddTreeNode(nodeName+"_hex", "Hex: "+color.toHex(), nodeName, "hash");
+
 }
   /*
   for (var i = 0; i < this.Meshes.length; i++) {
