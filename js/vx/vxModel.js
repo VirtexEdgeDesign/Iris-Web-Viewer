@@ -213,7 +213,7 @@ var size = "128px";
     img.style.left = "-18px";
 
 img.onload = function(e) {
-        console.log("Img "+texture.name+" Applied to model");
+        //console.log("Img "+texture.name+" Applied to model");
         AddTreeNodeTexture(imgNodeID, nodeName, img,  size);
           AddTreeNode(imgNodeID+"_w", "Width: "+img.width, imgNodeID, "hash");
           AddTreeNode(imgNodeID+"_h", "Height: "+img.height, imgNodeID, "hash");

@@ -342,6 +342,10 @@
         <th>
           <span class="modal_openFile-title">Iris Viewer - Open File</span>
           <hr id="splitter" />
+          <span class="modal-body">
+            Note: You must select all files which are referenced by others (i.e. Material definition files, textures etc...).
+          </span>
+          <br/>
           <br/>
         </th>
       </tr>
@@ -533,7 +537,7 @@
      <div id="btn_googleSignIn"></div>
   <script>
     function onSuccess(googleUser) {
-      console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
+//      console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
       onSignIn(googleUser);
     }
     function onFailure(error) {

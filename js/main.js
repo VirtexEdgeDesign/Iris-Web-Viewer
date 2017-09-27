@@ -470,7 +470,7 @@ function InitialiseModel(model)
 
 function InitialiseFiles()
 {
-  console.log("initialising files");
+//  console.log("initialising files");
   for (var i = 0; i < ModelCollection.length; i++) {
   
   var model = ModelCollection[i];
@@ -499,7 +499,7 @@ function InitialiseFiles()
   // Now process any errors loading the file
       for(var key in FileLoadNotes) {
       var note = FileLoadNotes[key];
-      console.log(note);
+      //console.log(note);
       addResultsItem(note);
       // Finally show the file load results dialog
       modalLoadFileResults.style.display = "block";

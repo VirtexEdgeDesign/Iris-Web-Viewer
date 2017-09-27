@@ -198,11 +198,12 @@ Bottom Left Corner Status Text
 */
 .corner-status-text
 {
-  color:#aaa;
+  color:#ccc;
   border: none;
   position:absolute;
   bottom:1px; 
   left:5px;
+  font-size: 14px;
 }
 
 /*

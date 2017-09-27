@@ -211,7 +211,7 @@ var norm = new vxVertex3D(0,0,0);
 
     // Read a 32 bit unsigned integer
     var triangles = dv.getUint32(0, isLittleEndian);
-    console.log("tris: "+triangles)
+//    console.log("tris: "+triangles)
 
     var offset = 4;
     for (var i = 0; i < triangles; i++) {

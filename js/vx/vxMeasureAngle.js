@@ -280,7 +280,7 @@ vxMeasureAngle.prototype.initBasicTexture = function()
 vxMeasureAngle.prototype.InitialiseBuffers = function(){
   
   this.initBasicTexture();
-  console.log("initBasicTexture");
+//  console.log("initBasicTexture");
 
   this.meshVerticesBuffer = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, this.meshVerticesBuffer);

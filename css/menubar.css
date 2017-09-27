@@ -141,7 +141,6 @@ nav ul li:before {
   text-decoration: none;
 }
 
-
 .menubar nav ul li:hover { color: #fff; background-color: darkorange;}
 .menubar nav ul li ul li:hover { color: #fff; background-color: #0094f7;}
 
@@ -293,6 +292,7 @@ nav a[data-icon="icon-logo-vrtx"]::before { content: url('../img/icon/vrtx_logo_
   width: 100%;
 }
 
+
 .menubar nav ul ul .toggle,
  nav ul ul a { padding: 0 40px; }
 
@@ -303,6 +303,7 @@ nav a[data-icon="icon-logo-vrtx"]::before { content: url('../img/icon/vrtx_logo_
 
 .menubar nav ul li ul li .toggle,
 .menubar  nav ul ul a { background-color: #212121; }
+
 
 .menubar nav ul ul {
   float: none;

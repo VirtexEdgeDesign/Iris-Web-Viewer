@@ -177,7 +177,7 @@ vxMeshPart.prototype.initMaterials = function (mesh) {
 
   // Handle Textures
   var material = mesh.Materials[mesh.MaterialName];
-  console.log(material);
+  //console.log(material);
   if(mesh.Materials[mesh.MaterialName] == null){
     // set up material
     this.initBasicTexture();
@@ -188,8 +188,8 @@ vxMeshPart.prototype.initMaterials = function (mesh) {
 
     var src = ioImgs[textName.toString().trim().valueOf()];
     if(textName !== ""){
-      console.log('------------------------------------');
-      console.log(textName);
+//      console.log('------------------------------------');
+//      console.log(textName);
 
       this.HasTexture = 0;
 

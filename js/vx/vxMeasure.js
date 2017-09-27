@@ -210,7 +210,7 @@ function vxMeasure (name, pt1, pt2, nrml1, nrml2) {
       
       this.leaderPadding = this.Length * 0.12525;
 
-      console.log(this.Direction);
+//      console.log(this.Direction);
       this.Direction.X = this.leaderHeight * this.Direction.X;
       this.Direction.Y = this.leaderHeight * this.Direction.Y;
       this.Direction.Z = this.leaderHeight * this.Direction.Z;

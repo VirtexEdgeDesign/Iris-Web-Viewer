@@ -6,7 +6,7 @@ function OnResize() {
     var width;
     var height;
     var offsetWidth = 0;
-console.log("resize");
+//console.log("resize");
     if (windowRatio < canvasRatio) {
         height = window.innerHeight;
         width = height / canvasRatio;

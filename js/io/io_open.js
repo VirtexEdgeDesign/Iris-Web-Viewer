@@ -161,7 +161,7 @@ for(var key in FileLoadNotes) {
                 logLoadWarning(fileName,"'" + ext +"' File Type Not Supported", "If you would like this file type added, please contact us!");
                 break;
         }
-        console.log(fileName+" Loaded.")
+//        console.log(fileName+" Loaded.")
         CurFileIndex++;
         if (CurFileIndex < files.length) {
 
@@ -222,7 +222,7 @@ function onAllFilesLoaded(){
     // Remove the Loading File Modal
     modalLoadFile.style.display = "none";
 
-    console.log("All Files Loaded");
+//    console.log("All Files Loaded");
 
     InitialiseFiles();
 
