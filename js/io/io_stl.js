@@ -171,7 +171,6 @@ var norm = new vxVertex3D(0,0,0);
         rotX = -45;
         rotY = 30;
 
-  //$('#modelForm_Open').window('close');
   log("Done!");
     }
 }
@@ -198,21 +197,16 @@ var norm = new vxVertex3D(0,0,0);
     //log(files[0]);
     //Function Executed After the File Has Been Loaded
     binreader.onload = function(e) {
-  //var arrayBuffer = binreader.result;
-    //var array = new Int8Array(binreader.result);
-    var buffer = e.target.result;//new Uint8Array(e.target.result);
-    //log(buffer);
-     //var bytes = new Uint8Array(e.target.result);
-     //var view = new DataView(buffer);
-     
- // The stl binary is read into a DataView for processing
+
+    var buffer = e.target.result;
+
+    // The stl binary is read into a DataView for processing
     var dv = new DataView(buffer, 80); // 80 == unused header
     var isLittleEndian = true;
 
     // Read a 32 bit unsigned integer
     var triangles = dv.getUint32(0, isLittleEndian);
-//    console.log("tris: "+triangles)
-
+    
     var offset = 4;
     for (var i = 0; i < triangles; i++) {
         // Get the normal for this triangle by reading 3 32 but floats
@@ -261,22 +255,6 @@ var norm = new vxVertex3D(0,0,0);
         mesh.AddFace(vert1, vert2, vert3, norm, norm, norm,new vxVertex2D(0,0),new vxVertex2D(0,0),new vxVertex2D(0,0), meshcolor, selcol);
           
          numOfFaces++;
-
-/*
-                   // There is a fundamental limit to the number of vertices, if it hits one, then
-          // create a new mesh
-          if(numOfElements > 65000/2)
-         {
-           blockCount++;
-            numOfElements = 0;
-            
-            // ass the current mesh to the model
-            model.AddMesh(mesh);
-            
-            // now create a new mesh
-            mesh = new vxMesh("mesh: " + FileName.substring(0, FileName.length-4) + "[block:"+blockCount+"]");
-         }
-         */
     }
     
 
@@ -298,4 +276,91 @@ var norm = new vxVertex3D(0,0,0);
     // Read in the image file as a binary string.
     //binreader.readAsBinaryString(files[0]);
     binreader.readAsArrayBuffer(files[0]);
+}
+
+
+
+
+function io_export_stl(){
+
+var fileWriter = new vxFileWriter("export.stl");
+
+  // ASCII 'stl' file and face block format
+  /*
+    solid Exported from (exporter name)
+    facet normal -1.000000 0.000000 0.000000
+    outer loop
+    vertex -1.000000 1.000000 -1.000000
+    vertex -1.000000 -1.000000 -1.000000
+    vertex -1.000000 -1.000000 1.000000
+    endloop
+    endfacet
+  */
+  
+  // reclear the text
+  stlText = "";
+
+  var solidName = "Exported from "+iris.name+" - v. "+ iris.version;
+
+  // first add header line
+  fileWriter.writeLine("solid "+solidName);
+
+  // next loop through all faces in each model, mesh, and mesh part 
+  for (var i = 0; i < ModelCollection.length; i++) {
+
+    // loop through all models
+    var model = ModelCollection[i];
+
+    // loop through all meshes in the model
+    for(var key in model.Meshes) {
+      var mesh = model.Meshes[key];
+      
+      //loop through all mesh parts in the mesh
+      for (var j = 0; j < mesh.MeshParts.length; j++) {
+        var meshpart = mesh.MeshParts[j];
+        
+
+        // now loop through all of the indecies and faces for this mesh part
+        for(var k =0; k < meshpart.Indices.length; k += 3){
+
+          // get the indicies for this face
+          var vi1 = [0,0,0];
+          for(var indx = 0; indx < 3; indx++)
+            vi1[indx]=meshpart.Indices[k+indx];
+
+          // average the normal for each 3 vertices
+          var ni1 = [0,0,0];
+          for(var indxNrml = 0; indxNrml < 3; indxNrml++){
+            ni1[0]+= parseFloat(meshpart.vert_noramls[vi1[indxNrml]*3]);
+            ni1[1]+= parseFloat(meshpart.vert_noramls[vi1[indxNrml]*3+1]);
+            ni1[2]+= parseFloat(meshpart.vert_noramls[vi1[indxNrml]*3+2]);
+          }
+
+          ni1[0] /=3;
+          ni1[1] /=3;
+          ni1[2] /=3;        
+
+        // first write the normal
+        fileWriter.writeLine("facet normal "+ni1[0]+" "+ni1[1]+" "+ni1[2]);
+
+        // start the face loop
+        fileWriter.writeLine("outer loop");
+
+        // now write the vertex data
+        fileWriter.writeLine("vertex "+meshpart.mesh_vertices[vi1[0]*3]+" "+meshpart.mesh_vertices[vi1[0]*3+1]+" "+meshpart.mesh_vertices[vi1[0]*3+2]);
+        fileWriter.writeLine("vertex "+meshpart.mesh_vertices[vi1[1]*3]+" "+meshpart.mesh_vertices[vi1[1]*3+1]+" "+meshpart.mesh_vertices[vi1[1]*3+2]);
+        fileWriter.writeLine("vertex "+meshpart.mesh_vertices[vi1[2]*3]+" "+meshpart.mesh_vertices[vi1[2]*3+1]+" "+meshpart.mesh_vertices[vi1[2]*3+2]);
+        
+        // finish the face
+        fileWriter.writeLine("endloop");
+        fileWriter.writeLine("endfacet");
+        }
+      }
+    }
+  }
+  // finish the file
+  fileWriter.writeLine("endsolid "+solidName);
+  fileWriter.save();
+
+  return true;
 }

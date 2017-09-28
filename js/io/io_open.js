@@ -1,3 +1,59 @@
+
+
+
+// A File Writer class for exporting files.
+class vxFileWriter {
+  constructor(filename) {
+    this.fileName = filename;
+    this.text = "";
+  }
+
+
+// export the file
+  
+ makeTextFile (text) {
+    var textFile = null;
+    var data = new Blob([text], {type: 'text/plain'});
+
+    // If we are replacing a previously generated file we need to
+    // manually revoke the object URL to avoid memory leaks.
+    if (textFile !== null) {
+      window.URL.revokeObjectURL(textFile);
+    }
+
+    textFile = window.URL.createObjectURL(data);
+
+    // returns a URL you can use as a href
+    return textFile;
+  }
+
+  write(text)
+  {
+    this.text += text;
+  }
+  
+  writeLine(text)
+  {
+    this.text += text + "\n";
+  }
+  
+  // This finalises the file and saves it to disl
+  save() {
+
+    var link = document.createElement('a');
+    link.setAttribute('download', this.fileName);
+    link.href = this.makeTextFile(this.text);
+    document.body.appendChild(link);
+
+    // wait for the link to be added to the document
+    window.requestAnimationFrame(function () {
+      var event = new MouseEvent('click');
+      link.dispatchEvent(event);
+      document.body.removeChild(link);
+    });
+  }
+}
+
 var reader;
 //var progress = document.querySelector('.percent');
 
@@ -76,7 +132,7 @@ function updateProgress(evt) {
         if (percentLoaded < 100) {
             //progress.style.width = percentLoaded + '%';
             //progress.textContent = percentLoaded + '%';
-            console.log(percentLoaded);
+            //console.log(percentLoaded);
         }
     }
 }

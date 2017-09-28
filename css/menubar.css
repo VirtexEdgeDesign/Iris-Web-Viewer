@@ -97,7 +97,8 @@ h1 {
 .menubar nav {
   margin: 0;
   padding: 0;
-  background-color: darkorange;
+  /*background-color: darkorange;*/
+  background-color: "#f76300"
 }
 
 .menubar nav:after {
@@ -119,8 +120,6 @@ h1 {
   display: inline-block;
   float: left;
   background-color: #333;
-  
-
 }
 
 /*
@@ -184,6 +183,7 @@ nav a[data-icon="icon-view-right"]::before { content: url('../img/tlbr/view/set/
 nav a[data-icon="icon-view-top"]::before { content: url('../img/tlbr/view/set/view_top.png'); }
 nav a[data-icon="icon-view-bottom"]::before { content: url('../img/tlbr/view/set/view_bottom.png'); }
 nav a[data-icon="icon-view-front"]::before { content: url('../img/tlbr/view/set/view_front.png'); }
+nav a[data-icon="icon-view-iso"]::before { content: url('../img/tlbr/view/set/view_iso.png'); }
 
 nav a[data-icon="icon-view-ortho"]::before { content: url('../img/tlbr/view/set/view_ortho.png'); }
 nav a[data-icon="icon-view-persp"]::before { content: url('../img/tlbr/view/set/view_perspective.png'); }

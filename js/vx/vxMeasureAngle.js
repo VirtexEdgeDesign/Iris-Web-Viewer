@@ -92,20 +92,25 @@ function vxMeasureAngle (name, pt1, pt2, nrml1, nrml2) {
     this.Indices = [];
     this.EdgeIndices = [];
     
-    //Buffers
-    this.meshVerticesBuffer = null;
-    this.meshVerticesNormalBuffer= null;
-    this.meshVerticesColorBuffer= null;
-    this.meshVerticesUVTexCoordBuffer= null;
-    this.meshVerticesSelectionColorBuffer= null;
-    this.meshVerticesWireframeColorBuffer= null;
-    this.meshVerticesIndexBuffer= null;
+    this.meshBuffers = {
+      verticies: null,
+      normals: null,
+      uvCoords: null,
+      colours: null,
+      selectionColours: null,
+      wireframeColours: null,
+      indices: null,
+    }
     
-    this.edgeVerticesBuffer = null;
-    this.edgeVerticesNormalBuffer= null;
-    this.edgeVerticesColorBuffer= null;
-    this.edgeVerticesUVBuffer= null;
-    this.edgeVerticesIndexBuffer= null
+    this.edgeBuffers = {
+      verticies: null,
+      normals: null,
+      uvCoords: null,
+      colours: null,
+      selectionColours: null,
+      wireframeColours: null,
+      indices: null,
+    }
 
     this.Texture = null;
 
@@ -282,38 +287,38 @@ vxMeasureAngle.prototype.InitialiseBuffers = function(){
   this.initBasicTexture();
 //  console.log("initBasicTexture");
 
-  this.meshVerticesBuffer = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, this.meshVerticesBuffer);
+  this.meshBuffers.verticies = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, this.meshBuffers.verticies);
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.mesh_vertices), gl.STATIC_DRAW);
   
     // Set up the normals for the vertices, so that we can compute lighting.
-  this.meshVerticesNormalBuffer = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, this.meshVerticesNormalBuffer);
+  this.meshBuffers.normals = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, this.meshBuffers.normals);
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.vert_noramls), gl.STATIC_DRAW);
   
   // Now set up the colors
-  this.meshVerticesColorBuffer = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, this.meshVerticesColorBuffer);
+  this.meshBuffers.colours = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, this.meshBuffers.colours);
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.vert_colours), gl.STATIC_DRAW);
 
-  this.meshVerticesSelectionColorBuffer = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, this.meshVerticesSelectionColorBuffer);
+  this.meshBuffers.selectionColours = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, this.meshBuffers.selectionColours);
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.vert_selcolours), gl.STATIC_DRAW);
 
   // Set up the UV Texture Coordinates
-  this.meshVerticesUVTexCoordBuffer = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, this.meshVerticesUVTexCoordBuffer);
+  this.meshBuffers.uvCoords = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, this.meshBuffers.uvCoords);
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.vert_uvcoords), gl.STATIC_DRAW);
 
   // Now set up the colors
-  this.meshVerticesWireframeColorBuffer = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, this.meshVerticesWireframeColorBuffer);
+  this.meshBuffers.wireframeColours = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, this.meshBuffers.wireframeColours);
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.wire_colours), gl.STATIC_DRAW);
 
   // Build the element array buffer; this specifies the indices
   // into the vertex array for each face's vertices.
-  this.meshVerticesIndexBuffer = gl.createBuffer();
-  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.meshVerticesIndexBuffer);
+  this.meshBuffers.indices = gl.createBuffer();
+  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.meshBuffers.indices);
   gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(this.Indices), gl.STATIC_DRAW);
 
 
@@ -321,23 +326,23 @@ vxMeasureAngle.prototype.InitialiseBuffers = function(){
 
 // Edge Buffers
 //*************************************************************************************
-    this.edgeVerticesBuffer = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, this.edgeVerticesBuffer);
+    this.edgeBuffers.verticies = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, this.edgeBuffers.verticies);
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.edgevertices), gl.STATIC_DRAW);
   
     // Set up the normals for the vertices, so that we can compute lighting.
-  this.edgeVerticesNormalBuffer = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, this.edgeVerticesNormalBuffer);
+  this.edgeBuffers.normals = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, this.edgeBuffers.normals);
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.edge_noramls), gl.STATIC_DRAW);
   
   // Now set up the colors
-  this.edgeVerticesColorBuffer = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, this.edgeVerticesColorBuffer);
+  this.edgeBuffers.colours = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, this.edgeBuffers.colours);
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.edge_colours), gl.STATIC_DRAW);
 
   // Now set up the uvs
-  this.edgeVerticesUVBuffer = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, this.edgeVerticesUVBuffer);
+  this.edgeBuffers.uvCoords = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, this.edgeBuffers.uvCoords);
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.edge_uvcoords), gl.STATIC_DRAW);
 
 
@@ -345,8 +350,8 @@ vxMeasureAngle.prototype.InitialiseBuffers = function(){
 
   // Build the element array buffer; this specifies the indices
   // into the vertex array for each face's vertices.
-  this.edgeVerticesIndexBuffer = gl.createBuffer();
-  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.edgeVerticesIndexBuffer);
+  this.edgeBuffers.indices = gl.createBuffer();
+  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.edgeBuffers.indices);
   gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(this.EdgeIndices), gl.STATIC_DRAW);
 };
 
@@ -357,15 +362,15 @@ vxMeasureAngle.prototype.DrawSelPreProc = function(){
 
   // Draw the mesh by binding the array buffer to the mesh's vertices
   // array, setting attributes, and pushing it to GL.
-  gl.bindBuffer(gl.ARRAY_BUFFER, this.meshVerticesBuffer );
+  gl.bindBuffer(gl.ARRAY_BUFFER, this.meshBuffers.verticies );
   gl.vertexAttribPointer(shader.attribLocations.vertexPosition, 3, gl.FLOAT, false, 0, 0);
 
     // Bind the normals buffer to the shader attribute.
-  gl.bindBuffer(gl.ARRAY_BUFFER, this.meshVerticesNormalBuffer);
+  gl.bindBuffer(gl.ARRAY_BUFFER, this.meshBuffers.normals);
   gl.vertexAttribPointer(shader.attribLocations.vertexNormal, 3, gl.FLOAT, false, 0, 0);
 
   // Bind Texture Coordinates
-  gl.bindBuffer(gl.ARRAY_BUFFER, this.meshVerticesUVTexCoordBuffer);
+  gl.bindBuffer(gl.ARRAY_BUFFER, this.meshBuffers.uvCoords);
   gl.vertexAttribPointer(shader.attribLocations.txtrCoords, 2, gl.FLOAT, false, 0, 0);
   
   gl.activeTexture(gl.TEXTURE0);
@@ -373,11 +378,11 @@ vxMeasureAngle.prototype.DrawSelPreProc = function(){
   gl.uniform1i(shader.uniformLocations.uSampler, 0);
   
   // Set the colors attribute for the vertices.
-  gl.bindBuffer(gl.ARRAY_BUFFER, this.meshVerticesSelectionColorBuffer);
+  gl.bindBuffer(gl.ARRAY_BUFFER, this.meshBuffers.selectionColours);
   gl.vertexAttribPointer(shader.attribLocations.vertexColor, 4, gl.FLOAT, false, 0, 0);
   
   // Draw the cube.
-  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.meshVerticesIndexBuffer);
+  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.meshBuffers.indices);
   
   setMatrixUniforms();
     
@@ -416,15 +421,15 @@ vxMeasureAngle.prototype.Draw = function(){
 
   // Draw the mesh by binding the array buffer to the mesh's vertices
   // array, setting attributes, and pushing it to GL.
-  gl.bindBuffer(gl.ARRAY_BUFFER, this.meshVerticesBuffer );
+  gl.bindBuffer(gl.ARRAY_BUFFER, this.meshBuffers.verticies );
   gl.vertexAttribPointer(shader.attribLocations.vertexPosition, 3, gl.FLOAT, false, 0, 0);
 
     // Bind the normals buffer to the shader attribute.
-  gl.bindBuffer(gl.ARRAY_BUFFER, this.meshVerticesNormalBuffer);
+  gl.bindBuffer(gl.ARRAY_BUFFER, this.meshBuffers.normals);
   gl.vertexAttribPointer(shader.attribLocations.vertexNormal, 3, gl.FLOAT, false, 0, 0);
 
   // Bind Texture Coordinates
-  gl.bindBuffer(gl.ARRAY_BUFFER, this.meshVerticesUVTexCoordBuffer);
+  gl.bindBuffer(gl.ARRAY_BUFFER, this.meshBuffers.uvCoords);
   gl.vertexAttribPointer(shader.attribLocations.txtrCoords, 2, gl.FLOAT, false, 0, 0);
   gl.enableVertexAttribArray(shader.attribLocations.txtrCoords);
   
@@ -434,11 +439,11 @@ vxMeasureAngle.prototype.Draw = function(){
   //gl.uniform1i(gl.getUniformLocation(shaderProgram, "uSampler"), 0);
   
   // Set the colors attribute for the vertices.
-  gl.bindBuffer(gl.ARRAY_BUFFER, this.meshVerticesColorBuffer);
+  gl.bindBuffer(gl.ARRAY_BUFFER, this.meshBuffers.colours);
   gl.vertexAttribPointer(shader.attribLocations.vertexColor, 4, gl.FLOAT, false, 0, 0);
   
   // Draw the cube.
-  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.meshVerticesIndexBuffer);
+  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.meshBuffers.indices);
   
   setMatrixUniforms();
   

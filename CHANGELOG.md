@@ -4,6 +4,9 @@
 * Added Angle Measurement Tool.
 * Fixed bug where 'stl' files would split meshes after 65000 elements, and not split meshparts.
 * Fixed bug where mouse scroll/zoom was not working in firefox.
+* Added Toggleable Menu Items.
+* Streamlined Menubar.
+* Added Corner View Item.
 
 
 # v 0.3 April 28th 2017

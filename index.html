@@ -78,10 +78,10 @@
   <script src="js/InputHandling.js"></script>
     
     <!-- Inport Scripts -->
-    <script src="js/io/import_img.js" type="text/javascript"></script>
-    <script src="js/io/import_obj.js" type="text/javascript"></script>
-    <script src="js/io/import_stl.js" type="text/javascript"></script>
-    <script src="js/io/import_ply.js" type="text/javascript"></script>
+    <script src="js/io/io_img.js" type="text/javascript"></script>
+    <script src="js/io/io_obj.js" type="text/javascript"></script>
+    <script src="js/io/io_stl.js" type="text/javascript"></script>
+    <script src="js/io/io_ply.js" type="text/javascript"></script>
 </head>
 
 <!-- Main Body of Code -->
@@ -147,6 +147,8 @@
           <a href="#">Set View to...    </a>
           <input type="checkbox" id="drop-3"/>
           <ul>
+            <li><a id="menu_view_iso" data-icon="icon-view-iso" href="#">Corner</a></li>
+                <li><hr id="splitter" /></li>
             <li><a id="menu_view_top" data-icon="icon-view-top" href="#">Top</a></li>
             <li><a id="menu_view_bottom" data-icon="icon-view-bottom" href="#">Bottom</a></li>
             <li><a id="menu_view_front" data-icon="icon-view-front"  href="#">Front</a></li>
@@ -176,12 +178,14 @@
       <a href="#">Rendering</a>
       <input type="checkbox" id="drop-3"/>
       <ul>
-            <!--<li><a id="menu_view_textured" data-icon="icon-view-textured" href="#">Textured</a></li>-->
-            <li><a id="menu_view_shadedEdge" data-icon="icon-view-shadededge" href="#">Shaded Edge</a></li>
+            <li><a id="menu_view_textured" data-icon="icon-view-textured" href="#">Textured</a></li>
             <li><a id="menu_view_shaded" data-icon="icon-view-shaded" href="#">Shaded</a></li>
             <li><a id="menu_view_wireframe" data-icon="icon-view-wireframe" href="#">Wireframe</a></li>
+                <!--<li><hr id="splitter" /></li>-->
+            <li><a id="menu_view_surfaceNormal" data-icon="icon-view-normal" href="#">Surface Normal</a></li>
                 <li><hr id="splitter" /></li>
-            <li><a id="menu_view_surfaceNormal" data-icon="icon-view-normal" href="#">Normal</a></li>
+                <li><a id="menu_view_doEdge" data-icon="icon-view-shadededge" href="#">Show Edge</a></li>
+                <li><a id="menu_view_noEdge" data-icon="icon-view-shaded" href="#">No Edge</a></li>
       </ul>
     </li>
     <li> 
@@ -463,6 +467,113 @@
 
 
 
+<!-- The File Export Dialog
+====================================================================== -->
+<div id="modal_exportFile" class="modal_openFile">
+  <!-- Modal content -->
+  <div class="modal_openFile-content" style="width:600px">
+     <table style="width: 100%">
+      <tr>
+        <th>
+          <span class="modal_openFile-title">Iris Viewer - Export File</span>
+          <hr id="splitter" />
+
+          <span class="modal-body" style="font-size: 12px">
+            You can use this dialog to export the current scene to a different format.
+            Currently only ASCII 'stl' files are supported for exporting. If there's a format you need, you can request
+            one through Iris' Github page.
+          </span>
+          <br/>
+          <br/>
+          <br/>
+          <span class="modal-body" style="font-size: 12px">
+            NOTE: For certain file types, the way in which data is translated from one format to another may change the exported information from what was imported. Check out the <a href="https://github.com/VirtexEdgeDesign/Iris-Web-Viewer/wiki/Exporting" target="_blank">Exporting Github Wiki page</a> for more info and things to be aware of. 
+          </span>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <h2>
+            Choose Exporter
+          </h2>
+          <br/>
+        </th>
+      </tr>
+      <table style="width:80%; margin:auto;">
+        <tr>
+          <th style="width:45%">
+            <select id="modal_exportFile_choice" onChange="OnFileExportTypeChange()">
+              <option value="stl">STereoLithography (*.stl)</option>
+              <!--
+              <option value="obj">Wavefront (*.obj)</option>
+              <option value="fbx">Autodesk Filmbox File (*.fbx)</option>-->
+            </select>
+          </th>
+          <th>
+            <h3>File Type</h3>
+            <span class="modal-body" style="font-size: 12px">
+              STereoLithography File
+            </span>
+          </th>
+        </tr>
+        <tr>
+          <th>
+          </th>
+          <th>
+            <h3>Description</h3>
+            <span class="modal-body" style="font-size: 12px">
+              This file type is commonly used for 3D printing formats. This exporter creates an ASCII text file
+              for debuggin purposes.
+            </span>
+            <h3>Exported Data</h3>
+            <span class="modal-body" style="font-size: 12px">
+              <ul>
+                <li>Vertex Data</li>
+                <li>Per Face Normal Data</li>
+              </ul>
+            </span>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+          </th>
+        </tr>
+      </table>
+      <tr>
+        <th>
+          <hr id="splitter" />
+        </th>
+      </tr>
+      <tr>
+        <th>
+          <br/>
+          <table style="width: 100%">
+            <tr>
+              <th>
+                <button class="modal-btn" id="btn_file_export_do">               
+                  <div id="btn_container">
+                    <img class ="modal-btn-img" data-icon="export"/>
+                    <span class="modal-btn-txt">Export</span>
+                  </div>
+                </button>
+                </th>
+                    <th>
+                <button class="modal-btn" id="btn_file_export_cancel">               
+                  <div id="btn_container">
+                    <img class ="modal-btn-img" data-icon="cancel"/>
+                    <span class="modal-btn-txt">Cancel</span>
+                  </div>
+                </button>
+              </th>
+            </tr>
+          </table>
+        </th>
+      </tr>
+    </table>
+  </div>
+</div>
+
 
 <!-- The File Load Results Warnings and Errors Modal
 ====================================================================== -->
@@ -529,6 +640,7 @@
   <a href="#" class="closebtn" id="btn_closeSidebar">&times;</a>
   <a id="sidebar_file_new" href="#">New</a>
   <a id="sidebar_file_import" data-icon="icon-import" href="#">Import</a>
+  <a id="sidebar_file_export" data-icon="icon-export" href="#">Export</a>
   <hr id="splitter" />
   <a href="https://github.com/VirtexEdgeDesign/Iris-Web-Viewer/wiki" target="_blank">Help</a>
   <a id="menu_about_about" href="#">About</a>

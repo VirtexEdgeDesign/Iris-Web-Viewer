@@ -132,7 +132,7 @@
 
     // 1 is a basic Diffuse Shader
     if (uRenderTypeFS == 1) {
-        if(uHasTexture == 0){
+        if(uHasTexture == 1){
             gl_FragColor = vec4(texture2D(uSampler, vTextureCoord).rgb * vLighting, texture2D(uSampler, vTextureCoord).a);
         }
         else{
@@ -268,7 +268,7 @@ function initShaders() {
 
 
         var sel_colour = [0.1, 0.6, 1, 1];
-        HoveredMesh.HasTexture = false;
+        HoveredMesh.HasTexture = 0;
         
         for (var i = 0; i < 3; i++) {
             HoveredMesh.mesh_vertices.push(0);
@@ -521,7 +521,7 @@ stats.begin();
 
         // Only Draw Edges if the Shaded Edge Settings is set
         for (var i = 0; i < MeshCollection.length; i++) {
-            if (RenderState == vxRenderState.ShadedEdge) {
+            if (ShowEdges == true) {
                 MeshCollection[i].DrawEdge();
             }
             if (RenderState == vxRenderState.Wireframe) {
@@ -592,6 +592,10 @@ stats.begin();
 
 
 
+function SetViewToIso() {
+rotX = -45;
+rotY = 30;
+}
 
 function SetViewToTop() {
 rotY = 90;
@@ -625,37 +629,112 @@ rotX = 0;
 
 
 
+function SetEdgeRendering(value) {
+    ShowEdges = value;
+    log("ShowEdges = " + ShowEdges);
+    SetMenuBarValues();
+}
 
-function SetShadingToEdge() {
-    RenderState = vxRenderState.ShadedEdge;
+function SetShadingToTextured() {
+    RenderState = vxRenderState.Textured;
     log("RenderState = " + RenderState);
+    SetMenuBarValues();
 }
 
 function SetShadingToShaded() {
     RenderState = vxRenderState.Shaded;
     log("RenderState = " + RenderState);
+    SetMenuBarValues();
 }
 
 function SetShadingToWireframe() {
     RenderState = vxRenderState.Wireframe;
     log("RenderState = " + RenderState);
+    SetMenuBarValues();
 }
 
 function SetShadingToNormal() {
     RenderState = vxRenderState.SurfaceNormal;
     log("RenderState = " + RenderState);
+    SetMenuBarValues();
 }
 
 
 function SetViewToPerspective() {
     ProjectionType = vxProjectionType.Perspective;
     log("ProjectionType = " + ProjectionType);
+    SetMenuBarValues();
 }
 
 function SetViewToOrtho() {
     ProjectionType = vxProjectionType.Ortho;
     log("ProjectionType = " + ProjectionType);
+    SetMenuBarValues();
+}
+
+var unSelCol = "";
+//var selCol = "#0094f7";
+//var selCol = "#0082d9";
+var selCol = "#555";
+
+function setMenuItemState(string, toggleState){
+    var item = document.getElementById(string);
+    document.getElementById(string).parentElement.style.backgroundColor = (toggleState==true) ? selCol : unSelCol;
+    //document.getElementById(string).parentElement.style.border = (toggleState==true) ? "thin solid #0000FF" : "thin solid #333";
+    document.getElementById(string).parentElement.style.borderColor = (toggleState==true) ? selCol : unSelCol;
+    item.style.color = (toggleState==true) ? "#fff" : "#ccc";
 }
 
 
+function SetMenuBarValues(){
 
+    // Handle Projection Type
+    switch(ProjectionType){
+        case vxProjectionType.Perspective:
+            setMenuItemState("menu_view_perspec", true);
+            setMenuItemState("menu_view_ortho", false);
+        break;
+        case vxProjectionType.Ortho:
+            setMenuItemState("menu_view_perspec", false);
+            setMenuItemState("menu_view_ortho", true);
+        break;
+    }
+
+    // Handle Shading Type
+    switch(RenderState){
+        case vxRenderState.Textured:
+            setMenuItemState("menu_view_textured", true);
+            setMenuItemState("menu_view_shaded", false);
+            setMenuItemState("menu_view_wireframe", false);
+            setMenuItemState("menu_view_surfaceNormal", false);
+        break;
+        case vxRenderState.Shaded:
+            setMenuItemState("menu_view_textured", false);
+            setMenuItemState("menu_view_shaded", true);
+            setMenuItemState("menu_view_wireframe", false);
+            setMenuItemState("menu_view_surfaceNormal", false);
+        break;
+        case vxRenderState.Wireframe:
+            setMenuItemState("menu_view_textured", false);
+            setMenuItemState("menu_view_shaded", false);
+            setMenuItemState("menu_view_wireframe", true);
+            setMenuItemState("menu_view_surfaceNormal", false);
+        break;
+        case vxRenderState.SurfaceNormal:
+            setMenuItemState("menu_view_textured", false);
+            setMenuItemState("menu_view_shaded", false);
+            setMenuItemState("menu_view_wireframe", false);
+            setMenuItemState("menu_view_surfaceNormal", true);
+        break;
+    }
+
+    // Handle Edge Rendering
+    if(ShowEdges == true){
+        setMenuItemState("menu_view_doEdge", true);
+        setMenuItemState("menu_view_noEdge", false);
+    }
+    else{
+        setMenuItemState("menu_view_doEdge", false);
+        setMenuItemState("menu_view_noEdge", true);
+    }
+}

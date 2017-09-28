@@ -74,6 +74,14 @@
   color: #ccc;
 }
 
+.modal-body a {
+    font-family: Arial, Sans-serif;
+    font-style: normal;
+    font-weight: normal;
+  color: #00bfff;
+  text-decoration: none;
+}
+
 
 /* Open File Buttons */
 .modal-btn {
@@ -107,25 +115,13 @@
     margin-right: 5px;    
     vertical-align: middle;
 }
-.modal-btn-img[data-icon="open_local"]{
-    content: url('../img/io/open_local.png');
-}
 
-.modal-btn-img[data-icon="open_gdrive"]{
-    content: url('../img/io/open_gdrive.png');
-}
-.modal-btn-img[data-icon="cancel"]{
-    content: url('../img/btns/cancel.png');
-}
-
-.modal-btn-img[data-icon="cancel"]{
-    content: url('../img/btns/cancel.png');
-}
-
-.modal-btn-img[data-icon="warning"]{
-    content: url('../img/btns/warning.png');
-}
-
+.modal-btn-img[data-icon="open_local"]  { content: url('../img/io/open_local.png');}
+.modal-btn-img[data-icon="open_gdrive"] { content: url('../img/io/open_gdrive.png');}
+.modal-btn-img[data-icon="cancel"]      { content: url('../img/btns/cancel.png');}
+.modal-btn-img[data-icon="cancel"]      { content: url('../img/btns/cancel.png');}
+.modal-btn-img[data-icon="warning"]     { content: url('../img/btns/warning.png');}
+.modal-btn-img[data-icon="export"]        { content: url('../img/btns/document_export.png'); }
 
 .modal-btn-txt {
     vertical-align: middle;
@@ -201,11 +197,8 @@
     vertical-align: middle;
 }
 
-.modal-result-item-img[data-icon="error"]{
-    content: url('../img/btns/cancel.png');
-}
+.modal-result-item-img[data-icon="error"]   { content: url('../img/btns/cancel.png'); }
+.modal-result-item-img[data-icon="warning"] { content: url('../img/btns/warning.png'); }
 
-.modal-result-item-img[data-icon="warning"]{
-    content: url('../img/btns/warning.png');
-}
+
 

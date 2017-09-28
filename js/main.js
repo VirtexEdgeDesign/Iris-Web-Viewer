@@ -75,23 +75,15 @@ var numOfFaces = 1;
 //**************************************************
 
 vxRenderState = {
-    ShadedEdge: 0,
+    Wireframe: 0,
     Shaded: 1,
-    Wireframe: 2,
+    Textured: 2,
     SurfaceNormal: 3
 };
-/*
-vxRenderState = {
-    IndexColour: 0,
-    Wireframe: 1,
-    Shaded: 2,
-    ShadedEdge: 3,
-    Textured: 4,
-    SurfaceNormals: 5
-};*/
-var RenderState = vxRenderState.ShadedEdge;
 
+var RenderState = vxRenderState.Textured;
 
+var ShowEdges = true;
 
 vxShaderState = {
   Diffuse:0,
@@ -324,6 +316,7 @@ setTimeout(function(){FinaliseInit();}, 150);
 
 function FinaliseInit(){
 log("FinaliseInit()");
+SetMenuBarValues();
     $('#loading').fadeOut();
 }
 
@@ -950,7 +943,52 @@ $( "#sidebar_file_import" ).click(function() {
 
   CloseSidebar();
 });
+$( "#sidebar_file_export" ).click(function() {
+  document.getElementById("modal_exportFile").style.display = "block";
+  CloseSidebar();
+});
 
+
+
+// export the file
+  var textFile = null;
+ function makeTextFile (text) {
+    var data = new Blob([text], {type: 'text/plain'});
+
+    // If we are replacing a previously generated file we need to
+    // manually revoke the object URL to avoid memory leaks.
+    if (textFile !== null) {
+      window.URL.revokeObjectURL(textFile);
+    }
+
+    textFile = window.URL.createObjectURL(data);
+
+    // returns a URL you can use as a href
+    return textFile;
+  };
+
+
+$( "#btn_file_export_do" ).click(function() {
+
+// first get which type of exporter we're using
+  var combobox = document.getElementById("modal_exportFile_choice");
+  
+  switch(combobox.selectedIndex)
+  {
+    case 0: // STL
+    io_export_stl();
+  }
+  
+});
+$( "#btn_file_export_cancel" ).click(function() {
+  document.getElementById("modal_exportFile").style.display = "none";
+});
+
+function OnFileExportTypeChange() {
+    var combobox = document.getElementById("modal_exportFile_choice");
+    var idx = combobox.selectedIndex;
+    var content = combobox.options[idx].innerHTML;
+}
 
 
 // Handle Location To Open File From
@@ -1017,29 +1055,20 @@ $( "#menu_view_ortho" ).click(function() {
   SetViewToOrtho();
 });
 
+
 // Set the view events
-$( "#menu_view_top" ).click(function() {
-  SetViewToTop();
-});
-$( "#menu_view_bottom" ).click(function() {
-  SetViewToBottom();
-});
-$( "#menu_view_front" ).click(function() {
-  SetViewToFront();
-});
-$( "#menu_view_back" ).click(function() {
-  SetViewToBack();
-});
-$( "#menu_view_left" ).click(function() {
-  SetViewToLeft();
-});
-$( "#menu_view_right" ).click(function() {
-  SetViewToRight();
-});
+$( "#menu_view_iso" ).click(function()    { SetViewToIso();   });
+$( "#menu_view_top" ).click(function()    { SetViewToTop();   });
+$( "#menu_view_bottom" ).click(function() { SetViewToBottom();});
+$( "#menu_view_front" ).click(function()  { SetViewToFront(); });
+$( "#menu_view_back" ).click(function()   { SetViewToBack();  });
+$( "#menu_view_left" ).click(function()   { SetViewToLeft();  });
+$( "#menu_view_right" ).click(function()  { SetViewToRight(); });
 
 // Rendering Style
-$( "#menu_view_shadedEdge" ).click(function() {
-  SetShadingToEdge();
+//******************************************************************
+$( "#menu_view_textured" ).click(function() {
+  SetShadingToTextured();
 });
 $( "#menu_view_shaded" ).click(function() {
   SetShadingToShaded();
@@ -1048,6 +1077,15 @@ $( "#menu_view_wireframe" ).click(function() {
   SetShadingToWireframe();
 });
 
+// Show Edges
+$( "#menu_view_doEdge" ).click(function() {
+  SetEdgeRendering(true);
+});
+$( "#menu_view_noEdge" ).click(function() {
+  SetEdgeRendering(false);
+});
+
+// Custom Rendering
 $( "#menu_view_surfaceNormal" ).click(function() {
   SetShadingToNormal();
 });

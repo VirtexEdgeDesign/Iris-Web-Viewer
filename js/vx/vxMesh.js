@@ -100,10 +100,13 @@ vxMesh.prototype.Init = function() {
   this.IndexEnd = numOfFaces;
   for (var i = 0; i < this.MeshParts.length; i++) {
 
+    this.MeshParts[i].Name = this.Name + ".MeshPart."+i;
     this.MeshParts[i].Model = this.Model;
+    this.MeshParts[i].Mesh = this;
     this.MeshParts[i].Init();
 
     if(this.MeshParts[i].MaxPoint.Length() > this.MaxPoint.Length())
+
       this.MaxPoint.Set(this.MeshParts[i].MaxPoint.X, this.MeshParts[i].MaxPoint.Y, this.MeshParts[i].MaxPoint.Z);
         }
   
