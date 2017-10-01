@@ -40,17 +40,13 @@
     color: #1375b3;
     font-size: 8px;
     line-height: 13px;
-    
-    
 }
 
 
 .ui-cntrl-treeview:hover
-{
-  
+{ 
   background-color:rgba(0, 0, 0, .5);
-  box-shadow: 0 0 15px rgba(0, 0, 0, .75);
-    
+  box-shadow: 0 0 15px rgba(0, 0, 0, .75);   
   transition: box-shadow 0.5s ease;
 }
  
@@ -79,7 +75,7 @@
  
 .ui-cntrl-treeview
 {
-    font: normal 12px/16px "Segoe UI", Arial, Sans-serif;
+    font: normal 13px/16px "Segoe UI", Arial, Sans-serif;
 }
  
 .ui-cntrl-treeview li
@@ -183,6 +179,7 @@
 .ui-cntrl-treeview label[for][data-icon="envrroot"]{  background-image: url('../img/tree/node_envr.png'); }
 .ui-cntrl-treeview label[for][data-icon="axis"]{  background-image: url('../img/tree/node_axis.png'); }
 .ui-cntrl-treeview label[for][data-icon="plane"]{  background-image: url('../img/tree/node_plane.png'); }
+.ui-cntrl-treeview label[for][data-icon="center"]{  background-image: url('../img/tree/node_centroid.png'); }
 .ui-cntrl-treeview label[for][data-icon="folder"]{  background-image: url('../img/tree/node_folder.png'); }
 .ui-cntrl-treeview label[for][data-icon="txtrs"]{  background-image: url('../img/tree/node_folder_picture.png'); }
 .ui-cntrl-treeview label[for][data-icon="properties"]{  background-image: url('../img/tree/node_properties.png'); }
@@ -191,14 +188,32 @@
 
 .ui-cntrl-treeview label[for][data-icon="measure"]{  background-image: url('../img/tree/node_measure.png'); }
 .ui-cntrl-treeview label[for][data-icon="measure_angle"]{  background-image: url('../img/tree/node_measure_angle.png'); }
+
 .ui-cntrl-treeview label[for][data-icon="bullet_blue"]{  background-image: url('../img/tree/node_bullet_blue.png'); }
 .ui-cntrl-treeview label[for][data-icon="bullet_green"]{  background-image: url('../img/tree/node_bullet_green.png'); }
 .ui-cntrl-treeview label[for][data-icon="bullet_red"]{  background-image: url('../img/tree/node_bullet_red.png'); }
+.ui-cntrl-treeview label[for][data-icon="bullet_white"]{  background-image: url('../img/tree/node_bullet_white.png'); }
+
 .ui-cntrl-treeview label[for][data-icon="bullet_vector"]{  background-image: url('../img/tree/node_bullet_vector.png'); }
 .ui-cntrl-treeview label[for][data-icon="material"]{  background-image: url('../img/tree/node_material.png'); }
 .ui-cntrl-treeview label[for][data-icon="materials"]{  background-image: url('../img/tree/node_materials.png'); }
+
+/* Colours */
+.ui-cntrl-treeview label[for][data-icon="node_colours"]{  background-image: url('../img/tree/node_colours.png'); }
+.ui-cntrl-treeview label[for][data-icon="node_color_info"]{  background-image: url('../img/tree/node_color_info.png'); }
 .ui-cntrl-treeview label[for][data-icon="colour_wheel"]{  background-image: url('../img/tree/node_colour_wheel.png'); }
 .ui-cntrl-treeview label[for][data-icon="colour_rgb"]{  background-image: url('../img/tree/node_colour_rgb.png'); }
+
+
 .ui-cntrl-treeview label[for][data-icon="image"]{  background-image: url('../img/tree/node_image.png'); }
 .ui-cntrl-treeview label[for][data-icon="hash"]{  background-image: url('../img/tree/node_hash.png'); }
+
+.ui-cntrl-treeview label[for][data-icon="file_info"]{  background-image: url('../img/tree/file_info.png'); }
+.ui-cntrl-treeview label[for][data-icon="file_bin"]{  background-image: url('../img/tree/file_bin.png'); }
+.ui-cntrl-treeview label[for][data-icon="bullet_error"]{  background-image: url('../img/tree/bullet_error.png'); }
+.ui-cntrl-treeview label[for][data-icon="bullet_warning"]{  background-image: url('../img/tree/bullet_warning.png'); }
+.ui-cntrl-treeview label[for][data-icon="bullet_success"]{  background-image: url('../img/tree/bullet_success.png'); }
+
+.ui-cntrl-treeview label[for][data-icon="document_info"]{  background-image: url('../img/tree/document_info.png'); }
+.ui-cntrl-treeview label[for][data-icon="document_import"]{  background-image: url('../img/tree/document_import.png'); }
 

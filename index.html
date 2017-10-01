@@ -2,13 +2,13 @@
 <html>
 
 <link rel="stylesheet" href="css/ui-cntrl-progressbar.css">
-<div id="loading" background-color="#2a2a2a">
+<div id="loading" background-color="#2a2a2a" style="width: 100%; height: 100%; top: 0px; left: 0px; position: fixed; display: block; opacity: 1; background-color: #2a2a2a; z-index: 99; text-align: center; -webkit-transition: background-color 0;transition: background-color 0;">
   <div class="meter deepskyblue" style="width:50%;margin:auto;top:70%;height:4px;padding:3px;">
     <span id="loading-prgrsbar" style="width: 10%"></span>
   </div>
-  <img background-color="#1b1b1b" id="loading-image" src="img/loading/box.gif" alt="Loading..."/>
+  <img background-color="#1b1b1b" id="loading-image" src="img/loading/Eclipse.svg" alt="Loading..." style="background-color: #2a2a2a;
+color: #2a2a2a; position: absolute; top: 20%; left: 44%; z-index: 600; width: 50; height: 50"/>
   <!--<span id="loading-text">loading...</span>-->
-
 </div>
 <head>
   <title>IRIS Viewer - Loading... </title>
@@ -38,9 +38,6 @@
   <link rel="stylesheet" href="css/menubar.css">
   <link rel="stylesheet" href="css/modal.css">
   <link rel="stylesheet" href="css/modal_intro.css">
-  <link rel="stylesheet" href="css/modal_openFile.css">
-  <link rel="stylesheet" href="css/modal_loadFile.css">
-  <link rel="stylesheet" href="css/modal_about.css">
   <link rel="stylesheet" href="css/contextmenu.css">
   
   <link rel="stylesheet" href="css/ui-cntrl-treeview.css">
@@ -82,6 +79,7 @@
     <script src="js/io/io_obj.js" type="text/javascript"></script>
     <script src="js/io/io_stl.js" type="text/javascript"></script>
     <script src="js/io/io_ply.js" type="text/javascript"></script>
+    <script src="js/io/io_drctx.js" type="text/javascript"></script>
 </head>
 
 <!-- Main Body of Code -->
@@ -108,13 +106,15 @@
 
 <!-- Treeview Control 
 ====================================================================== -->
-<div id="model_treeview" class="ui-cntrl-treeview" style="position:absolute; top:32px; left:0;">
-        <li>
-            <input type="checkbox" id="tree_root" checked="checked" /><label><input type="checkbox" checked="checked" /><span></span></label><label data-icon="envrroot" for="tree_root">Enviroment</label>
-            <ul id="tree_root_ul">
-            </ul>
-        </li>
-    </ul>
+<div id="tree_div" style="
+  border: thin solid #FFF;">
+  <div id="model_treeview" class="ui-cntrl-treeview" style="position:absolute; top:32px; left:0px; max-height: 250px; overflow-y: scroll; overflow-x:hidden; direction: rtl;">
+    <div id="treeview_capsuleDiv" style="direction: ltr; position:relative; left:0px;">
+          <li>
+              <input type="checkbox" id="tree_root" checked="checked" /><label><input type="checkbox" checked="checked" /><span></span> </label><label data-icon="envrroot" for="tree_root">Enviroment</label>
+              <ul id="tree_root_ul"></ul>
+          </li>
+        </div>
   </div>
 </div>
 
@@ -140,7 +140,7 @@
             <li><a id="menu_view_perspec" data-icon="icon-view-persp" href="#">Perspective</a></li>
             <li><a id="menu_view_ortho" data-icon="icon-view-ortho" href="#">Orthogonal</a></li>
             
-        <li><hr id="splitter" /></li>
+        <li><hr class="menubar-splitter-min" /></li>
         <!-- Second Tier Drop Down -->
         <li> 
           <label for="drop-3" class="toggle">SetViewto</label>
@@ -148,7 +148,7 @@
           <input type="checkbox" id="drop-3"/>
           <ul>
             <li><a id="menu_view_iso" data-icon="icon-view-iso" href="#">Corner</a></li>
-                <li><hr id="splitter" /></li>
+              <li><hr class="menubar-splitter-min" /></li>
             <li><a id="menu_view_top" data-icon="icon-view-top" href="#">Top</a></li>
             <li><a id="menu_view_bottom" data-icon="icon-view-bottom" href="#">Bottom</a></li>
             <li><a id="menu_view_front" data-icon="icon-view-front"  href="#">Front</a></li>
@@ -157,9 +157,14 @@
             <li><a id="menu_view_right" data-icon="icon-view-right" href="#">Right</a></li>
           </ul>
         </li>
+        
+              <li><hr class="menubar-splitter" /></li>
+            <li><a id="menu_view_zoomIn" data-icon="icon-view-zoom-in" href="#">Zoom In</a></li>
+            <li><a id="menu_view_zoomOut" data-icon="icon-view-zoom-out" href="#">Zoom Out</a></li>
+            <li><a id="menu_view_zoomFit" data-icon="icon-view-zoom-fit"  href="#">Fit</a></li>
         <!-- Second Tier Drop Down -->
         <!--
-                <li><hr id="splitter" /></li>
+                <li><hr class="modal-splitter" /></li>
         <li> 
           <label for="drop-3" class="toggle">SetViewto</label>
           <a href="#">Rendering Style    </a>
@@ -181,9 +186,9 @@
             <li><a id="menu_view_textured" data-icon="icon-view-textured" href="#">Textured</a></li>
             <li><a id="menu_view_shaded" data-icon="icon-view-shaded" href="#">Shaded</a></li>
             <li><a id="menu_view_wireframe" data-icon="icon-view-wireframe" href="#">Wireframe</a></li>
-                <!--<li><hr id="splitter" /></li>-->
+                <li><hr class="menubar-splitter-min" /></li>
             <li><a id="menu_view_surfaceNormal" data-icon="icon-view-normal" href="#">Surface Normal</a></li>
-                <li><hr id="splitter" /></li>
+                <li><hr class="menubar-splitter" /></li>
                 <li><a id="menu_view_doEdge" data-icon="icon-view-shadededge" href="#">Show Edge</a></li>
                 <li><a id="menu_view_noEdge" data-icon="icon-view-shaded" href="#">No Edge</a></li>
       </ul>
@@ -195,7 +200,7 @@
       <ul>
         <li><a  id="menu_tools_measure" data-icon="icon-tools-measure" href="#">Measure Distance</a></li>
         <li><a  id="menu_tools_measure_angle" data-icon="icon-tools-measure-angle" href="#">Measure Angle</a></li>
-        <li><hr id="splitter" /></li>
+        <li><hr class="modal-splitter" /></li>
         <li><a  id="menu_tools_debug" data-icon="icon-tools-debug" href="#">Toggle Debug Info</a></li>
       </ul>
       
@@ -275,38 +280,44 @@
 
 <!-- The About Modal 
 ====================================================================== -->
-<div id="myModal" class="modal_about">
+<div id="modal_about" class="modal">
 
   <!-- Modal content -->
-  <div class="modal_about-content">
-    <div class="modal_about-header">
-      <span class="close">&times;</span>
+  <div class="modal-content" style="width: 60%;">
+    <div class="modal-header">
+      <!--<span class="close">&times;</span>-->
       <h2>Iris Web Viewer - About</h2>
+      <hr class="modal-splitter" />
     </div>
-    <div class="modal_about-body">
+    <div class="modal-body">
 <table class="tg">
   <tr>
     <th class="tg-031e">
       <img src="assets/icon_128.png" alt="Mountain View" style="width:128px;height:128px;">
     </th>
     <td class="tg-yw4l" style="width:150px">
-
-     Iris Web Viewer is a cross platform 3D Model Viewer for exchange formats.
+      <br/>
+     Iris Web Viewer is an online 3D Exchange file viewer. It allows you to view files on any computer with a web browser without having to bootup bulky 3D packages. Iris is currently in Beta, so If there's a format or feature you want added, contact us below and we'll do our best to add it in. 
     <br/>
     <br/>
     </th>
-
     <h2>Supported Formats</h2>
+    <hr class="modal-splitter" />
     <br/>
-    The entire point of IRIS is to allow for a central location to view 3D file formats. If there's a format you want added, contact us below and we'll do our best to add it in.
+    Currently Iris can open:
     <br/>
+    <div style="position:relative; left:25px">
+    <ul>
+      <li>STereoLithography (*.stl)</li>
+      <li>Wavefront (*.obj)</li>
+      <li>Direct X 3D (*.x)</li>
+      <li>Autodesk Filmbox File (*.fbx)</li>
+    </ul>
+    </div> 
     <br/>
-    Currently IRIS supports:
-    <br/>
-    - *.stl (both ASCII and binary)
-    <br/>
-    - *.obj 
-    <br/>
+    <p>
+      <b>NOTE:</b> Not all features of all file types are supported for importing and exporting. Check out the <a href="https://github.com/VirtexEdgeDesign/Iris-Web-Viewer/wiki" target="_blank">Github Wiki</a> for a break down of Iris' capabilities. 
+      </p>
     <br/>
     </td>
   </tr>
@@ -314,22 +325,29 @@
     <td class="tg-yw4l" style="width:150px"></td>
     <td class="tg-yw4l">
       <h2>Contact and Follow</h2>
+      <hr class="modal-splitter" />
     <br/>
-    Problem, question, concern? IRIS is opensource and hosted on Github, check the issues section or post a question there. If you want to reach me directly you can tweet to me on twitter.
+    Problem, question, concern? Iris is Open Source and hosted on  <a href="https://github.com/VirtexEdgeDesign/Iris-Web-Viewer" target="_blank">Github</a>, check the issues section or post a question there. If you want to reach me directly you can tweet to me on twitter.
     <br/>
     <br/>
-<p>
-    <iframe src="https://ghbtns.com/github-btn.html?user=VirtexEdgeDesign&repo=Iris-Web-Viewer&type=follow&count=true" frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
-    <iframe src="https://ghbtns.com/github-btn.html?user=VirtexEdgeDesign&repo=Iris-Web-Viewer&type=star&count=true" frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
-    <br/>
-      <a class="twitter-follow-button" href="https://twitter.com/VirtexEdge"> Tweet @VirtexEdge</a></p>
+      <table style="width:100%">
+        <tr>
+          <th style="width:40%">
+            <a class="twitter-follow-button" href="https://twitter.com/VirtexEdge"> Tweet @VirtexEdge</a>
+          </th>
+          <th>
+            <iframe src="https://ghbtns.com/github-btn.html?user=VirtexEdgeDesign&repo=Iris-Web-Viewer&type=follow&count=true" frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
+            <iframe src="https://ghbtns.com/github-btn.html?user=VirtexEdgeDesign&repo=Iris-Web-Viewer&type=star&count=true" frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
+          </th>
+        </tr>
+      </table>
     </td>
   </tr>
 </table>
 
 
     </div>
-    <div class="modal_about-footer">
+    <div class="modal-footer">
       <p>(C) Virtex Edge Design</p>
     </div>
   </div>
@@ -338,14 +356,14 @@
 
 <!-- The Open File Modal 
 ====================================================================== -->
-<div id="modal_openFile" class="modal_openFile">
+<div id="modal_openFile" class="modal">
   <!-- Modal content -->
-  <div class="modal_openFile-content">
+  <div class="modal-content">
      <table style="width: 100%">
       <tr>
         <th>
-          <span class="modal_openFile-title">Iris Viewer - Open File</span>
-          <hr id="splitter" />
+          <span class="modal-title">Iris Viewer - Open File</span>
+          <hr class="modal-splitter" />
           <span class="modal-body">
             Note: You must select all files which are referenced by others (i.e. Material definition files, textures etc...).
           </span>
@@ -355,13 +373,13 @@
       </tr>
       <tr>
         <th>
-          <span class="modal_openFile-subtitle">From Disk</span>
-          <hr id="splitter" />
+          <span class="modal-subtitle">From Disk</span>
+          <hr class="modal-splitter" />
         <br/>
-          <button class="modal_openFile-btn" id="btn_openfile_local">               
+          <button class="modal-btn" id="btn_openfile_local">               
             <div id="btn_container">
-              <img class ="modal_openFile-btn-img" data-icon="open_local"/>
-              <span class="modal_openFile-btn-txt">Load Files from Disk</span>
+              <img class ="modal-btn-img" data-icon="open_local"/>
+              <span class="modal-btn-txt">Load Files from Disk</span>
             </div>
           </button>
           <br/>
@@ -369,16 +387,24 @@
       </tr>
       <tr>
         <th>
-          <span class="modal_openFile-subtitle">Google Drive</span>
-          <hr id="splitter" />
+          <span class="modal-subtitle">Google Drive</span>
+          <hr class="modal-splitter" />
         <br/>
-          <button class="modal_openFile-btn" id="btn_openfile_gdrive">               
+          <button class="modal-btn" id="btn_openfile_gdrive">               
             <div id="btn_container">
-              <img class ="modal_openFile-btn-img" data-icon="open_gdrive"/>
-              <span class="modal_openFile-btn-txt">Open from Google Drive</span>
+              <img class ="modal-btn-img" data-icon="open_gdrive"/>
+              <span class="modal-btn-txt">Open from Google Drive</span>
             </div>
           </button>
           <br/>
+        </th>
+      </tr>
+      <tr>
+        <th>
+          <hr class="modal-splitter" />
+          <span class="modal-body" style="text-align: center;">
+            NOTE: Not all features of all file types are implemented. Check out the <a href="https://github.com/VirtexEdgeDesign/Iris-Web-Viewer/wiki/Importing" target="_blank">Importing Github Wiki page</a> for a break down of which file features are imported. 
+          </span>
         </th>
       </tr>
     </table>
@@ -390,15 +416,15 @@
 
 <!-- The Load File Modal 
 ====================================================================== -->
-<div id="modal_loadFile" class="modal_loadFile">
+<div id="modal_loadFile" class="modal">
  
   <!-- Modal content -->
-  <div class="modal_loadFile-content">
+  <div class="modal-content">
      <table style="width: 100%">
       <tr>
         <th>
-          <span class="modal_openFile-title">Loading File</span>
-          <hr id="splitter" />
+          <span class="modal-title">Loading File</span>
+          <hr class="modal-splitter" />
           <br/>
         </th>
       </tr>
@@ -406,10 +432,10 @@
         <table style="width: 75%;margin:auto;">
           <tr>
         <th>
-          <span class="modal_loadFile-txt" id="modal_loadFile_file-name">File Name:</span>
+          <span class="modal-txt" id="modal_loadFile_file-name">File Name:</span>
         </th>
         <th>
-          <span class="modal_loadFile-txt" id="modal_loadFile_file-size">File Size:</span>
+          <span class="modal-txt" id="modal_loadFile_file-size">File Size:</span>
         </th>
         </tr>
         </table>
@@ -430,15 +456,15 @@
 
 <!-- The Google Drive File Picker Modal 
 ====================================================================== -->
-<div id="modal_GDrivePicker" class="modal_loadFile">
+<div id="modal_GDrivePicker" class="modal">
  
   <!-- Modal content -->
-  <div class="modal_loadFile-content">
+  <div class="modal-content">
      <table style="width: 100%">
       <tr>
         <th>
-          <span class="modal_GDrivePicker-title">Google Drive - Downloading Files...</span>
-          <hr id="splitter" />
+          <span class="modal-title">Google Drive - Downloading Files...</span>
+          <hr class="modal-splitter" />
           <br/>
         </th>
       </tr>
@@ -446,10 +472,10 @@
         <table style="width: 75%;margin:auto;">
           <tr>
         <th>
-          <span class="modal_loadFile-txt" id="modal_GDrivePicker-name">File Name:</span>
+          <span class="modal-txt" id="modal_GDrivePicker-name">File Name:</span>
         </th>
         <th>
-          <span class="modal_loadFile-txt" id="modal_GDrivePicker-size">File Size:</span>
+          <span class="modal-txt" id="modal_GDrivePicker-size">File Size:</span>
         </th>
         </tr>
         </table>
@@ -469,14 +495,14 @@
 
 <!-- The File Export Dialog
 ====================================================================== -->
-<div id="modal_exportFile" class="modal_openFile">
+<div id="modal_exportFile" class="modal">
   <!-- Modal content -->
-  <div class="modal_openFile-content" style="width:600px">
+  <div class="modal-content" style="width:700px">
      <table style="width: 100%">
       <tr>
         <th>
-          <span class="modal_openFile-title">Iris Viewer - Export File</span>
-          <hr id="splitter" />
+          <span class="modal-title">Iris Viewer - Export File</span>
+          <hr class="modal-splitter" />
 
           <span class="modal-body" style="font-size: 12px">
             You can use this dialog to export the current scene to a different format.
@@ -542,7 +568,7 @@
       </table>
       <tr>
         <th>
-          <hr id="splitter" />
+          <hr class="modal-splitter" />
         </th>
       </tr>
       <tr>
@@ -577,14 +603,14 @@
 
 <!-- The File Load Results Warnings and Errors Modal
 ====================================================================== -->
-<div id="modal_openFileResults" class="modal_openFile">
+<div id="modal_openFileResults" class="modal">
   <!-- Modal content -->
-  <div class="modal_openFile-content" style="width:600px">
+  <div class="modal-content" style="width:600px">
      <table style="width: 100%">
       <tr>
         <th>
-          <span class="modal_openFile-title">Iris Viewer - File Load Results</span>
-          <hr id="splitter" />
+          <span class="modal-title">Iris Viewer - File Load Results</span>
+          <hr class="modal-splitter" />
           <span class="modal-body" style="font-size: 12px">
             There were some issues loading the files you selected. Please review them below:
           </span>
@@ -594,25 +620,11 @@
       </tr>
       <tr>
         <th>
-          <div id="div_results" style="overflow-y: scroll; height:250px;">             
-            <div class="modal-result-item" type="error" >
-              <img class ="modal-result-item-img" data-icon="error"/>
-              <span class="modal-result-item-title">Error Loading File</span>
-              <span class="modal-result-item-file">filename.txt</span>
-              <hr id="splitter" />
-              <span class="modal-result-item-txt">There was an error when loading the file default.txt. "Could not find material file 'None.mtl' referenced in cube.obj. Make sure you've selected all referenced files when selecting."</span>
-            </div>
-            <div class="modal-result-item" type="warning" >
-              <img class ="modal-result-item-img" data-icon="warning"/>
-              <span class="modal-result-item-txt">Warning Loading File</span>
-            </div>
-             <div class="modal-result-item" type="warning" >
-              <img class ="modal-result-item-img" data-icon="warning"/>
-              <span class="modal-result-item-txt">Another Warning Loading File</span>
-            </div>
+          <div id="div_results" class="scrollbar" id="style-4">             
+              <!-- Put Errors and Warnings Here-->
           </div>
           <br/>
-          <hr id="splitter" />
+          <hr class="modal-splitter" />
         </th>
       </tr>
       <tr>
@@ -641,7 +653,7 @@
   <a id="sidebar_file_new" href="#">New</a>
   <a id="sidebar_file_import" data-icon="icon-import" href="#">Import</a>
   <a id="sidebar_file_export" data-icon="icon-export" href="#">Export</a>
-  <hr id="splitter" />
+  <hr class="modal-splitter" />
   <a href="https://github.com/VirtexEdgeDesign/Iris-Web-Viewer/wiki" target="_blank">Help</a>
   <a id="menu_about_about" href="#">About</a>
   <div id="dev_signedOut" style="position:absolute; bottom:75px; left:10px;" >

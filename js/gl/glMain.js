@@ -628,6 +628,16 @@ rotX = 0;
 }
 
 
+function AdjustZoom(amount) {
+    Zoom *= amount;
+}
+
+function FitZoom(){
+    for (var i = 0; i < ModelCollection.length; i++) {
+        var model = ModelCollection[i];
+        Zoom = Math.min(-model.MaxPoint.Length()*1.5, Zoom)-1; 
+    }
+}
 
 function SetEdgeRendering(value) {
     ShowEdges = value;

@@ -37,3 +37,14 @@ vxVertex3D.prototype.Set = function(x, y, z) {
   vxVertex3D.prototype.Cross = function(v1, v2) {
     return 1;
   };
+
+  function sigDigs(val, sigdig){
+    var bigVal = parseInt(val * Math.pow(10, sigdig));
+
+    return bigVal/(Math.pow(10, sigdig));
+  };
+
+  vxVertex3D.prototype.toShortString = function() {
+    var fig = 3;
+    return "(" + sigDigs(this.X, fig) + ", " + sigDigs(this.Y, fig) + ", " + sigDigs(this.Z, fig) + ")";
+  };

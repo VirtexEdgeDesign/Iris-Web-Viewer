@@ -17,18 +17,19 @@
 /* Modal Content */
 .modal-content {
     position: relative;
-    background-color: #333;
+    background-color: #2e2e2e;
     margin: auto;
-    padding: 0;
-    border: 1px solid #888;
+    padding: 10px;
+    border: 1px solid #555;
     width: 550px;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.75),0 6px 20px 0 rgba(0,0,0,0.75);
     -webkit-animation-name: animatetop;
     -webkit-animation-duration: 0.4s;
     animation-name: animatetop;
     animation-duration: 0.75s;
-    font-size: 11px;
+    font-size: 12px;
     line-height: 16px;
+    text-align: left;
 }
 
 /* Add Animation */
@@ -42,26 +43,38 @@
     to {top:0; opacity:1}
 }
 
-/* The Close Button */
-.close {
+
+.modal-title {
     color: white;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
+    font-size: 18px;
+    text-align: left;
 }
 
-.close:hover,
-.close:focus {
-    color: #000;
-    text-decoration: none;
-    cursor: pointer;
+.modal-subtitle {
+    color: #aaa;
+    font-size: 16px;
 }
+
+.modal-description {
+    color: #888;
+}
+
+.modal-splitter {
+    padding: 0px 10px 0px 10px;
+    margin: 0px 5px 0px 5px;
+    color: #555;
+    background-color: #777;
+    font-size:1%;
+    height:1px; 
+    border: 0;
+}
+
 
 .modal-header {
     padding: 2px 16px;
-    background-color: darkorange;
-    color: black;
-        font-size: 12px;
+    /*background-color: darkorange;*/
+    color: white;
+    font-size: 12px;
     line-height: 32px;
 }
 
@@ -97,6 +110,7 @@
     color: #ccc;
     vertical-align: middle;
     transition: all 0.3s ease;
+    border-radius: 2px;
 }
 
 .modal-btn:hover {
@@ -129,7 +143,7 @@
 
 .modal-footer {
     padding: 2px 16px;
-    background-color: #222;
+    /*background-color: #222;*/
     color: white;
 }
 
@@ -141,7 +155,7 @@
 
 /* Open File Buttons */
 .modal-result-item {
-   display:block; /* change this from inline-block */
+    display:block; /* change this from inline-block */
     width:95%; /* setting the width */
     margin:3px 5px auto; /* this will center  it */
     position:relative;
@@ -152,7 +166,8 @@
     font-size: 12px;
     color: #ccc;
     vertical-align: middle;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
+    border-radius: 3px;
 }
 
 .modal-result-item:hover {
@@ -174,6 +189,8 @@
     vertical-align: middle;
     font-size: 14px;
     color: white;
+    position: relative;
+    top:-5px;
 }
 
 .modal-result-item-file {
@@ -187,9 +204,7 @@
 
 .modal-result-item-txt {
     font-weight: normal;
-    vertical-align: middle;
-    position: relative;
-    left: 38px;
+    margin-left: 38px;
 }
 
 .modal-result-item-img {

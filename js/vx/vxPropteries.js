@@ -66,7 +66,8 @@ class FaceProperty extends vxProperty{
     x++;
     this.Name = mesh.Name;
     this.Mesh = mesh;
-    this.Model = mesh.Model.Name;
+    console.log(mesh);
+    this.Model = mesh.Mesh.Model.Name;
     this.x = 1;
     
    this.NameNode = this.gui.add(this, 'Name');

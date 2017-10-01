@@ -188,6 +188,11 @@ nav a[data-icon="icon-view-iso"]::before { content: url('../img/tlbr/view/set/vi
 nav a[data-icon="icon-view-ortho"]::before { content: url('../img/tlbr/view/set/view_ortho.png'); }
 nav a[data-icon="icon-view-persp"]::before { content: url('../img/tlbr/view/set/view_perspective.png'); }
 
+/* Zoom Icons */
+nav a[data-icon="icon-view-zoom-in"]::before { content: url('../img/tlbr/view/zoom/zoom_in.png'); }
+nav a[data-icon="icon-view-zoom-out"]::before { content: url('../img/tlbr/view/zoom/zoom_out.png'); }
+nav a[data-icon="icon-view-zoom-fit"]::before { content: url('../img/tlbr/view/zoom/zoom_fit.png'); }
+
 /* Tools Icons */
 nav a[data-icon="icon-tools-measure"]::before { content: url('../img/tlbr/tools/measure.png'); }
 nav a[data-icon="icon-tools-measure-angle"]::before { content: url('../img/tree/node_measure_angle.png'); }
@@ -247,6 +252,26 @@ nav a[data-icon="icon-logo-vrtx"]::before { content: url('../img/icon/vrtx_logo_
 .menubar nav ul li ul li hr#splitter:hover {
     color: #888;
     background-color: #888;
+}
+
+.menubar-splitter {
+    padding: 0px 10px 0px 10px;
+    margin: 0px 5px 0px 5px;
+    color: #555;
+    background-color: #777;
+    font-size:1%;
+    height:1px; 
+    border: 0;
+}
+
+.menubar-splitter-min {
+    padding: 0px 10px 0px 10px;
+    margin: 0px 20px 0px 20px;
+    color: #444;
+    background-color: #555;
+    font-size:1%;
+    height:1px; 
+    border: 0;
 }
 
 .menubar li > a:only-child:after { content: ''; }
