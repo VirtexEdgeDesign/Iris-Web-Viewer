@@ -1,4 +1,3 @@
-    
     //var vertexPositionAttribute;
     //var vertexColorAttribute;
     //var hasTextureAttribute;
@@ -9,7 +8,7 @@
 
     // Vertex shader program
 
-  const vsSource = `
+    const vsSource = `
     attribute vec3 aVertexPosition;
     attribute highp vec3 aVertexNormal;
     attribute vec4 aVertexColor;
@@ -112,9 +111,9 @@
       }
   `;
 
-  // Fragment shader program
+    // Fragment shader program
 
-  const fsSource = `
+    const fsSource = `
     varying highp vec4 vColor;
     varying highp vec3 vLighting;
     varying highp vec2 vTextureCoord;
@@ -145,13 +144,13 @@
     }
   `;
 
-  // Collect all the info needed to use the shader program.
-  // Look up which attributes our shader program is using
-  // for aVertexPosition, aTextureCoord and also
-  // look up uniform locations.
+    // Collect all the info needed to use the shader program.
+    // Look up which attributes our shader program is using
+    // for aVertexPosition, aTextureCoord and also
+    // look up uniform locations.
 
-  //gl_FragColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));//vec4(vColor.rgb * vLighting, vColor.a);
-  var programInfo;
+    //gl_FragColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));//vec4(vColor.rgb * vLighting, vColor.a);
+    var programInfo;
 
 
     function webGLStart() {
@@ -172,39 +171,39 @@
     }
 
 
-//
-// creates a shader of the given type, uploads the source and
-// compiles it.
-//
-function loadShader(gl, type, source) {
-  const newShader = gl.createShader(type);
+    //
+    // creates a shader of the given type, uploads the source and
+    // compiles it.
+    //
+    function loadShader(gl, type, source) {
+        const newShader = gl.createShader(type);
 
-  // Send the source to the shader object
+        // Send the source to the shader object
 
-  gl.shaderSource(newShader, source);
+        gl.shaderSource(newShader, source);
 
-  // Compile the shader program
+        // Compile the shader program
 
-  gl.compileShader(newShader);
+        gl.compileShader(newShader);
 
-  // See if it compiled successfully
+        // See if it compiled successfully
 
-  if (!gl.getShaderParameter(newShader, gl.COMPILE_STATUS)) {
-    alert('An error occurred compiling the shaders: ' + gl.getShaderInfoLog(newShader));
-    gl.deleteShader(newShader);
-    return null;
-  }
+        if (!gl.getShaderParameter(newShader, gl.COMPILE_STATUS)) {
+            alert('An error occurred compiling the shaders: ' + gl.getShaderInfoLog(newShader));
+            gl.deleteShader(newShader);
+            return null;
+        }
 
-  return newShader;
-}
+        return newShader;
+    }
 
-function initShaders() {
+    function initShaders() {
 
-  const vertexShader = loadShader(gl, gl.VERTEX_SHADER, vsSource);
-  const fragmentShader = loadShader(gl, gl.FRAGMENT_SHADER, fsSource);
+        const vertexShader = loadShader(gl, gl.VERTEX_SHADER, vsSource);
+        const fragmentShader = loadShader(gl, gl.FRAGMENT_SHADER, fsSource);
 
-  //      var fragmentShader = getShader(gl, "shader-fs");
-    //    var vertexShader = getShader(gl, "shader-vs");
+        //      var fragmentShader = getShader(gl, "shader-fs");
+        //    var vertexShader = getShader(gl, "shader-vs");
 
         var shaderProgram = gl.createProgram();
         gl.attachShader(shaderProgram, vertexShader);
@@ -218,26 +217,26 @@ function initShaders() {
 
 
         shader = {
-    program: shaderProgram,
-    attribLocations: {
-      vertexPosition: gl.getAttribLocation(shaderProgram, 'aVertexPosition'),
-      vertexNormal: gl.getAttribLocation(shaderProgram, 'aVertexNormal'),
-      vertexColor: gl.getAttribLocation(shaderProgram, 'aVertexColor'),
-      txtrCoords: gl.getAttribLocation(shaderProgram, 'aTextureCoord'),
-    },
-    uniformLocations: {
-        projectionMatrix: gl.getUniformLocation(shaderProgram, 'uProjectionMatrix'),
-        modelViewMatrix: gl.getUniformLocation(shaderProgram, 'uModelViewMatrix'),
-        normalMatrix: gl.getUniformLocation(shaderProgram, 'uNormalMatrix'),
-        renderType: gl.getUniformLocation(shaderProgram, 'uRenderType'),
-        renderTypeFS: gl.getUniformLocation(shaderProgram, 'uRenderTypeFS'),
-        HasTexture: gl.getUniformLocation(shaderProgram, 'uHasTexture'),
-        uSampler: gl.getUniformLocation(shaderProgram, 'uSampler'),
-    },
-  };
+            program: shaderProgram,
+            attribLocations: {
+                vertexPosition: gl.getAttribLocation(shaderProgram, 'aVertexPosition'),
+                vertexNormal: gl.getAttribLocation(shaderProgram, 'aVertexNormal'),
+                vertexColor: gl.getAttribLocation(shaderProgram, 'aVertexColor'),
+                txtrCoords: gl.getAttribLocation(shaderProgram, 'aTextureCoord'),
+            },
+            uniformLocations: {
+                projectionMatrix: gl.getUniformLocation(shaderProgram, 'uProjectionMatrix'),
+                modelViewMatrix: gl.getUniformLocation(shaderProgram, 'uModelViewMatrix'),
+                normalMatrix: gl.getUniformLocation(shaderProgram, 'uNormalMatrix'),
+                renderType: gl.getUniformLocation(shaderProgram, 'uRenderType'),
+                renderTypeFS: gl.getUniformLocation(shaderProgram, 'uRenderTypeFS'),
+                HasTexture: gl.getUniformLocation(shaderProgram, 'uHasTexture'),
+                uSampler: gl.getUniformLocation(shaderProgram, 'uSampler'),
+            },
+        };
         gl.useProgram(shader.program);
 
-//console.log(gl.getAttribLocation.length);
+        //console.log(gl.getAttribLocation.length);
         gl.enableVertexAttribArray(shader.attribLocations.vertexPosition);
         gl.enableVertexAttribArray(shader.attribLocations.vertexNormal);
         gl.enableVertexAttribArray(shader.attribLocations.vertexColor);
@@ -269,13 +268,13 @@ function initShaders() {
 
         var sel_colour = [0.1, 0.6, 1, 1];
         HoveredMesh.HasTexture = 0;
-        
+
         for (var i = 0; i < 3; i++) {
             HoveredMesh.mesh_vertices.push(0);
             HoveredMesh.mesh_vertices.push(0);
             HoveredMesh.mesh_vertices.push(0);
-            
-            
+
+
             HoveredMesh.vert_uvcoords.push(0);
             HoveredMesh.vert_uvcoords.push(1);
 
@@ -298,7 +297,9 @@ function initShaders() {
 
 
     vec3.transformMat4 = function(out, a, m) {
-        var x = a[0], y = a[1], z = a[2],
+        var x = a[0],
+            y = a[1],
+            z = a[2],
             w = m[3] * x + m[7] * y + m[11] * z + m[15];
         w = w || 1.0;
         out[0] = (m[0] * x + m[4] * y + m[8] * z + m[12]) / w;
@@ -306,11 +307,15 @@ function initShaders() {
         out[2] = (m[2] * x + m[6] * y + m[10] * z + m[14]) / w;
         return out;
     };
-        var center = [0,0,0];
+    var center = [0, 0, 0];
 
     vec3.cross = function(out, a, b) {
-        var ax = a[0], ay = a[1], az = a[2],
-            bx = b[0], by = b[1], bz = b[2];
+        var ax = a[0],
+            ay = a[1],
+            az = a[2],
+            bx = b[0],
+            by = b[1],
+            bz = b[2];
 
         out[0] = ay * bz - az * by;
         out[1] = az * bx - ax * bz;
@@ -318,11 +323,11 @@ function initShaders() {
         return out;
     };
 
-        vec3.normalize = function(out, a) {
+    vec3.normalize = function(out, a) {
         var x = a[0],
             y = a[1],
             z = a[2];
-        var len = x*x + y*y + z*z;
+        var len = x * x + y * y + z * z;
         if (len > 0) {
             //TODO: evaluate use of glm_invsqrt here?
             len = 1 / Math.sqrt(len);
@@ -334,417 +339,802 @@ function initShaders() {
     };
 
     function drawScene() {
-      
-      if(safeToDraw == true)
-{
-stats.begin();
 
-    var resp = 8;
-    // monitored code goes here
-        currotX = Smooth(currotX, DegToRad(rotX), resp);
-        currotY = Smooth(currotY, DegToRad(rotY), resp);
-        curZoom = Smooth(curZoom, Zoom, resp);
+        if (safeToDraw == true) {
+            stats.begin();
 
-
-        var theta = currotX;
-        var phi = currotY;
-        
-        var up = [0,1,0];
-        up[0] = Math.sin(theta)*Math.sin(phi);
-        up[1] = Math.cos(phi);
-        up[2] = -Math.cos(theta)*Math.sin(phi);
-        //console.log(up);
-
-        //var center = [0,0,0];
-        
-        // now get the foward vector, the right vector will be the x-product of that
-        // and the up vector.
-        var fwd = [0, 0, 0];
-        var eye = [0, 0, curZoom];
-        eye[0] = Math.sin(theta) * Math.cos(phi)* curZoom;
-        eye[1] = -Math.sin(phi) * curZoom;
-        eye[2] = -Math.cos(theta)*Math.cos(phi) * curZoom;
-
-        fwd[0] = center[0]- eye[0];
-        fwd[1] = center[1]- eye[1];
-        fwd[2] = center[2]- eye[2];
-
-        var fwdN = [0, 0, 0];
-        vec3.normalize(fwdN, fwd);
-        var right = [0, 0, 0];
-        vec3.cross(right, up, fwdN);
-
-        modelprop_Center[0] += panY * up[0] + panX * right[0];
-        modelprop_Center[1] += panY * up[1] + panX * right[1];
-        modelprop_Center[2] += panY * up[2] + panX * right[2];
-        //mat4.translate(mvMatrix, [panY/10 * up[0], panY/10 * up[1], panY/10 * up[2]]);
-        //mat4.translate(mvMatrix, [-panX/10 * right[0], -panX/10 * right[1], -panX/10 * right[2]]);
-    panX = 0;
-    panY = 0;
+            var resp = 8;
+            // monitored code goes here
+            currotX = Smooth(currotX, DegToRad(rotX), resp);
+            currotY = Smooth(currotY, DegToRad(rotY), resp);
+            curZoom = Smooth(curZoom, Zoom, resp);
 
 
-        Cur_Center[0] = Smooth(Cur_Center[0], modelprop_Center[0], 8);
-        Cur_Center[1] = Smooth(Cur_Center[1], modelprop_Center[1], 8);
-        Cur_Center[2] = Smooth(Cur_Center[2], modelprop_Center[2], 8);
+            var theta = currotX;
+            var phi = currotY;
 
-        // Clear the canvas before we start drawing on it.
-        gl.clearColor(0, 0, 0, 1); // Clear to black, fully opaque
-        gl.clearDepth(1.0); // Clear everything
-        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+            var up = [0, 1, 0];
+            up[0] = Math.sin(theta) * Math.sin(phi);
+            up[1] = Math.cos(phi);
+            up[2] = -Math.cos(theta) * Math.sin(phi);
+            //console.log(up);
 
-        // Set the viewport to match
-        gl.viewport(0, 0, canvas.width, canvas.height);
+            //var center = [0,0,0];
 
-        // Establish the perspective with which we want to view the
-        // scene. Our field of view is 45 degrees, with a width/height
-        // ratio of 640:480, and we only want to see objects between 0.1 units
-        // and 100 units away from the camera.
-        var factor = -curZoom / 800;
+            // now get the foward vector, the right vector will be the x-product of that
+            // and the up vector.
+            var fwd = [0, 0, 0];
+            var eye = [0, 0, curZoom];
+            eye[0] = Math.sin(theta) * Math.cos(phi) * curZoom;
+            eye[1] = -Math.sin(phi) * curZoom;
+            eye[2] = -Math.cos(theta) * Math.cos(phi) * curZoom;
 
-        if (ProjectionType == vxProjectionType.Perspective) {
-            mat4.perspective(45, canvas.width / canvas.height, 0.1, 1000000.0, pMatrix);
-        } else if (ProjectionType == vxProjectionType.Ortho) {
-            mat4.ortho(-factor * canvas.width / 2, factor * canvas.width / 2, -factor * canvas.height / 2, factor * canvas.height / 2, -10000, 10000, pMatrix);
-        }
-        
-        // Set the drawing position to the "identity" point, which is
-        // the center of the scene.
-        mat4.identity(mvMatrix);
+            fwd[0] = center[0] - eye[0];
+            fwd[1] = center[1] - eye[1];
+            fwd[2] = center[2] - eye[2];
 
-        mat4.translate(mvMatrix, [0, 0, curZoom]);
-        
-        mat4.translate(mvMatrix, [-2*panX/10, -2*panY/10, 0]);
-        mat4.rotate(mvMatrix, currotY, [1, 0, 0]);
-        mat4.rotate(mvMatrix, currotX, [0, 1, 0]);
+            var fwdN = [0, 0, 0];
+            vec3.normalize(fwdN, fwd);
+            var right = [0, 0, 0];
+            vec3.cross(right, up, fwdN);
 
-
-        // Now get the cross product of the 
-
-        //vec3.transformMat4(Cur_Center, mvMatrix, [panX/10, panY/10, 0]);
-        mat4.translate(mvMatrix, Cur_Center);
-        
-        mat4.multiply(pMatrix, mvMatrix, mvp);
-        // Save the current matrix, then rotate before we draw.
-
-        mvPushMatrix();
+            modelprop_Center[0] += panY * up[0] + panX * right[0];
+            modelprop_Center[1] += panY * up[1] + panX * right[1];
+            modelprop_Center[2] += panY * up[2] + panX * right[2];
+            //mat4.translate(mvMatrix, [panY/10 * up[0], panY/10 * up[1], panY/10 * up[2]]);
+            //mat4.translate(mvMatrix, [-panX/10 * right[0], -panX/10 * right[1], -panX/10 * right[2]]);
+            panX = 0;
+            panY = 0;
 
 
-        // Draw Mesh with Encoded Index Colour for Selection
-        //***************************************************************************************
-        gl.uniform1i(shader.uniformLocations.renderType, 0);
-        gl.uniform1i(shader.uniformLocations.renderTypeFS, 0);
+            Cur_Center[0] = Smooth(Cur_Center[0], modelprop_Center[0], 8);
+            Cur_Center[1] = Smooth(Cur_Center[1], modelprop_Center[1], 8);
+            Cur_Center[2] = Smooth(Cur_Center[2], modelprop_Center[2], 8);
+
+            // Clear the canvas before we start drawing on it.
+            gl.clearColor(0, 0, 0, 1); // Clear to black, fully opaque
+            gl.clearDepth(1.0); // Clear everything
+            gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+            // Set the viewport to match
+            gl.viewport(0, 0, canvas.width, canvas.height);
+
+            // Establish the perspective with which we want to view the
+            // scene. Our field of view is 45 degrees, with a width/height
+            // ratio of 640:480, and we only want to see objects between 0.1 units
+            // and 100 units away from the camera.
+            var factor = -curZoom / 800;
+
+            if (ProjectionType == vxProjectionType.Perspective) {
+                mat4.perspective(45, canvas.width / canvas.height, 0.1, 1000000.0, pMatrix);
+            } else if (ProjectionType == vxProjectionType.Ortho) {
+                mat4.ortho(-factor * canvas.width / 2, factor * canvas.width / 2, -factor * canvas.height / 2, factor * canvas.height / 2, -10000, 10000, pMatrix);
+            }
+
+            // Set the drawing position to the "identity" point, which is
+            // the center of the scene.
+            mat4.identity(mvMatrix);
+
+            mat4.translate(mvMatrix, [0, 0, curZoom]);
+
+            mat4.translate(mvMatrix, [-2 * panX / 10, -2 * panY / 10, 0]);
+            mat4.rotate(mvMatrix, currotY, [1, 0, 0]);
+            mat4.rotate(mvMatrix, currotX, [0, 1, 0]);
 
 
-        for (var i = 0; i < MeshCollection.length; i++) {
-            MeshCollection[i].DrawSelPreProc();
-        }
+            // Now get the cross product of the 
 
-        // Get Selection Information
-        //***************************************************************************************
-        var pixels = new Uint8Array(4);
-        gl.readPixels(MouseState.x, gl.drawingBufferHeight - MouseState.y, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
+            //vec3.transformMat4(Cur_Center, mvMatrix, [panX/10, panY/10, 0]);
+            mat4.translate(mvMatrix, Cur_Center);
 
-        HoverIndex = 0;
-        HoverIndex = pixels[0] + pixels[1] * 255 + pixels[2] * 255 * 255;
+            mat4.multiply(pMatrix, mvMatrix, mvp);
+            // Save the current matrix, then rotate before we draw.
 
-        var backCol = 0.125;
-        gl.clearColor(backCol, backCol, backCol, 1.0); // Clear to black, fully opaque
-        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+            mvPushMatrix();
 
-        // Always draw the grid normally
-        gl.uniform1i(shader.uniformLocations.renderType, 1);
-        gl.uniform1i(shader.uniformLocations.renderTypeFS, 1);
-        GridMesh.Draw();
-        
-        if(RenderState == vxRenderState.SurfaceNormal)
-        {
-            // Set to Normal View
-            gl.uniform1i(shader.uniformLocations.renderType, 3);
 
-            // Deactivate All Textures
+            // Draw Mesh with Encoded Index Colour for Selection
+            //***************************************************************************************
+            gl.uniform1i(shader.uniformLocations.renderType, 0);
             gl.uniform1i(shader.uniformLocations.renderTypeFS, 0);
-        }
-          
-        if (RenderState != vxRenderState.Wireframe) {
-            //New elegent Drawing code
+
+
             for (var i = 0; i < MeshCollection.length; i++) {
-                MeshCollection[i].Draw();
+                MeshCollection[i].DrawSelPreProc();
             }
+
+            // Get Selection Information
+            //***************************************************************************************
+            var pixels = new Uint8Array(4);
+            gl.readPixels(MouseState.x, gl.drawingBufferHeight - MouseState.y, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
+
+            HoverIndex = 0;
+            HoverIndex = pixels[0] + pixels[1] * 255 + pixels[2] * 255 * 255;
+
+            var backCol = 0.125;
+            gl.clearColor(backCol, backCol, backCol, 1.0); // Clear to black, fully opaque
+            gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+            // Always draw the grid normally
+            gl.uniform1i(shader.uniformLocations.renderType, 1);
+            gl.uniform1i(shader.uniformLocations.renderTypeFS, 1);
+            GridMesh.Draw();
+
+            if (RenderState == vxRenderState.SurfaceNormal) {
+                // Set to Normal View
+                gl.uniform1i(shader.uniformLocations.renderType, 3);
+
+                // Deactivate All Textures
+                gl.uniform1i(shader.uniformLocations.renderTypeFS, 0);
+            }
+
+            if (RenderState != vxRenderState.Wireframe) {
+                //New elegent Drawing code
+                for (var i = 0; i < MeshCollection.length; i++) {
+                    MeshCollection[i].Draw();
+                }
+            }
+
+            // Everything After this does not need shading
+            gl.uniform1i(shader.uniformLocations.renderType, 2);
+
+            // Only find index is selection is greater than 0
+            if (HoverIndex > 0 && MeshCollectionPart.length > 0) {
+
+                //Keep a running count of the total
+                var runningtotal = 0;
+
+                // Now check if the Hover index is within this mesh's bounds
+                for (var i = 0; i < MeshCollectionPart.length; i++) {
+
+                    // Now check if the Hover Index is within this Mesh Collection
+                    if (HoverIndex >= MeshCollectionPart[i].IndexStart && HoverIndex < MeshCollectionPart[i].IndexEnd) {
+                        //Now Finally Draw the Face
+                        for (var j = 0; j < 9; j++) {
+                            HoveredMesh.mesh_vertices[j] = MeshCollectionPart[i].mesh_vertices[(HoverIndex - 1 - runningtotal) * 9 + j];
+                            HoveredMesh.vert_noramls[j] = MeshCollectionPart[i].vert_noramls[(HoverIndex - 1 - runningtotal) * 9 + j];
+                        }
+                        HoveredMesh.Model = MeshCollectionPart[i].Model;
+
+                        HoveredMesh.InitialiseBuffers();
+                        HoveredMesh.SetCenter();
+                    }
+
+                    // Keep running total
+                    runningtotal = runningtotal + (MeshCollectionPart[i].IndexEnd - MeshCollectionPart[i].IndexStart);
+
+                }
+
+            } else {
+                for (var i = 0; i < 9; i++)
+                    HoveredMesh.mesh_vertices[i] = 0;
+
+                HoveredMesh.InitialiseBuffers();
+            }
+
+            HoveredMesh.Draw();
+
+
+            //Last thing to draw is the Selection
+            for (var i = 0; i < SelectedMeshCollection.length; i++) {
+                SelectedMeshCollection[i].Draw();
+            }
+
+            // Only Draw Edges if the Shaded Edge Settings is set
+            for (var i = 0; i < MeshCollection.length; i++) {
+                if (ShowEdges == true) {
+                    MeshCollection[i].DrawEdge();
+                }
+                if (RenderState == vxRenderState.Wireframe) {
+                    MeshCollection[i].DrawWireframe();
+                }
+            }
+
+            gl.uniform1i(shader.uniformLocations.HasTexture, 1);
+            for (var i = 0; i < MeasureCollection.length; i++) {
+                MeasureCollection[i].Draw();
+            }
+
+            //gl.uniform1i(hasTextureAttribute, 2);
+            XAxisMesh.Draw();
+            YAxisMesh.Draw();
+            ZAxisMesh.Draw();
+
+
+            var newCntr = [];
+            newCntr.push(-modelprop_Center[0]);
+            newCntr.push(-modelprop_Center[1]);
+            newCntr.push(-modelprop_Center[2]);
+
+
+            //mat4.translate(mvMatrix,newCntr);
+            //Cntr_Mesh.Draw();
+
+
+
+            mvPopMatrix();
+
+            //Gimbal Viewport Size
+            var size = 80;
+
+            // Set the viewport to match
+            gl.viewport(canvas.width - size, canvas.height - size, size, size);
+
+
+            if (ProjectionType == vxProjectionType.Perspective) {
+                mat4.perspective(45, 1, 0.1, 10000.0, pMatrix);
+
+            } else if (ProjectionType == vxProjectionType.Ortho) {
+                size = 15;
+                mat4.ortho(-size, size, -size, size, -10000, 10000, pMatrix);
+            }
+
+
+            // Set the drawing position to the "identity" point, which is
+            // the center of the scene.
+            mat4.identity(mvMatrix);
+
+            mat4.translate(mvMatrix, [-0.0, 0.0, -size / 2]);
+            mat4.rotate(mvMatrix, currotY, [1, 0, 0]);
+            mat4.rotate(mvMatrix, currotX, [0, 1, 0]);
+
+            setMatrixUniforms();
+
+
+            // Draw Axis
+            XAxisMesh.Draw();
+            YAxisMesh.Draw();
+            ZAxisMesh.Draw();
+
+            stats.end();
+        }
+    }
+
+
+
+
+    function SetViewToIso() {
+        rotX = -45;
+        rotY = 30;
+    }
+
+    function SetViewToTop() {
+        rotY = 90;
+        rotX = 90;
+    }
+
+    function SetViewToBottom() {
+        rotY = -90;
+        rotX = 90;
+    }
+
+    function SetViewToFront() {
+        rotY = 0;
+        rotX = 270;
+    }
+
+    function SetViewToBack() {
+        rotY = 0;
+        rotX = 90;
+    }
+
+    function SetViewToLeft() {
+        rotY = 0;
+        rotX = 180;
+    }
+
+    function SetViewToRight() {
+        rotY = 0;
+        rotX = 0;
+    }
+
+
+    function AdjustZoom(amount) {
+        Zoom *= amount;
+    }
+
+    function FitZoom() {
+        for (var i = 0; i < ModelCollection.length; i++) {
+            var model = ModelCollection[i];
+            Zoom = Math.min(-model.MaxPoint.Length() * 1.5, Zoom) - 1;
+        }
+    }
+
+    function SetEdgeRendering(value) {
+        ShowEdges = value;
+        log("ShowEdges = " + ShowEdges);
+        SetMenuBarValues();
+    }
+
+    function SetShadingToTextured() {
+        RenderState = vxRenderState.Textured;
+        log("RenderState = " + RenderState);
+        SetMenuBarValues();
+    }
+
+    function SetShadingToShaded() {
+        RenderState = vxRenderState.Shaded;
+        log("RenderState = " + RenderState);
+        SetMenuBarValues();
+    }
+
+    function SetShadingToWireframe() {
+        RenderState = vxRenderState.Wireframe;
+        log("RenderState = " + RenderState);
+        SetMenuBarValues();
+    }
+
+    function SetShadingToNormal() {
+        RenderState = vxRenderState.SurfaceNormal;
+        log("RenderState = " + RenderState);
+        SetMenuBarValues();
+    }
+
+
+    function SetViewToPerspective() {
+        ProjectionType = vxProjectionType.Perspective;
+        log("ProjectionType = " + ProjectionType);
+        SetMenuBarValues();
+    }
+
+    function SetViewToOrtho() {
+        ProjectionType = vxProjectionType.Ortho;
+        log("ProjectionType = " + ProjectionType);
+        SetMenuBarValues();
+    }
+
+    var unSelCol = "";
+    //var selCol = "#0094f7";
+    //var selCol = "#0082d9";
+    var selCol = "#555";
+
+    function setMenuItemState(string, toggleState) {
+        var item = document.getElementById(string);
+        document.getElementById(string).parentElement.style.backgroundColor = (toggleState == true) ? selCol : unSelCol;
+        //document.getElementById(string).parentElement.style.border = (toggleState==true) ? "thin solid #0000FF" : "thin solid #333";
+        document.getElementById(string).parentElement.style.borderColor = (toggleState == true) ? selCol : unSelCol;
+        item.style.color = (toggleState == true) ? "#fff" : "#ccc";
+    }
+
+
+    function SetMenuBarValues() {
+
+        // Handle Projection Type
+        switch (ProjectionType) {
+            case vxProjectionType.Perspective:
+                setMenuItemState("menu_view_perspec", true);
+                setMenuItemState("menu_view_ortho", false);
+                break;
+            case vxProjectionType.Ortho:
+                setMenuItemState("menu_view_perspec", false);
+                setMenuItemState("menu_view_ortho", true);
+                break;
         }
 
-        // Everything After this does not need shading
-        gl.uniform1i(shader.uniformLocations.renderType, 2);
+        // Handle Shading Type
+        switch (RenderState) {
+            case vxRenderState.Textured:
+                setMenuItemState("menu_view_textured", true);
+                setMenuItemState("menu_view_shaded", false);
+                setMenuItemState("menu_view_wireframe", false);
+                setMenuItemState("menu_view_surfaceNormal", false);
+                break;
+            case vxRenderState.Shaded:
+                setMenuItemState("menu_view_textured", false);
+                setMenuItemState("menu_view_shaded", true);
+                setMenuItemState("menu_view_wireframe", false);
+                setMenuItemState("menu_view_surfaceNormal", false);
+                break;
+            case vxRenderState.Wireframe:
+                setMenuItemState("menu_view_textured", false);
+                setMenuItemState("menu_view_shaded", false);
+                setMenuItemState("menu_view_wireframe", true);
+                setMenuItemState("menu_view_surfaceNormal", false);
+                break;
+            case vxRenderState.SurfaceNormal:
+                setMenuItemState("menu_view_textured", false);
+                setMenuItemState("menu_view_shaded", false);
+                setMenuItemState("menu_view_wireframe", false);
+                setMenuItemState("menu_view_surfaceNormal", true);
+                break;
+        }
 
-        // Only find index is selection is greater than 0
-        if (HoverIndex > 0 && MeshCollectionPart.length > 0) {
-          
-          //Keep a running count of the total
-          var runningtotal = 0;
-          
-          // Now check if the Hover index is within this mesh's bounds
-          for (var i = 0; i < MeshCollectionPart.length; i++) {
-            
-            // Now check if the Hover Index is within this Mesh Collection
-            if(HoverIndex >= MeshCollectionPart[i].IndexStart && HoverIndex < MeshCollectionPart[i].IndexEnd)
-            {
-              //Now Finally Draw the Face
-              for (var j = 0; j < 9; j++)
-              {
-                HoveredMesh.mesh_vertices[j] = MeshCollectionPart[i].mesh_vertices[(HoverIndex - 1 - runningtotal) * 9 + j];
-                HoveredMesh.vert_noramls[j] = MeshCollectionPart[i].vert_noramls[(HoverIndex - 1 - runningtotal) * 9 + j];
-              }
-              HoveredMesh.Model = MeshCollectionPart[i].Model;
-              
-              HoveredMesh.InitialiseBuffers();
-              HoveredMesh.SetCenter();
-            }
-            
-          // Keep running total
-          runningtotal = runningtotal + (MeshCollectionPart[i].IndexEnd - MeshCollectionPart[i].IndexStart);
-          
-          }
-          
+        // Handle Edge Rendering
+        if (ShowEdges == true) {
+            setMenuItemState("menu_view_doEdge", true);
+            setMenuItemState("menu_view_noEdge", false);
         } else {
-            for (var i = 0; i < 9; i++)
-                HoveredMesh.mesh_vertices[i] = 0;
+            setMenuItemState("menu_view_doEdge", false);
+            setMenuItemState("menu_view_noEdge", true);
+        }
+    }
 
-            HoveredMesh.InitialiseBuffers();
+
+
+
+
+
+
+
+
+
+
+
+
+    // UTILTIES FOR WEBGL
+    // --------------------------------------------------------------------
+    // This class measures different values between mesh objects.
+
+    // Converts Degrees to Radians
+    function DegToRad(degrees) {
+        return degrees * Math.PI / 180;
+    }
+
+    // Converts Radians to Degrees
+    function RadToDeg(radians) {
+        return radians * 180 / Math.PI;
+    }
+
+    function Smooth(whatVarIs, whatVarShouldBe, steps) {
+        return whatVarIs + (whatVarShouldBe - whatVarIs) / steps;
+    }
+
+
+
+
+
+    function mvRotate(angle, v) {
+        var inRadians = angle * Math.PI / 180.0;
+
+        var m = Matrix.Rotation(inRadians, $V([v[0], v[1], v[2]])).ensure4x4();
+        multMatrix(m);
+    }
+
+    // The Matrix Stack
+    var mvMatrixStack = [];
+
+    // Push a Metrix onto the Stack
+    function mvPushMatrix() {
+        var copy = mat4.create();
+        mat4.set(mvMatrix, copy);
+        mvMatrixStack.push(copy);
+    }
+
+    // Pop a matrix off the stack
+    function mvPopMatrix() {
+        if (mvMatrixStack.length === 0) {
+            throw "Invalid popMatrix!";
+        }
+        mvMatrix = mvMatrixStack.pop();
+    }
+
+
+
+    function initGL(canvas) {
+        try {
+            gl = canvas.getContext("experimental-webgl");
+            gl.viewportWidth = canvas.width;
+            gl.viewportHeight = canvas.height;
+
+
+
+        } catch (e) {}
+        if (!gl) {
+            alert("Could not initialise WebGL, sorry :-(");
+        }
+    }
+
+
+    function CreateGrid(gridSize) {
+
+        var temp_Normal = [0, 0, 0];
+        //var temp_colour = [ 0.25, 0.25, 0.25, 1];  
+        var temp_colour = [0.825, 0.825, 0.825, 1];
+        var count = 0;
+        /* Load In Vertex and Colour Data */
+        for (var i = -gridSize; i < gridSize + 1; i += 5) {
+            if (i % 20 === 0)
+                temp_colour = [1, 1, 1, 1];
+            else
+                temp_colour = [0.7, 0.7, 0.7, 1];
+            // First Point is (i, 0, -gridSize)
+            GridMesh.mesh_vertices.push(i);
+            GridMesh.mesh_vertices.push(0);
+            GridMesh.mesh_vertices.push(-gridSize);
+
+            GridMesh.vert_noramls.push(temp_Normal[0]);
+            GridMesh.vert_noramls.push(temp_Normal[1]);
+            GridMesh.vert_noramls.push(temp_Normal[2]);
+
+            GridMesh.vert_uvcoords.push(temp_Normal[1]);
+            GridMesh.vert_uvcoords.push(temp_Normal[2]);
+
+            GridMesh.vert_colours.push(temp_colour[0]);
+            GridMesh.vert_colours.push(temp_colour[1]);
+            GridMesh.vert_colours.push(temp_colour[2]);
+            GridMesh.vert_colours.push(temp_colour[3]);
+
+            GridMesh.Indices.push(count);
+            count++;
+
+
+
+
+            GridMesh.mesh_vertices.push(i);
+            GridMesh.mesh_vertices.push(0);
+            GridMesh.mesh_vertices.push(gridSize);
+
+            GridMesh.vert_noramls.push(temp_Normal[0]);
+            GridMesh.vert_noramls.push(temp_Normal[1]);
+            GridMesh.vert_noramls.push(temp_Normal[2]);
+
+            GridMesh.vert_uvcoords.push(temp_Normal[1]);
+            GridMesh.vert_uvcoords.push(temp_Normal[2]);
+
+            GridMesh.vert_colours.push(temp_colour[0]);
+            GridMesh.vert_colours.push(temp_colour[1]);
+            GridMesh.vert_colours.push(temp_colour[2]);
+            GridMesh.vert_colours.push(temp_colour[3]);
+
+            GridMesh.Indices.push(count);
+            count++;
+
+
+
+
+            GridMesh.mesh_vertices.push(-gridSize);
+            GridMesh.mesh_vertices.push(0);
+            GridMesh.mesh_vertices.push(i);
+
+            GridMesh.vert_noramls.push(temp_Normal[0]);
+            GridMesh.vert_noramls.push(temp_Normal[1]);
+            GridMesh.vert_noramls.push(temp_Normal[2]);
+
+            GridMesh.vert_uvcoords.push(temp_Normal[1]);
+            GridMesh.vert_uvcoords.push(temp_Normal[2]);
+
+            GridMesh.vert_colours.push(temp_colour[0]);
+            GridMesh.vert_colours.push(temp_colour[1]);
+            GridMesh.vert_colours.push(temp_colour[2]);
+            GridMesh.vert_colours.push(temp_colour[3]);
+
+            GridMesh.Indices.push(count);
+            count++;
+
+
+
+            GridMesh.mesh_vertices.push(gridSize);
+            GridMesh.mesh_vertices.push(0);
+            GridMesh.mesh_vertices.push(i);
+
+            GridMesh.vert_noramls.push(temp_Normal[0]);
+            GridMesh.vert_noramls.push(temp_Normal[1]);
+            GridMesh.vert_noramls.push(temp_Normal[2]);
+
+            GridMesh.vert_uvcoords.push(temp_Normal[1]);
+            GridMesh.vert_uvcoords.push(temp_Normal[2]);
+
+            GridMesh.vert_colours.push(temp_colour[0]);
+            GridMesh.vert_colours.push(temp_colour[1]);
+            GridMesh.vert_colours.push(temp_colour[2]);
+            GridMesh.vert_colours.push(temp_colour[3]);
+
+            GridMesh.Indices.push(count);
+            count++;
         }
 
-        HoveredMesh.Draw();
-
-
-        //Last thing to draw is the Selection
-        for (var i = 0; i < SelectedMeshCollection.length; i++) {
-            SelectedMeshCollection[i].Draw();
-        }
-
-        // Only Draw Edges if the Shaded Edge Settings is set
-        for (var i = 0; i < MeshCollection.length; i++) {
-            if (ShowEdges == true) {
-                MeshCollection[i].DrawEdge();
-            }
-            if (RenderState == vxRenderState.Wireframe) {
-                MeshCollection[i].DrawWireframe();
-            }
-        }
-        
-        gl.uniform1i(shader.uniformLocations.HasTexture, 1);
-        for (var i = 0; i < MeasureCollection.length; i++) {
-            MeasureCollection[i].Draw();
-        }
-        
-        //gl.uniform1i(hasTextureAttribute, 2);
-        XAxisMesh.Draw();
-        YAxisMesh.Draw();
-        ZAxisMesh.Draw();
-        
-        
-        var newCntr = [];
-        newCntr.push(-modelprop_Center[0]);
-        newCntr.push(-modelprop_Center[1]);
-        newCntr.push(-modelprop_Center[2]);
-        
-        
-        //mat4.translate(mvMatrix,newCntr);
-        //Cntr_Mesh.Draw();
-
-        
-
-        mvPopMatrix();
-
-        //Gimbal Viewport Size
-        var size = 80;
-
-        // Set the viewport to match
-        gl.viewport(canvas.width - size, canvas.height - size, size, size);
-
-
-        if (ProjectionType == vxProjectionType.Perspective) {
-            mat4.perspective(45, 1, 0.1, 10000.0, pMatrix);
-            
-        } else if (ProjectionType == vxProjectionType.Ortho) {
-            size = 15;
-            mat4.ortho(-size, size, -size, size,  -10000, 10000, pMatrix);
-        }
-
-
-        // Set the drawing position to the "identity" point, which is
-        // the center of the scene.
-        mat4.identity(mvMatrix);
-
-        mat4.translate(mvMatrix, [-0.0, 0.0, -size / 2]);
-        mat4.rotate(mvMatrix, currotY, [1, 0, 0]);
-        mat4.rotate(mvMatrix, currotX, [0, 1, 0]);
-
-        setMatrixUniforms();
-        
-        
-        // Draw Axis
-        XAxisMesh.Draw();
-        YAxisMesh.Draw();
-        ZAxisMesh.Draw();
-        
-   stats.end();
-    }
-}
-
-
-
-
-function SetViewToIso() {
-rotX = -45;
-rotY = 30;
-}
-
-function SetViewToTop() {
-rotY = 90;
-rotX = 90;
-}
-
-function SetViewToBottom() {
-rotY = -90;
-rotX = 90;
-}
-
-function SetViewToFront() {
-rotY = 0;
-rotX = 270;
-}
-
-function SetViewToBack() {
-rotY = 0;
-rotX = 90;
-}
-
-function SetViewToLeft() {
-rotY = 0;
-rotX = 180;
-}
-
-function SetViewToRight() {
-rotY = 0;
-rotX = 0;
-}
-
-
-function AdjustZoom(amount) {
-    Zoom *= amount;
-}
-
-function FitZoom(){
-    for (var i = 0; i < ModelCollection.length; i++) {
-        var model = ModelCollection[i];
-        Zoom = Math.min(-model.MaxPoint.Length()*1.5, Zoom)-1; 
-    }
-}
-
-function SetEdgeRendering(value) {
-    ShowEdges = value;
-    log("ShowEdges = " + ShowEdges);
-    SetMenuBarValues();
-}
-
-function SetShadingToTextured() {
-    RenderState = vxRenderState.Textured;
-    log("RenderState = " + RenderState);
-    SetMenuBarValues();
-}
-
-function SetShadingToShaded() {
-    RenderState = vxRenderState.Shaded;
-    log("RenderState = " + RenderState);
-    SetMenuBarValues();
-}
-
-function SetShadingToWireframe() {
-    RenderState = vxRenderState.Wireframe;
-    log("RenderState = " + RenderState);
-    SetMenuBarValues();
-}
-
-function SetShadingToNormal() {
-    RenderState = vxRenderState.SurfaceNormal;
-    log("RenderState = " + RenderState);
-    SetMenuBarValues();
-}
-
-
-function SetViewToPerspective() {
-    ProjectionType = vxProjectionType.Perspective;
-    log("ProjectionType = " + ProjectionType);
-    SetMenuBarValues();
-}
-
-function SetViewToOrtho() {
-    ProjectionType = vxProjectionType.Ortho;
-    log("ProjectionType = " + ProjectionType);
-    SetMenuBarValues();
-}
-
-var unSelCol = "";
-//var selCol = "#0094f7";
-//var selCol = "#0082d9";
-var selCol = "#555";
-
-function setMenuItemState(string, toggleState){
-    var item = document.getElementById(string);
-    document.getElementById(string).parentElement.style.backgroundColor = (toggleState==true) ? selCol : unSelCol;
-    //document.getElementById(string).parentElement.style.border = (toggleState==true) ? "thin solid #0000FF" : "thin solid #333";
-    document.getElementById(string).parentElement.style.borderColor = (toggleState==true) ? selCol : unSelCol;
-    item.style.color = (toggleState==true) ? "#fff" : "#ccc";
-}
-
-
-function SetMenuBarValues(){
-
-    // Handle Projection Type
-    switch(ProjectionType){
-        case vxProjectionType.Perspective:
-            setMenuItemState("menu_view_perspec", true);
-            setMenuItemState("menu_view_ortho", false);
-        break;
-        case vxProjectionType.Ortho:
-            setMenuItemState("menu_view_perspec", false);
-            setMenuItemState("menu_view_ortho", true);
-        break;
+        GridMesh.initBasicTexture();
+        GridMesh.InitialiseBuffers();
+        GridMesh.meshType = MeshType.Lines;
     }
 
-    // Handle Shading Type
-    switch(RenderState){
-        case vxRenderState.Textured:
-            setMenuItemState("menu_view_textured", true);
-            setMenuItemState("menu_view_shaded", false);
-            setMenuItemState("menu_view_wireframe", false);
-            setMenuItemState("menu_view_surfaceNormal", false);
-        break;
-        case vxRenderState.Shaded:
-            setMenuItemState("menu_view_textured", false);
-            setMenuItemState("menu_view_shaded", true);
-            setMenuItemState("menu_view_wireframe", false);
-            setMenuItemState("menu_view_surfaceNormal", false);
-        break;
-        case vxRenderState.Wireframe:
-            setMenuItemState("menu_view_textured", false);
-            setMenuItemState("menu_view_shaded", false);
-            setMenuItemState("menu_view_wireframe", true);
-            setMenuItemState("menu_view_surfaceNormal", false);
-        break;
-        case vxRenderState.SurfaceNormal:
-            setMenuItemState("menu_view_textured", false);
-            setMenuItemState("menu_view_shaded", false);
-            setMenuItemState("menu_view_wireframe", false);
-            setMenuItemState("menu_view_surfaceNormal", true);
-        break;
-    }
+    function CreateAxis() {
+        var strt = 2;
+        var end = 5;
+        /*
+  var cntr_colour = [0.75, 0.75, 0.75, 1];
+      Cntr_Mesh.mesh_vertices.push(0);
+         Cntr_Mesh.mesh_vertices.push(0);
+         Cntr_Mesh.mesh_vertices.push(0); 
+         
+         Cntr_Mesh.vert_noramls.push(0);
+         Cntr_Mesh.vert_noramls.push(1);
+         Cntr_Mesh.vert_noramls.push(0);
+         
+         Cntr_Mesh.vert_uvcoords.push(0);
+         Cntr_Mesh.vert_uvcoords.push(0);
+         
+         Cntr_Mesh.vert_colours.push(cntr_colour[0]);
+         Cntr_Mesh.vert_colours.push(cntr_colour[1]);
+         Cntr_Mesh.vert_colours.push(cntr_colour[2]);
+         Cntr_Mesh.vert_colours.push(cntr_colour[3]);
+         
+         Cntr_Mesh.Indices.push(0);
 
-    // Handle Edge Rendering
-    if(ShowEdges == true){
-        setMenuItemState("menu_view_doEdge", true);
-        setMenuItemState("menu_view_noEdge", false);
+         Cntr_Mesh.mesh_vertices.push(end);
+         Cntr_Mesh.mesh_vertices.push(0);
+         Cntr_Mesh.mesh_vertices.push(0); 
+         
+         Cntr_Mesh.vert_noramls.push(0);
+         Cntr_Mesh.vert_noramls.push(1);
+         Cntr_Mesh.vert_noramls.push(0);
+         
+         Cntr_Mesh.vert_uvcoords.push(0);
+         Cntr_Mesh.vert_uvcoords.push(0);
+         
+         Cntr_Mesh.vert_colours.push(cntr_colour[0]);
+         Cntr_Mesh.vert_colours.push(cntr_colour[1]);
+         Cntr_Mesh.vert_colours.push(cntr_colour[2]);
+         Cntr_Mesh.vert_colours.push(cntr_colour[3]);
+         
+         Cntr_Mesh.Indices.push(1);
+         Cntr_Mesh.Indices.push(0);
+         
+        Cntr_Mesh.mesh_vertices.push(0);
+         Cntr_Mesh.mesh_vertices.push(end);
+         Cntr_Mesh.mesh_vertices.push(0); 
+         
+         Cntr_Mesh.vert_noramls.push(0);
+         Cntr_Mesh.vert_noramls.push(1);
+         Cntr_Mesh.vert_noramls.push(0);
+         
+         Cntr_Mesh.vert_uvcoords.push(0);
+         Cntr_Mesh.vert_uvcoords.push(0);
+         
+         Cntr_Mesh.vert_colours.push(cntr_colour[0]);
+         Cntr_Mesh.vert_colours.push(cntr_colour[1]);
+         Cntr_Mesh.vert_colours.push(cntr_colour[2]);
+         Cntr_Mesh.vert_colours.push(cntr_colour[3]);
+         
+         Cntr_Mesh.Indices.push(2);
+         Cntr_Mesh.Indices.push(0);
+         
+        Cntr_Mesh.mesh_vertices.push(0);
+         Cntr_Mesh.mesh_vertices.push(0);
+         Cntr_Mesh.mesh_vertices.push(end); 
+         
+         Cntr_Mesh.vert_noramls.push(0);
+         Cntr_Mesh.vert_noramls.push(1);
+         Cntr_Mesh.vert_noramls.push(0);
+         
+         Cntr_Mesh.vert_uvcoords.push(0);
+         Cntr_Mesh.vert_uvcoords.push(0);
+         
+         Cntr_Mesh.vert_colours.push(cntr_colour[0]);
+         Cntr_Mesh.vert_colours.push(cntr_colour[1]);
+         Cntr_Mesh.vert_colours.push(cntr_colour[2]);
+         Cntr_Mesh.vert_colours.push(cntr_colour[3]);
+         
+         Cntr_Mesh.Indices.push(3);
+         Cntr_Mesh.Indices.push(0);
+
+
+        Cntr_Mesh.InitialiseBuffers();
+        Cntr_Mesh.meshType = MeshType.Lines;*/
+
+        // The X Axis
+        var xcolour = [1, 0, 0, 1];
+        XAxisMesh.mesh_vertices.push(0);
+        XAxisMesh.mesh_vertices.push(0);
+        XAxisMesh.mesh_vertices.push(0);
+
+        XAxisMesh.vert_noramls.push(0);
+        XAxisMesh.vert_noramls.push(1);
+        XAxisMesh.vert_noramls.push(0);
+
+        XAxisMesh.vert_uvcoords.push(0);
+        XAxisMesh.vert_uvcoords.push(0);
+
+        XAxisMesh.vert_colours.push(xcolour[0]);
+        XAxisMesh.vert_colours.push(xcolour[1]);
+        XAxisMesh.vert_colours.push(xcolour[2]);
+        XAxisMesh.vert_colours.push(xcolour[3]);
+
+        XAxisMesh.Indices.push(0);
+
+        XAxisMesh.mesh_vertices.push(10);
+        XAxisMesh.mesh_vertices.push(0);
+        XAxisMesh.mesh_vertices.push(0);
+
+        XAxisMesh.vert_noramls.push(0);
+        XAxisMesh.vert_noramls.push(1);
+        XAxisMesh.vert_noramls.push(0);
+
+        XAxisMesh.vert_uvcoords.push(0);
+        XAxisMesh.vert_uvcoords.push(0);
+
+        XAxisMesh.vert_colours.push(xcolour[0]);
+        XAxisMesh.vert_colours.push(xcolour[1]);
+        XAxisMesh.vert_colours.push(xcolour[2]);
+        XAxisMesh.vert_colours.push(xcolour[3]);
+
+        XAxisMesh.Indices.push(1);
+        XAxisMesh.initBasicTexture();
+        XAxisMesh.InitialiseBuffers();
+        XAxisMesh.meshType = MeshType.Lines;
+
+
+        // The Y Axis
+        var ycolour = [0, 1, 0, 1];
+        YAxisMesh.mesh_vertices.push(0);
+        YAxisMesh.mesh_vertices.push(0);
+        YAxisMesh.mesh_vertices.push(0);
+
+        YAxisMesh.vert_noramls.push(0);
+        YAxisMesh.vert_noramls.push(1);
+        YAxisMesh.vert_noramls.push(0);
+
+        YAxisMesh.vert_uvcoords.push(0);
+        YAxisMesh.vert_uvcoords.push(0);
+
+        YAxisMesh.vert_colours.push(ycolour[0]);
+        YAxisMesh.vert_colours.push(ycolour[1]);
+        YAxisMesh.vert_colours.push(ycolour[2]);
+        YAxisMesh.vert_colours.push(ycolour[3]);
+
+        YAxisMesh.Indices.push(0);
+
+        YAxisMesh.mesh_vertices.push(0);
+        YAxisMesh.mesh_vertices.push(10);
+        YAxisMesh.mesh_vertices.push(0);
+
+        YAxisMesh.vert_noramls.push(0);
+        YAxisMesh.vert_noramls.push(1);
+        YAxisMesh.vert_noramls.push(0);
+
+        YAxisMesh.vert_uvcoords.push(0);
+        YAxisMesh.vert_uvcoords.push(0);
+
+        YAxisMesh.vert_colours.push(ycolour[0]);
+        YAxisMesh.vert_colours.push(ycolour[1]);
+        YAxisMesh.vert_colours.push(ycolour[2]);
+        YAxisMesh.vert_colours.push(ycolour[3]);
+
+        YAxisMesh.Indices.push(1);
+        YAxisMesh.initBasicTexture();
+        YAxisMesh.InitialiseBuffers();
+        YAxisMesh.meshType = MeshType.Lines;
+
+
+        // The Z Axis
+        var zcolour = [0.25, 0.5, 1, 1];
+        ZAxisMesh.mesh_vertices.push(0);
+        ZAxisMesh.mesh_vertices.push(0);
+        ZAxisMesh.mesh_vertices.push(0);
+
+        ZAxisMesh.vert_noramls.push(0);
+        ZAxisMesh.vert_noramls.push(1);
+        ZAxisMesh.vert_noramls.push(0);
+
+        ZAxisMesh.vert_uvcoords.push(0);
+        ZAxisMesh.vert_uvcoords.push(0);
+
+        ZAxisMesh.vert_colours.push(zcolour[0]);
+        ZAxisMesh.vert_colours.push(zcolour[1]);
+        ZAxisMesh.vert_colours.push(zcolour[2]);
+        ZAxisMesh.vert_colours.push(zcolour[3]);
+
+        ZAxisMesh.Indices.push(0);
+
+        ZAxisMesh.mesh_vertices.push(0);
+        ZAxisMesh.mesh_vertices.push(0);
+        ZAxisMesh.mesh_vertices.push(10);
+
+        ZAxisMesh.vert_noramls.push(0);
+        ZAxisMesh.vert_noramls.push(1);
+        ZAxisMesh.vert_noramls.push(0);
+
+        ZAxisMesh.vert_uvcoords.push(0);
+        ZAxisMesh.vert_uvcoords.push(0);
+
+        ZAxisMesh.vert_colours.push(zcolour[0]);
+        ZAxisMesh.vert_colours.push(zcolour[1]);
+        ZAxisMesh.vert_colours.push(zcolour[2]);
+        ZAxisMesh.vert_colours.push(zcolour[3]);
+
+        ZAxisMesh.Indices.push(1);
+        ZAxisMesh.initBasicTexture();
+        ZAxisMesh.InitialiseBuffers();
+        ZAxisMesh.meshType = MeshType.Lines;
+
     }
-    else{
-        setMenuItemState("menu_view_doEdge", false);
-        setMenuItemState("menu_view_noEdge", true);
-    }
-}
