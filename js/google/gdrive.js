@@ -10,7 +10,7 @@ var clientId = "629606533840-1j5m58o3krsdkno8hiamd763opce78ia.apps.googleusercon
 var appId = "629606533840";
 
 // Scope to use to access user's Drive items.
-var scope = ['https://www.googleapis.com/auth/drive'];
+var scope = ['https://www.googleapis.com/auth/drive.file'];
 
 var pickerApiLoaded = false;
 var oauthToken;
@@ -49,7 +49,10 @@ function handleAuthResult(authResult) {
 // Create and render a Picker object for searching images.
 function createPicker() {
     if (pickerApiLoaded && oauthToken) {
-        var view = new google.picker.View(google.picker.ViewId.DOCS);
+        //var view = new google.picker.View(google.picker.ViewId.DOCS);
+        var view = new google.picker.DocsView()
+        .setParent('root')
+        .setIncludeFolders(true);
         //view.setMimeTypes("application/vnd.ms-pki.stl, application/octet-stream");
         var picker = new google.picker.PickerBuilder()
             //.enableFeature(google.picker.Feature.NAV_HIDDEN)
