@@ -791,7 +791,9 @@ nav ul li {
 
 
 .admob{
-  height: 40px;
+  height: 90px;
+  background-color: #222;
+  align-content: center;
 }
 
 
