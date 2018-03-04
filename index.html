@@ -90,14 +90,14 @@ color: #2a2a2a; position: absolute; top: 20%; left: 44%; z-index: 600; width: 50
     <div>
       <img id="img_profile" src="assets/icon_24.png" style="position:absolute;top:4px; right:4px; width:24px;height:24px;"></img>
     </div>
-
-    <div class="admob" style="position:absolute;bottom:20px; left:150px;">
+    <!--
+    <div class="admob" style="position:absolute;bottom:24px; align-content: center;">
       <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-      <!-- web.irisviewer.bottom -->
       <ins class="adsbygoogle" style="display:inline-block;width:728px;height:90px" data-ad-client="ca-pub-9433392372917576" data-ad-slot="1019838755"></ins>
       <script>
         (adsbygoogle = window.adsbygoogle || []).push({});
       </script>
+    -->
     </div>
   </div>
 
@@ -315,7 +315,8 @@ color: #2a2a2a; position: absolute; top: 20%; left: 44%; z-index: 600; width: 50
       <li>STereoLithography (*.stl)</li>
       <li>Wavefront (*.obj)</li>
       <li>Direct X 3D (*.x)</li>
-      <li>Autodesk Filmbox File (*.fbx)</li>
+      <!--<li>PLY Files (*.ply)</li>-->
+      <!--<li>Autodesk Filmbox Files (*.fbx)</li>-->
     </ul>
     </div> 
     <br/>
@@ -685,10 +686,11 @@ color: #2a2a2a; position: absolute; top: 20%; left: 44%; z-index: 600; width: 50
   </script>
   <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
   </div>
+
   <div id="dev_signedIn" style="position:absolute; bottom:75px; left:10px;" >
   <table style="color:#555;font-size: 12px">
   <tr>
-    <th><img id="profile_img" style="width:42px;height:42px;margin:4px"></img></th>
+    <th></th>
     <td>
     <table style="color:#999;font-size: 12px">
     <tr>
@@ -697,11 +699,13 @@ color: #2a2a2a; position: absolute; top: 20%; left: 44%; z-index: 600; width: 50
       <tr>
         <td>
           <span id="profile_name" class="profileInfo">profile_name</span>
+          <br/>
+          <span class="profileInfo" id="profile_email" >profile_email</span></td> 
         </td>
       </tr>
       <tr>
         <td>
-          <span class="profileInfo" id="profile_email" >profile_email</span></td> 
+          
         </td>
       </tr>
     </table>
@@ -713,6 +717,7 @@ color: #2a2a2a; position: absolute; top: 20%; left: 44%; z-index: 600; width: 50
   </tr>
 </table>
   </div>
+  <img id="profile_img" style="position:absolute; bottom:75px; left:10px;width:42px;height:42px;margin:4px"></img><br/>
 </div>
 </div>
 

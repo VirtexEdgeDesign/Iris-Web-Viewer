@@ -539,7 +539,7 @@ $(window).resize(function() {
 // Handles Resizing
 function Resize() {
     canvas.width = $(window).width();
-    canvas.height = $(window).height() - 150;
+    canvas.height = $(window).height() - 32;
 
     document.getElementById("model_treeview").style.maxHeight = ($(window).height() - 56) + "px";
     document.getElementById("treeview_capsuleDiv").style.width = document.getElementById("model_treeview").style.width;
