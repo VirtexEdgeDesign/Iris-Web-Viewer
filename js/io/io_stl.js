@@ -148,9 +148,9 @@ function io_import_stl(file, InputFileText) {
         InitialiseModel(model);
 
         // Now Set the View Parameters
-        Zoom = -model.MaxPoint.Length() * 1.5 - 1;
-        rotX = -45;
-        rotY = 30;
+        Camera.zoom = -model.MaxPoint.Length() * 1.5 - 1;
+        Camera.rotX = -45;
+        Camera.rotY = 30;
 
         log("Done!");
     }

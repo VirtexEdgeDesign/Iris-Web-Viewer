@@ -1,0 +1,114 @@
+
+.tree-control,
+.tree-control *
+{
+	padding: 0;
+	margin: ;
+	font-family: Arial;
+	font-size: 11px;
+	cursor: pointer;
+	transition: 0.2s;
+}
+
+.tree-control li ul
+{
+	margin: 0 0 0 16px;
+}
+
+input[type=checkbox] {
+	position: absolute;
+	top: -9999px;
+	left: -9999px;
+}
+
+.tree-control ul{
+	list-style-type: none;
+}
+
+.tree-node{
+	display: inline-block;
+	margin: ;
+	padding: 2px;
+}
+/* Text And Icon Location */
+.tree-node span{
+	position: relative;
+	top: -3px;
+	padding: 5px 6px 3px 3px;
+	border: solid 1px transparent;
+
+
+	background-color: rgba(50,50,50,0.5);	
+	border: solid 1px rgba(20,20,20,0.5);	
+}
+
+.tree-node span:hover{
+	background-color: #00abff;	
+	border: solid 1px #0055ff;
+}
+
+.tree-node span:before{
+	position: relative;
+	top: 3px;
+	left: -2px;
+}
+
+.tree-node span[icon="default"]::before{
+	content: url('img/folder.png');
+}
+
+
+
+.tree-node-arrow{
+	transition: 0.2s;
+	content: url('img/arrow_right.png');
+	border: solid 1px transparent;
+}
+.tree-node-arrow[show="yes"]:hover{
+	background-color: #00abff;	
+	border: solid 1px #0066ff;
+}
+
+.tree-node-arrow[show="no"]{
+	content: url('img/arrow_empty.png');
+}
+
+
+/* Node Items */
+.tree-node input[type=checkbox]:checked ~ .tree-node-arrow[show="yes"] {
+	content: url('img/arrow_down.png');
+}
+
+.tree-node input[type=checkbox]:checked ~ li
+{
+	display: block;
+}
+
+.tree-node input[type=checkbox]:not(:checked) ~ li
+{
+	display: none;
+}
+
+
+.tree-node-chkbx{
+	padding: 1px;
+	background-color: transparent;
+	border: none;
+}
+
+.tree-node-chkbx:hover{
+	background-color: #00abff;
+}
+
+.tree-node-chkbx-img{
+	content: url('img/check_box_uncheck.png');
+}
+
+.tree-node-chkbx-img[status="checked"] {
+	content: url('img/check_box.png');
+}
+
+
+.tree-node-chkbx-img[status="mixed"] {
+	content: url('img/check_box.png');
+}

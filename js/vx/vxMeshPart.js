@@ -419,10 +419,7 @@ vxMeshPart.prototype.Draw = function() {
         gl.activeTexture(gl.TEXTURE0);
         gl.bindTexture(gl.TEXTURE_2D, this.Texture);
         gl.uniform1i(shader.uniformLocations.uSampler, 0);
-        //gl.uniform1i(gl.getUniformLocation(shaderProgram, "uSampler"), 0);
-
-
-
+        
 
         // Set the colors attribute for the vertices.
         if (this.UseHighlight == true) {

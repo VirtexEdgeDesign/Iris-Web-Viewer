@@ -1,0 +1,286 @@
+:root {
+  --tab-bg-color: #323232; 
+  --tab-fg-colour-unselected: #aaa;
+  --tab-fg-colour: #333;
+
+  /* Main Tab Colours */
+  --maintab-bg-colour: #ff7e00;
+  --maintab-bg-colour-hover: #ffa64f;
+  --maintab-fg-colour: #333;
+  --maintab-fg-colour-hover: #000;
+
+
+  --content-bg-color: #ddd;
+  --content-fg-color: #333;
+  --gui-selected: #00abff;
+}
+
+.vx-rbn-cntrl{
+  border: 1px solid #333;
+  font-family: Arial;
+  font-size: 11px;
+}
+
+.vx-rbn-headerbar{
+  text-align: center;
+  background-color: var(--tab-bg-color);
+  height: 2px;
+  color: #aaa;
+}
+.vx-rbn-titlebar{
+  padding: 6px;
+}
+
+/* Style the tab */
+.vx-rbn-tab-header {
+  overflow: hidden;
+  background-color: var(--tab-bg-color);
+}
+
+/* Style the buttons that are used to open the tab content */
+.vx-rbn-tab {
+  color: var(--tab-fg-colour-unselected);
+  background-color: var(--tab-bg-color);
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 4px 24px;
+  margin: 0px 1px;
+  transition: 0.3s;
+}
+
+/* Change background color of buttons on hover */
+.vx-rbn-tab:hover {
+  background-color: #646464;
+  color: #ccc;
+}
+
+/* Create an active/current tablink class */
+.vx-rbn-tab.active {
+  background-color: var(--content-bg-color);
+  color: #333;
+}
+
+#mainTab {
+  background-color: var(--maintab-bg-colour);
+  color: var(--maintab-fg-colour);
+}
+
+#mainTab:hover {
+  background-color: var(--maintab-bg-colour-hover);
+  color: var(--maintab-fg-colour-hover);
+}
+
+/* Style the tab content */
+.vx-rbn-tab-content {
+  background-color: var(--content-bg-color);
+  display: none;
+  padding: 6px 12px;
+  height: 80px;
+
+  /*animation: fadeEffect 0.15s; /* Fading effect takes 1 second */
+}
+
+/* Go from zero to full opacity */
+@keyframes fadeEffect {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
+.vx-rbn-tab-content ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  height:64px;
+  width: 400px;
+}
+
+.vx-rbn-tab-group{
+
+  width:100%;
+  border: 1px solid transparent;
+  border-color: transparent #777 transparent transparent;
+}
+
+
+.vx-rbn-tab-group-footer{
+  width:100%;
+  color: #555; 
+  text-align: center;
+  margin: 0;
+}
+
+.vx-rbn-break
+{
+  height: 96px;
+}
+
+
+.vx-rbn-seperator {
+  border-left: 1px solid #aaa;
+  height: 92px;
+  margin: 0px 10px 0px 10px;
+}
+
+.vx-rbn-btn {
+  color: #333;
+  background-color: var(--content-bg-color);
+  border: 1px solid var(--content-bg-color);
+  outline: none;
+  cursor: pointer;
+  padding: 0px 16px 6px 16px;
+  transition: 0.3s;
+  margin: 2px 2px;
+}
+
+.vx-rbn-btn[btn-size="large"]{
+  color: #333;
+  background-color: var(--content-bg-color);
+  border: 1px solid var(--content-bg-color);
+  outline: none;
+  cursor: pointer;
+  padding: 4px 16px;
+  transition: 0.3s;
+  padding-bottom: 10px; 
+  margin: 2px 2px;
+}
+.vx-rbn-btn::before { 
+  width: 16px;
+  height: 16px;
+  position: relative;
+  left:-5px;
+  bottom: -4px;
+}
+
+.vx-rbn-btn[btn-size="large"]::before {
+
+  width: 32px;
+  height: 32px;
+  display: block;
+  white-space: normal;
+  word-wrap: break-word;
+  left:0px;
+  bottom: 0px;
+}
+
+.vx-rbn-btn:hover {
+  border-radius: 2px;
+  color: #222;
+  background-color: #eee;
+  border: 1px solid #777;
+}
+.vx-rbn-btn:active {
+  transition: 0s;
+  background-color: var(--gui-selected);
+  color: #fff;
+  border: 1px solid #555;
+}
+
+
+
+.vx-rbn-drpdwn {
+  color: #333;
+  background-color: var(--content-bg-color);
+  border: 1px solid var(--content-bg-color);
+  outline: none;
+  text-align: left; 
+  cursor: pointer;
+  padding: 0px 16px 6px 16px;
+  transition: 0.3s;
+  margin: 20px 2px;
+  width: 150px;
+  transition: 0.3s;
+}
+
+/*the container must be positioned relative:*/
+.vx-rbn-drpdwn-select {
+  position: relative;
+  width: 125px;
+  margin: 2px 2px;
+}
+
+
+
+.vx-rbn-drpdwn-select select {
+  display: none; /*hide original SELECT element:*/
+}
+.select-selected {
+  background-color: var(--content-bg-color);
+  transition: 0.3s;
+}
+/*style the arrow inside the select element:*/
+.select-selected:after {
+  position: absolute;
+  content: "";
+  top: 8px;
+  right: 10px;
+  width: 0;
+  height: 0;
+  border: 6px solid transparent;
+  border-color: #777 transparent transparent transparent;
+}
+/*point the arrow upwards when the select box is open (active):*/
+.select-selected.select-arrow-active:after {
+  border-color: transparent transparent #333 transparent;
+  top: 3px;
+}
+.select-selected {
+  color: var(--content-fg-color);
+  border: 1px solid transparent;
+  cursor: pointer;
+  padding: 2px 18px 6px 16px;
+  transition: 0.3s;
+  margin: 2px 2px;
+}
+.select-selected:before{
+  content:url('../img/main/import.png');
+  position: relative;
+  left: -5px;
+  bottom: -3px;
+}
+/*style the items (options), including the selected item:*/
+.select-items div{
+  color: var(--content-fg-color);
+  border: 1px solid transparent;
+  cursor: pointer;
+  padding: 4px 14px 6px 16px;
+  transition: 0.3s;
+  margin: 2px 2px;
+
+}
+
+.select-selected:hover{
+  background-color: #eee;
+  border: 1px solid #777;
+}
+
+/*style items (options):*/
+.select-items {
+  position: absolute;
+  background-color: #fff;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 99;
+  border: 1px solid #777;
+}
+/*hide the items when the select box is closed:*/
+.select-hide {
+  display: none;
+}
+
+.select-items div:before{
+  content:url('../img/main/import.png');
+  position: relative;
+  left: -5px;
+  bottom: -3px;
+}
+
+.select-items div:hover {
+  background-color: var(--gui-selected);
+}
+

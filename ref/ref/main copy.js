@@ -2,7 +2,7 @@
 var iris = {
 
     name: "Iris Web Viewer",
-    version: "0.5.0",
+    version: "0.4.0",
 
     shortdescription: "3D Model Exchange Format Viewer",
 
@@ -57,7 +57,7 @@ var DoDebug = false;
 
 // Model Center
 var modelprop_Center = [0, 0, 0];
-//var Cur_Center = [0, 0, 0];
+var Cur_Center = [0, 0, 0];
 
 
 //var meshcolor = new vxColour(0.05, 0.5, 0.75, 1);
@@ -88,6 +88,16 @@ vxShaderState = {
     Diffuse: 0,
 };
 var ShaderState = vxShaderState.Diffuse;
+
+
+// View Projection Type
+//**************************************************
+vxProjectionType = {
+    Perspective: 0,
+    Ortho: 1
+};
+
+var ProjectionType = vxProjectionType.Perspective;
 
 
 
@@ -127,9 +137,21 @@ var ViewCenter = new vxVertex3D();
 
 //var cubeVerticesIndexBuffer;
 var numOfElements = 0;
+var rotX = -45;
+var rotY = 30;
+var panX = 0;
+var panY = 0;
+
+var currotX = 0;
+var currotY = 0;
+var curZoom = 0;
 
 var lastCubeUpdateTime = 0;
 
+var Zoom = -100;
+
+var mvMatrix;
+var perspectiveMatrix;
 var elmntID;
 
 // Mouse State Struct
@@ -165,23 +187,8 @@ var modalLoadFileResults = document.getElementById('modal_openFileResults');
 
 var loadingPrgrsBar = document.getElementById('loading-prgrsbar');
 
-
-
-// Tree Variables
-var tree = new vxTreeControl("js-treediv");
-var rootNode = new vxTreeNode("rootNode", "Enviroment");
-tree.SetRootNode(rootNode);
-
-var TreeNode_Models = new vxTreeNode("node_models", "Models");
-var TreeNode_Measurements = new vxTreeNode("node_measurements", "Measurements");
-
-
-var loadWait = 1;
-
 function InitVariables() {
     log("InitVariables()");
-
-    loadingPrgrsBar.style.width = "0%";
 
     // First set up Splash Screen (modal_intro)
     window.document.title = "IRIS Viewer  - [v. " + iris.version + " - Beta]"
@@ -217,15 +224,16 @@ function InitVariables() {
 
     // Now set up the 3D info
     canvas = document.getElementById('glcanvas3D');
-    loadingPrgrsBar.style.width = "10%";
+    loadingPrgrsBar.style.width = "20%";
 
-    setTimeout(function() { InitRibbon(); }, loadWait);
+    setTimeout(function() { InitRibbon(); }, 10);
 }
 
-function InitRibbon() {
+function InitRibbon()
+{
     var ribbon = new RibbonControl("div_ribbon");
     var irisTab = new RibbonTab("Iris");
-    var mainTab = new RibbonTab("Home");
+    var mainTab = new RibbonTab("Main");
     var viewTab = new RibbonTab("View");
     var toolTab = new RibbonTab("Tools");
 
@@ -236,262 +244,76 @@ function InitRibbon() {
 
     // Iris Tab
     irisTab.tabBtn.addEventListener("click", function() {
-
-        document.getElementById("mySidenav").style.width = "250px";
-        document.getElementById("div_main").style.marginLeft = "250px";
-        document.getElementById("glcanvas3D").style.marginLeft = "250px";
-        //document.getElementById("div_ribbon").style.marginLeft = "250px";
-        document.getElementById("model_treeview").style.marginLeft = "250px";
-    });
+          
+    document.getElementById("mySidenav").style.width = "250px";
+    document.getElementById("div_main").style.marginLeft = "250px";
+    document.getElementById("glcanvas3D").style.marginLeft = "250px";
+    //document.getElementById("div_ribbon").style.marginLeft = "250px";
+    document.getElementById("model_treeview").style.marginLeft = "250px";
+      });
     mainTab.tabBtn.click();
-
-    // Main Tab
-    // ------------------------------------------------
-    var mainGroup = new RibbonGroup("Main", 250);
-    mainTab.addItem(mainGroup);
 
     // Add in Controls
     var newBtn = new RibbonButton("New", "new_32", false);
-    newBtn.control.addEventListener("click", function() {
-        window.location.reload(true);
-    });
+    newBtn.btn.addEventListener("click", function() {
+          window.location.reload(true);
+      });
 
-    mainGroup.addItem(newBtn);
+    mainTab.addItem(newBtn);
 
     var openBtn = new RibbonButton("Open", "open_32", false);
-    openBtn.control.addEventListener("click", function() {
-        $('#menu_file_openSelect').click();
-    });
+    openBtn.btn.addEventListener("click", function() {
+          $('#menu_file_openSelect').click();
+      });
 
-    mainGroup.addItem(openBtn);
-    mainGroup.addBreak();
+    mainTab.addItem(openBtn);
+    mainTab.addBreak();
 
     var importBtn = new RibbonButton("Import", "import");
-    importBtn.control.addEventListener("click", function() {
+    importBtn.btn.addEventListener("click", function() {
         modalOpenFile.style.display = "block";
         CloseSidebar();
-    });
-    mainGroup.addItem(importBtn);
+      });
+    mainTab.addItem(importBtn);
 
     var exportBtn = new RibbonButton("Export", "export");
-    exportBtn.control.addEventListener("click", function() {
-        document.getElementById("modal_exportFile").style.display = "block";
-        CloseSidebar();
-    });
-    mainGroup.addItem(exportBtn);
-
-
-    // Controls Group
-    // ------------------------------------------------
-    var cntrlsGroup = new RibbonGroup("Controls", 300);
-    mainTab.addItem(cntrlsGroup);
+    exportBtn.btn.addEventListener("click", function() {
+    document.getElementById("modal_exportFile").style.display = "block";
+    CloseSidebar();
+      });
+    mainTab.addItem(exportBtn);
 
 
 
-    var tglTreeBtn = new RibbonButton("Toggle Tree", "toggle_tree");
-    tglTreeBtn.control.addEventListener("click", function() {        
-        tree.ToggleVisibility();
-    });
-    cntrlsGroup.addItem(tglTreeBtn);
+    mainTab.addSeperator();
+    mainTab.addItem(new RibbonButton("Save As"));
 
-    var tglPropsBtn = new RibbonButton("Toggle Properties", "toggle_properties");
-    tglPropsBtn.control.addEventListener("click", function() {
-        OpenProperties();
-    });
-    cntrlsGroup.addItem(tglPropsBtn);
+    var drpdwn= new RibbonDropdown("Save As");
+    mainTab.addItem(drpdwn);
+    drpdwn.addItem("Item 1");
+    drpdwn.addItem("Item 2");
+    drpdwn.addItem("Item 3");
+    drpdwn.addItem("Item 4");
+    drpdwn.addItem("Item 5");
 
-
-    var tglCnslBtn = new RibbonButton("Toggle Console", "toggle_console");
-    tglCnslBtn.control.addEventListener("click", function() {
-        
-    });
-    cntrlsGroup.addItem(tglCnslBtn);
-
-
-
-
-
-    // About Group
-    // ------------------------------------------------
-    var aboutGroup = new RibbonGroup("About", 200);
-    mainTab.addItem(aboutGroup);
+function SendMessage(e) {
+    console.log(e);
+}
+    document.addEventListener("OnRibbonSelectionChange", SendMessage, false);
+    
+    mainTab.addItem(new RibbonButton("Save As"));
+    mainTab.addItem(new RibbonButton("Save As"));
+    mainTab.addItem(new RibbonButton("Save As"));
+    mainTab.addItem(new RibbonButton("Save As"));
+    mainTab.addItem(new RibbonButton("Save As"));
+    mainTab.addItem(new RibbonButton("Save As"));
 
 
 
-    var settingsBtn = new RibbonButton("Settings", "setting_tools", false);
-    settingsBtn.control.addEventListener("click", function() {
-        
-    });
-
-    aboutGroup.addItem(settingsBtn);
+    ribbon.init();  
 
 
-
-    var aboutBtn = new RibbonButton("About", "icon_16");
-    aboutBtn.control.addEventListener("click", function() {
-        CloseSidebar();
-        modal.style.display = "block";
-    });
-    aboutGroup.addItem(aboutBtn);
-
-    //aboutGroup.addItem(new RibbonButton("Help", "about_help"));
-    var helpBtn = new RibbonButton("Help", "about_help");
-    helpBtn.control.addEventListener("click", function() {
-        CloseSidebar();
-        openInNewTab("https://github.com/VirtexEdgeDesign/Iris-Web-Viewer/wiki");
-    });
-    aboutGroup.addItem(helpBtn);
-
-
-
-
-
-    // View Tab
-    // ------------------------------------------------
-    var viewGroup = new RibbonGroup("View", 375);
-    viewTab.addItem(viewGroup);
-
-
-    var zoomInBtn = new RibbonButton("Zoom In", "zoomIn");
-    zoomInBtn.control.addEventListener("click", function() {
-        AdjustZoom(0.75);
-    });
-    viewGroup.addItem(zoomInBtn);
-
-    var zoomOutBtn = new RibbonButton("Zoom Out", "zoomOut");
-    zoomOutBtn.control.addEventListener("click", function() {
-        AdjustZoom(1.25);
-    });
-    viewGroup.addItem(zoomOutBtn);
-
-
-
-    var zoomFitBtn = new RibbonButton("Zoom Fit", "zoomFit");
-    zoomFitBtn.control.addEventListener("click", function() {
-        FitZoom();
-    });
-    viewGroup.addItem(zoomFitBtn);
-
-    var SetPrespctvDrpDwn = new RibbonDropdown("Perspective", "view_perspective");
-    viewGroup.addItem(SetPrespctvDrpDwn);
-    SetPrespctvDrpDwn.addItem("Perspective", "view_perspective");
-    SetPrespctvDrpDwn.addItem("Ortho", "view_ortho");
-
-    function OnSetPrespctvDrpDwnChange(e) {
-        switch (e.detail.text) {
-            case "Perspective":
-                SetViewToPerspective();
-                break;
-            case "Ortho":
-                SetViewToOrtho();
-        }
-    }
-    var elm = document.getElementById("id_Perspective");
-    elm.addEventListener("OnRibbonDropDownChange", OnSetPrespctvDrpDwnChange, false);
-
-
-    var SetViewDrpDwn = new RibbonDropdown("Set View", "view_perspective");
-    viewGroup.addItem(SetViewDrpDwn);
-    SetViewDrpDwn.addItem("Top", "setview_top");
-    SetViewDrpDwn.addItem("Bottom", "setview_bottom");
-    SetViewDrpDwn.addItem("Front", "setview_front");
-    SetViewDrpDwn.addItem("Back", "setview_back");
-    SetViewDrpDwn.addItem("Left", "setview_left");
-    SetViewDrpDwn.addItem("Right", "setview_right");
-    SetViewDrpDwn.addItem("ISO", "view_ortho");
-
-
-
-    function OnSetViewDrpDwnChange(e) {
-        switch (e.detail.text) {
-            case "Front":
-                SetViewToFront();
-                break;
-            case "Back":
-                SetViewToBack();
-                break;
-            case "Left":
-                SetViewToLeft();
-                break;
-            case "Right":
-                SetViewToRight();
-                break;
-            case "Top":
-                SetViewToTop();
-                break;
-            case "Bottom":
-                SetViewToBottom();
-                break;
-            case "ISO":
-                SetViewToIso();
-                break;
-        }
-
-    }
-    var elm = document.getElementById(SetViewDrpDwn.id);
-    elm.addEventListener("OnRibbonDropDownChange", OnSetViewDrpDwnChange, false);
-
-
-
-
-
-    // Render Group
-    var renderGroup = new RibbonGroup("Render", 200);
-    viewTab.addItem(renderGroup);
-
-
-    var DrpDwnRender = new RibbonDropdown("Render Type", "setrndr_texture");
-    renderGroup.addItem(DrpDwnRender);
-    DrpDwnRender.addItem("Textured", "setrndr_texture");
-    DrpDwnRender.addItem("Shaded", "setrndr_shaded");
-    DrpDwnRender.addItem("Wireframe", "setrndr_wireframe");
-    DrpDwnRender.addItem("Normals", "setrndr_normal");
-
-    var elm = document.getElementById(DrpDwnRender.id);
-    elm.addEventListener("OnRibbonDropDownChange", function(e) {
-        switch (e.detail.text) {
-            case "Textured":
-                SetShadingToTextured();
-                break;
-            case "Shaded":
-                SetShadingToShaded();
-                break;
-            case "Wireframe":
-                SetShadingToWireframe();
-                break;
-            case "Normals":
-                SetShadingToNormal();
-                break;
-
-        }
-    }, false);
-
-
-
-
-    var DrpDwnRender = new RibbonDropdown("Edge Type", "view_perspective");
-    renderGroup.addItem(DrpDwnRender);
-    DrpDwnRender.addItem("Show Edges", "setrndr_edges");
-    DrpDwnRender.addItem("No Edges", "setrndr_shaded");
-
-    var elm = document.getElementById(DrpDwnRender.id);
-    elm.addEventListener("OnRibbonDropDownChange", function(e) {
-        switch (e.detail.text) {
-            case "Show Edges":
-                SetEdgeRendering(true);
-                break;
-            case "No Edges":
-                SetEdgeRendering(false);
-                break;
-
-        }
-    }, false);
-
-
-
-    ribbon.init();
-
-    setTimeout(function() { InitDebugStats(); }, loadWait);
+    setTimeout(function() { InitDebugStats(); }, 10);
 }
 
 function InitDebugStats() {
@@ -506,7 +328,7 @@ function InitDebugStats() {
     document.body.appendChild(stats.dom);
     loadingPrgrsBar.style.width = "30%";
 
-    setTimeout(function() { InitProperties(); }, 10);
+    setTimeout(function() { InitProperties(); }, 100);
 }
 
 function InitProperties() {
@@ -522,7 +344,7 @@ function InitProperties() {
     //initialise model properties
     properties = new ModelProp(gui, "");
     loadingPrgrsBar.style.width = "40%";
-    setTimeout(function() { InitWebGL(); }, loadWait);
+    setTimeout(function() { InitWebGL(); }, 100);
 
 }
 
@@ -532,9 +354,9 @@ function InitWebGL() {
 
     //Initialise Web GL
     webGLStart();
-    loadingPrgrsBar.style.width = "50%";
+    loadingPrgrsBar.style.width = "65%";
 
-    setTimeout(function() { InitListerners(); }, loadWait);
+    setTimeout(function() { InitListerners(); }, 200);
 
 }
 
@@ -552,9 +374,9 @@ function InitListerners() {
     // hook up cross browser mouse scrolls
     document.addEventListener('DOMMouseScroll', MouseWheelHandler, { passive: true }); // for Firefox
     document.addEventListener("mousewheel", MouseWheelHandler, { passive: true }); // everyone else
-    loadingPrgrsBar.style.width = "60%";
+    loadingPrgrsBar.style.width = "75%";
 
-    setTimeout(function() { InitTreeNodes(); }, loadWait);
+    setTimeout(function() { InitTreeNodes(); }, 10);
 
 }
 
@@ -562,24 +384,15 @@ function InitTreeNodes() {
     log("InitTreeNodes()");
     Resize();
     loadingPrgrsBar.style.width = "70%";
-    //AddTreeNode(meshNodeId, "Meshes", "tree_root", "folder", true);
+    AddTreeNode(meshNodeId, "Meshes", "tree_root", "folder", true);
 
-
-    rootNode.Expand();
-    TreeNode_Models.Expand();
-    TreeNode_Measurements.Expand();
-
-    rootNode.AddNode(TreeNode_Models);
-    rootNode.AddNode(TreeNode_Measurements);
-
-    //AddTreeNode(measureNodeId, "Measurements", "tree_root", "folder", true);
+    AddTreeNode(measureNodeId, "Measurements", "tree_root", "folder", true);
     loadingPrgrsBar.style.width = "100%";
 
     var dev_signedIn = document.getElementById("profile_img");
     dev_signedIn.style.display = 'none';
 
-
-    setTimeout(function() { FinaliseInit(); }, loadWait);
+    setTimeout(function() { FinaliseInit(); }, 150);
 
 }
 
@@ -592,7 +405,7 @@ function FinaliseInit() {
 
 window.onload = function() {
 
-    setTimeout(function() { InitVariables(); }, loadWait);
+    setTimeout(function() { InitVariables(); }, 10);
 
 };
 
@@ -604,133 +417,134 @@ function AddTreeNode(id, labelText, rootToAddTo, icon) {
     AddTreeNode(id, labelText, rootToAddTo, "", true);
 }
 
+var nodeCount = 0;
+
 function AddTreeNode(id, labelText, rootToAddTo, icon, isExpanded) {
-    var newNode = new vxTreeNode(id, labelText, icon);
-    tree.AddNode(newNode, rootToAddTo);
-    if (isExpanded == true) {
-        newNode.Expand();
-    }
 
-    // Get the Node Checkbox
-    var elm = document.getElementById("chkbx_" + id);
-    elm.addEventListener('onNodeCheckChanged', function(e) {
 
-        var
-            checkbox = $(this),
-            nestedList = checkbox.parent().next().next();
+    // First get the tree root
+    var rootNode = document.getElementById(rootToAddTo + "_ul");
 
-        var elms = this.parentNode.getElementsByClassName("tree-node-chkbx");
-        var imgs = this.parentNode.getElementsByClassName("tree-node-chkbx-img");
-        //console.log(elms);
-        for (var i = 0; i < elms.length; i++) {
+    // Next create the li element which will encapslate the entire tree node GUI item
+    var li = document.createElement("li");
 
-            if (e.detail.isChecked) {
-                elms[i].setAttribute("toggle", "true");
-                imgs[i].setAttribute("status", "checked");
-            } else {
-                elms[i].setAttribute("toggle", "false");
-                imgs[i].setAttribute("status", "not-checked");
-            }
-        }
+    var cnvs = document.createElement("CANVAS");
+    cnvs.setAttribute("data-id", "id"); // added line
+    cnvs.style.width = "100%";
+    cnvs.style.height = "18px";
+    li.appendChild(cnvs);
 
-        /*
-            if (e.detail.isChecked) {
-                    return selectNestedListCheckbox.prop("click", true);
-                }
-                selectNestedListCheckbox.prop("click", false);
-            */
-        //    nestedList = checkbox.parent().next().next(),
-        //  selectNestedListCheckbox = nestedList.find("label:not([for]) input:checkbox");
 
-        //Check Models
-        for (var i = 0; i < ModelCollection.length; i++) {
 
-            //ModelCollection[i].TrueFunc = !ModelCollection[i].TrueFunc;
 
-            if ("node_" + ModelCollection[i].Name == e.detail.nodeId) {
-                ModelCollection[i].SetEnabled(e.detail.isChecked);
-            }
-        }
+    //Now Add an Input
 
-        //Check Meshes
-        for (var i = 0; i < MeshCollection.length; i++) {
+    //     <input type="checkbox" id="node-0-1-0" />
+    var inp1 = document.createElement("INPUT");
+    inp1.setAttribute("type", "checkbox"); // added line
+    inp1.setAttribute("id", id); // added line
 
-            if (MeshCollection[i].TreeNodeID == e.detail.nodeId) {
-                MeshCollection[i].Enabled = e.detail.isChecked;
-            }
-        }
 
-        //Check Measurements
-        for (var i = 0; i < MeasureCollection.length; i++) {
+    if (isExpanded === true)
+        inp1.setAttribute("checked", "true"); // added line
 
-            if ("node_" + MeasureCollection[i].Name == e.detail.nodeId) {
-                MeasureCollection[i].Enabled = e.detail.isChecked;
-            }
-        }
-    });
+    li.appendChild(inp1);
 
+    // Now Create the Nested label which holds the check box
+    var chkLbl = document.createElement("LABEL");
+
+    var inp2 = document.createElement("INPUT");
+    inp2.setAttribute("id", id); // added line
+    inp2.setAttribute("type", "checkbox"); // added line
+    inp2.setAttribute("checked", "checked"); // added line
+    chkLbl.appendChild(inp2);
+
+    var spn = document.createElement("SPAN");
+    chkLbl.appendChild(spn);
+
+    li.appendChild(chkLbl);
+
+    // Finally create the end Text
+    var txtLbl = document.createElement("LABEL");
+    var txt = document.createTextNode(labelText);
+    txtLbl.setAttribute("for", id);
+    txtLbl.setAttribute("data-icon", icon);
+    txtLbl.appendChild(txt);
+    li.appendChild(txtLbl);
+
+    // Finally Append a 'ul' element so that it can parent other nodes
+    var newul = document.createElement("ul");
+    newul.setAttribute("id", id + "_ul"); // added line
+    li.appendChild(newul);
+
+    rootNode.appendChild(li);
+
+
+    //$(".ui-cntrl-treeview").mouseenter(function(){treeHasFocus = 1;});
+    //$(".ui-cntrl-treeview").mouseleave(function(){treeHasFocus = 0;});
+    txtLbl.onmouseover = function() { crntTreeHighlight = labelText };
+    //$(id).mouseleave(function(){console.log("mouse left");});
 }
 var crntTreeHighlight = "";
 
 function AddTreeNodeTexture(id, rootToAddTo, newImg, size) {
-    /*
-
-        // First get the tree root
-        var rootNode = document.getElementById(rootToAddTo + "_ul");
-
-        // Next create the li element which will encapslate the entire tree node GUI item
-        var li = document.createElement("li");
-
-        var cnvs = document.createElement("CANVAS");
-        cnvs.setAttribute("data-id", "id"); // added line
-        cnvs.style.width = "100%";
-        cnvs.style.height = size;
-        li.appendChild(cnvs);
-
-        //Now Add an Input
-
-        //     <input type="checkbox" id="node-0-1-0" />
-        var inp1 = document.createElement("INPUT");
-        inp1.setAttribute("type", "checkbox"); // added line
-        inp1.setAttribute("id", id); // added line
 
 
-        //if (isExpanded === true)
-        inp1.setAttribute("checked", "true"); // added line
+    // First get the tree root
+    var rootNode = document.getElementById(rootToAddTo + "_ul");
 
-        li.appendChild(inp1);
+    // Next create the li element which will encapslate the entire tree node GUI item
+    var li = document.createElement("li");
 
-        // Now Create the Nested label which holds the check box
-        var chkLbl = document.createElement("LABEL");
+    var cnvs = document.createElement("CANVAS");
+    cnvs.setAttribute("data-id", "id"); // added line
+    cnvs.style.width = "100%";
+    cnvs.style.height = size;
+    li.appendChild(cnvs);
 
-        var inp2 = document.createElement("INPUT");
-        inp2.setAttribute("id", id); // added line
-        inp2.setAttribute("type", "checkbox"); // added line
-        inp2.setAttribute("checked", "checked"); // added line
-        chkLbl.appendChild(inp2);
+    //Now Add an Input
 
-        var spn = document.createElement("SPAN");
-        chkLbl.appendChild(spn);
+    //     <input type="checkbox" id="node-0-1-0" />
+    var inp1 = document.createElement("INPUT");
+    inp1.setAttribute("type", "checkbox"); // added line
+    inp1.setAttribute("id", id); // added line
 
-        li.appendChild(chkLbl);
 
-        // Finally create the end Text
-        var txtLbl = document.createElement("LABEL");
-        var txt = document.createTextNode("img: ");
-        var img = document.createElement("IMG");
-        txtLbl.setAttribute("for", id);
-        txtLbl.setAttribute("data-status", "texture");
+    //if (isExpanded === true)
+    inp1.setAttribute("checked", "true"); // added line
 
-        txtLbl.appendChild(newImg);
-        li.appendChild(txtLbl);
+    li.appendChild(inp1);
 
-        // Finally Append a 'ul' element so that it can parent other nodes
-        var newul = document.createElement("ul");
-        newul.setAttribute("id", id + "_ul"); // added line
-        li.appendChild(newul);
+    // Now Create the Nested label which holds the check box
+    var chkLbl = document.createElement("LABEL");
 
-        rootNode.appendChild(li);
-        */
+    var inp2 = document.createElement("INPUT");
+    inp2.setAttribute("id", id); // added line
+    inp2.setAttribute("type", "checkbox"); // added line
+    inp2.setAttribute("checked", "checked"); // added line
+    chkLbl.appendChild(inp2);
+
+    var spn = document.createElement("SPAN");
+    chkLbl.appendChild(spn);
+
+    li.appendChild(chkLbl);
+
+    // Finally create the end Text
+    var txtLbl = document.createElement("LABEL");
+    var txt = document.createTextNode("img: ");
+    var img = document.createElement("IMG");
+    txtLbl.setAttribute("for", id);
+    txtLbl.setAttribute("data-status", "texture");
+
+    txtLbl.appendChild(newImg);
+    li.appendChild(txtLbl);
+
+    // Finally Append a 'ul' element so that it can parent other nodes
+    var newul = document.createElement("ul");
+    newul.setAttribute("id", id + "_ul"); // added line
+    li.appendChild(newul);
+
+    rootNode.appendChild(li);
 }
 
 function InitialiseModel(model) {
@@ -742,6 +556,16 @@ function addResultsItem(note) {
     // First get the tree root
     var rootDiv = document.getElementById("div_results");
 
+
+    /*
+      <div class="modal-result-item" type="error" >
+        <img class ="modal-result-item-img" data-icon="error"/>
+        <span class="modal-result-item-title">Error Loading File</span>
+        <span class="modal-result-item-file">filename.txt</span>
+        <hr id="splitter" />
+        <span class="modal-result-item-txt">There was an error when loading the file default.txt. "Could not find material file 'None.mtl' referenced in cube.obj. Make sure you've selected all referenced files when selecting."</span>
+      </div>
+    */
     var errortype = note.type == 0 ? "error" : "warning";
 
     // first create the div which will encapsulate the entire note
@@ -795,16 +619,17 @@ F 120224
 
 
 $(window).resize(function() {
+
     Resize();
 });
 
 // Handles Resizing
 function Resize() {
     canvas.width = $(window).width();
-    canvas.height = $(window).height() - 118;
+    canvas.height = $(window).height() - 132;
 
-    document.getElementById("model_treeview").style.maxHeight = ($(window).height() - 118) + "px";
-    document.getElementById("js-treediv").style.width = document.getElementById("model_treeview").style.width;
+    document.getElementById("model_treeview").style.maxHeight = ($(window).height() - 156) + "px";
+    document.getElementById("treeview_capsuleDiv").style.width = document.getElementById("model_treeview").style.width;
 
     var footer = document.getElementById('div_footer');
 
@@ -819,11 +644,72 @@ function Resize() {
 
 
 
-$(".tree-control").mouseenter(function() { treeHasFocus = 1; });
-$(".tree-control").mouseleave(function() {
-    treeHasFocus = 0;
-    crntTreeHighlight = ""
+$(".ui-cntrl-treeview").mouseenter(function() { treeHasFocus = 1; });
+$(".ui-cntrl-treeview").mouseleave(function() { treeHasFocus = 0;
+    crntTreeHighlight = "" });
+
+
+// Handle Tree View Checkbox Toggle
+// *****************************************************************************************************
+$(".ui-cntrl-treeview").delegate("label input:checkbox", "change", function() {
+    var
+        checkbox = $(this),
+        nestedList = checkbox.parent().next().next(),
+        selectNestedListCheckbox = nestedList.find("label:not([for]) input:checkbox");
+
+    // Toggle all Meshes
+    if ($(checkbox).attr('id') == meshNodeId) {
+        for (var i = 0; i < MeshCollection.length; i++) {
+
+            MeshCollection[i].Enabled = checkbox.is(":checked");
+        }
+    }
+
+    // Toggle all Measurements
+    else if ($(checkbox).attr('id') == measureNodeId) {
+        for (var i = 0; i < MeasureCollection.length; i++) {
+
+            MeasureCollection[i].Enabled = checkbox.is(":checked");
+        }
+
+        // Parse through individual collections
+    } else {
+
+        //Check Meshes
+        for (var i = 0; i < MeshCollection.length; i++) {
+
+            if (MeshCollection[i].TreeNodeID == $(checkbox).attr('id')) {
+                MeshCollection[i].Enabled = checkbox.is(":checked");
+            }
+        }
+        //Check Models
+        for (var i = 0; i < ModelCollection.length; i++) {
+
+            //ModelCollection[i].TrueFunc = !ModelCollection[i].TrueFunc;
+
+            if ("node_" + ModelCollection[i].Name == $(checkbox).attr('id')) {
+                ModelCollection[i].SetEnabled(checkbox.is(":checked"));
+            }
+        }
+
+        //Check Measurements
+        for (var i = 0; i < MeasureCollection.length; i++) {
+
+            if ("node_" + MeasureCollection[i].Name == $(checkbox).attr('id')) {
+                MeasureCollection[i].Enabled = checkbox.is(":checked");
+            }
+        }
+    }
+    /*
+          log($(checkbox).attr('id'));
+        log(checkbox.is(":checked"));
+        */
+    if (checkbox.is(":checked")) {
+        return selectNestedListCheckbox.prop("checked", true);
+    }
+    selectNestedListCheckbox.prop("checked", false);
 });
+
 
 
 
@@ -850,6 +736,239 @@ function log(Text) {
 
 
 
+
+
+
+
+(function() {
+
+    "use strict";
+
+    //////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////
+    //
+    // H E L P E R    F U N C T I O N S
+    //
+    //////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * Function to check if we clicked inside an element with a particular class
+     * name.
+     *
+     * @param {Object} e The event
+     * @param {String} className The class name to check against
+     * @return {Boolean}
+     */
+    function clickInsideElement(e, className) {
+        var el = e.srcElement || e.target;
+
+        if (el.classList.contains(className)) {
+            return el;
+        } else {
+            while (el = el.parentNode) {
+                if (el.classList && el.classList.contains(className)) {
+                    return el;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Get's exact position of event.
+     *
+     * @param {Object} e The event passed in
+     * @return {Object} Returns the x and y position
+     */
+    function getPosition(e) {
+        var posx = 0;
+        var posy = 0;
+
+        if (!e) var e = window.event;
+
+        if (e.pageX || e.pageY) {
+            posx = e.pageX;
+            posy = e.pageY;
+        } else if (e.clientX || e.clientY) {
+            posx = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
+            posy = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
+        }
+
+        return {
+            x: posx,
+            y: posy
+        }
+    }
+
+    //////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////
+    //
+    // C O R E    F U N C T I O N S
+    //
+    //////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * Variables.
+     */
+    var contextMenuClassName = "context-menu";
+    var contextMenuItemClassName = "context-menu__item";
+    var contextMenuLinkClassName = "context-menu__link";
+    var contextMenuActive = "context-menu--active";
+
+    var taskItemClassName = "glcanvas3D";
+    var taskItemInContext;
+
+    var clickCoords;
+    var clickCoordsX;
+    var clickCoordsY;
+
+    var menu = document.querySelector("#context-menu");
+    var menuItems = menu.querySelectorAll(".context-menu__item");
+    var menuState = 0;
+    var menuWidth;
+    var menuHeight;
+    var menuPosition;
+    var menuPositionX;
+    var menuPositionY;
+
+    var windowWidth;
+    var windowHeight;
+
+    /**
+     * Initialise our application's code.
+     */
+    function init() {
+        contextListener();
+        clickListener();
+        keyupListener();
+        resizeListener();
+    }
+
+    /**
+     * Listens for contextmenu events.
+     */
+    function contextListener() {
+        document.addEventListener("contextmenu", function(e) {
+            taskItemInContext = clickInsideElement(e, taskItemClassName);
+            //e.preventDefault();
+            if (taskItemInContext) {
+                e.preventDefault();
+                toggleMenuOn();
+                positionMenu(e);
+            } else {
+                taskItemInContext = null;
+                toggleMenuOff();
+            }
+        });
+    }
+
+    /**
+     * Listens for click events.
+     */
+    function clickListener() {
+        document.addEventListener("click", function(e) {
+            var clickeElIsLink = clickInsideElement(e, contextMenuLinkClassName);
+
+            if (clickeElIsLink) {
+                e.preventDefault();
+                menuItemListener(clickeElIsLink);
+            } else {
+                var button = e.which || e.button;
+                if (button === 1) {
+                    toggleMenuOff();
+                }
+            }
+        });
+    }
+
+    /**
+     * Listens for keyup events.
+     */
+    function keyupListener() {
+        window.onkeyup = function(e) {
+            if (e.keyCode === 27) {
+                toggleMenuOff();
+            }
+        }
+    }
+
+    /**
+     * Window resize event listener
+     */
+    function resizeListener() {
+        window.onresize = function(e) {
+            toggleMenuOff();
+        };
+    }
+
+    /**
+     * Turns the custom context menu on.
+     */
+    function toggleMenuOn() {
+        if (menuState !== 1) {
+            menuState = 1;
+            menu.classList.add(contextMenuActive);
+        }
+    }
+
+    /**
+     * Turns the custom context menu off.
+     */
+    function toggleMenuOff() {
+        if (menuState !== 0) {
+            menuState = 0;
+            menu.classList.remove(contextMenuActive);
+        }
+    }
+
+    /**
+     * Positions the menu properly.
+     *
+     * @param {Object} e The event
+     */
+    function positionMenu(e) {
+        clickCoords = getPosition(e);
+        clickCoordsX = clickCoords.x;
+        clickCoordsY = clickCoords.y;
+
+        menuWidth = menu.offsetWidth + 4;
+        menuHeight = menu.offsetHeight + 4;
+
+        windowWidth = window.innerWidth;
+        windowHeight = window.innerHeight;
+
+        if ((windowWidth - clickCoordsX) < menuWidth) {
+            menu.style.left = windowWidth - menuWidth + "px";
+        } else {
+            menu.style.left = clickCoordsX + "px";
+        }
+
+        if ((windowHeight - clickCoordsY) < menuHeight) {
+            menu.style.top = windowHeight - menuHeight + "px";
+        } else {
+            menu.style.top = clickCoordsY + "px";
+        }
+    }
+
+    /**
+     * Dummy action function that logs an action when a menu item link is clicked
+     *
+     * @param {HTMLElement} link The link that was clicked
+     */
+    function menuItemListener(link) {
+        log("Task ID - " + taskItemInContext.getAttribute("data-id") + ", Task action - " + link.getAttribute("data-action"));
+        toggleMenuOff();
+    }
+
+    /**
+     * Run the app.
+     */
+    init();
+
+})();
 
 
 
@@ -887,12 +1006,7 @@ $("#sidebar_file_export").click(function() {
 
 
 
-
-
-
-
-// Export the file
-//******************************************************************
+// export the file
 var textFile = null;
 
 function makeTextFile(text) {
@@ -953,7 +1067,7 @@ $("#btn_social_github").click(function() {
   chrome.browser.openTab({
       url: 'https://github.com/r4tch31/Iris-Web-Viewer/wiki'
     });
-    */
+*/
     openInNewTab('https://github.com/VirtexEdgeDesign/Iris-Web-Viewer/wiki');
 });
 
@@ -986,6 +1100,55 @@ $("#menu_file_quit").click(function() {
 
 
 
+// View
+//******************************************************************
+
+// Projection Events
+$("#menu_view_perspec").click(function() {
+    SetViewToPerspective();
+});
+$("#menu_view_ortho").click(function() {
+    SetViewToOrtho();
+});
+
+
+// Set the view events
+$("#menu_view_iso").click(function() { SetViewToIso(); });
+$("#menu_view_top").click(function() { SetViewToTop(); });
+$("#menu_view_bottom").click(function() { SetViewToBottom(); });
+$("#menu_view_front").click(function() { SetViewToFront(); });
+$("#menu_view_back").click(function() { SetViewToBack(); });
+$("#menu_view_left").click(function() { SetViewToLeft(); });
+$("#menu_view_right").click(function() { SetViewToRight(); });
+
+$("#menu_view_zoomIn").click(function() { AdjustZoom(0.75); });
+$("#menu_view_zoomOut").click(function() { AdjustZoom(1.25); });
+$("#menu_view_zoomFit").click(function() { FitZoom(); });
+
+// Rendering Style
+//******************************************************************
+$("#menu_view_textured").click(function() {
+    SetShadingToTextured();
+});
+$("#menu_view_shaded").click(function() {
+    SetShadingToShaded();
+});
+$("#menu_view_wireframe").click(function() {
+    SetShadingToWireframe();
+});
+
+// Show Edges
+$("#menu_view_doEdge").click(function() {
+    SetEdgeRendering(true);
+});
+$("#menu_view_noEdge").click(function() {
+    SetEdgeRendering(false);
+});
+
+// Custom Rendering
+$("#menu_view_surfaceNormal").click(function() {
+    SetShadingToNormal();
+});
 
 
 // Tools
@@ -1288,15 +1451,19 @@ function handleMouseMove(event) {
     if (MouseState.MiddleButtonDown) {
         // Handle rotation
         if (KeyboardState.Shift == false) {
+            var newX = event.clientX;
+            var newY = event.clientY;
 
-            Camera.rotate(event.clientX - lastMouseX, event.clientY - lastMouseY);
+            rotX += newX - lastMouseX;
+            rotY += newY - lastMouseY;
 
-            lastMouseX = event.clientX;
-            lastMouseY = event.clientY;
+            lastMouseX = newX;
+            lastMouseY = newY;
         }
         // Handle Panning
         else {
-            Camera.pan((MouseState.x - MouseState.prevX), (MouseState.y - MouseState.prevY));
+            panX = (MouseState.x - MouseState.prevX) / 500 * Zoom;
+            panY = (MouseState.y - MouseState.prevY) / 500 * Zoom;
         }
     }
 }
@@ -1311,7 +1478,7 @@ function ResetRotation() {
 }
 
 
-var treepos = 118;
+var treepos = 132;
 
 
 
@@ -1330,22 +1497,24 @@ function MouseWheelHandler(e) {
             //Set the position based off of the delta
             treepos += delta * 14;
             //set the min as the bar height
-            treepos = Math.min(118, treepos);
+            treepos = Math.min(132, treepos);
 
-            var allowedMovement = document.getElementById('model_treeview').clientHeight - window.innerHeight + 118;
+            //console.log(document.getElementById('model_treeview').clientHeight);
+            //console.log(window.innerHeight);
+            var allowedMovement = document.getElementById('model_treeview').clientHeight - window.innerHeight + 132;
 
             if (allowedMovement > 0) {
                 //Now set the top bound for the treepos
-                treepos = Math.max(-1 * allowedMovement + 118, treepos);
+                treepos = Math.max(-1 * allowedMovement + 132, treepos);
 
                 //now set the css data
                 tree.style.top = treepos + "px";
             } else {
-                tree.style.top = "118px";
+                tree.style.top = "132px";
             }
         } else {
             // Set zoom info
-            Camera.zoom -= delta * (Camera.zoom / 10);
+            Zoom -= delta * (Zoom / 10);
         }
     }
     //log("Set Zoom: " + Zoom);

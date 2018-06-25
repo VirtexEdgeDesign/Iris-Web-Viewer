@@ -2,19 +2,20 @@
 <html>
 
 <link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/modal.css">
 <div id="loading" background-color="#2a2a2a" style="width: 100%; height: 100%; top: 0px; left: 0px; position: fixed; display: block; opacity: 1; background-color: #2a2a2a; z-index: 99; text-align: center; -webkit-transition: background-color 0;transition: background-color 0;">
   <div class="meter deepskyblue" style="width:50%;margin:auto;top:70%;height:4px;padding:3px;">
     <span id="loading-prgrsbar" style="width: 10%"></span>
   </div>
   <img background-color="#1b1b1b" id="loading-image" src="img/loading/Eclipse.svg" alt="Loading..." style="background-color: #2a2a2a;
-color: #2a2a2a; position: absolute; top: 20%; left: 44%; z-index: 600; width: 50; height: 50"/>
+  color: #2a2a2a; position: absolute; top: 20%; left: 44%; z-index: 600; width: 50; height: 50"/>
 
 </div>
 <head>
   <title>IRIS Viewer - Loading... </title>
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <meta name="google-site-verification" content="_vL8-wOxlF5ojenBYuauH9k6nC8f2AFpLK8ABf4NH1M" />
-<!-- Google Analytics -->
+<!-- Google Analytics 
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -25,71 +26,81 @@ color: #2a2a2a; position: absolute; top: 20%; left: 44%; z-index: 600; width: 50
   ga('send', 'pageview');
 
 </script>
-
-  <!-- Google AdSense Code -->
+-->
+  <!-- Google AdSense Code 
 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 <script>
   (adsbygoogle = window.adsbygoogle || []).push({
     google_ad_client: "ca-pub-9433392372917576",
     enable_page_level_ads: true
   });
+-->
 </script>
 
-  <!-- Google Auth Code -->
+  <!-- Google Auth Code 
   <script src="https://apis.google.com/js/platform.js" async defer></script>
   <meta name="google-signin-client_id" content="629606533840-1j5m58o3krsdkno8hiamd763opce78ia.apps.googleusercontent.com" />
   <script src="js/google/login.js"></script>
   <script src="js/google/gdrive.js"></script>
+-->
+<!-- Styles -->
 
-  <!-- Styles -->
-  
   <!--
   <script src="lib/prism.js" type="text/javascript"></script>
   <link rel="stylesheet" href="lib/prism.css">
-  -->
-  <!-- Javascript -->
+-->
+<!-- Javascript -->
 
-  <!-- Libraries -->
-  <script type="text/javascript" src="lib/jquery-3.1.0.min.js"></script>
-  <script type="text/javascript" src="lib/glMatrix-0.9.5.min.js" ></script>
-  <script type="text/javascript" src="lib/dat.gui.js"></script>
-  <script type="text/javascript" src="lib/stats.min.js"></script>
-  
-    
-  <!-- Base vx3D code -->
-  <script src="js/gl/glMain.js" type="text/javascript"></script>
-  <script src="js/vx/vxColour.js" type="text/javascript"></script>
-  <script src="js/vx/vxGeometry.js" type="text/javascript"></script>
-  <script src="js/vx/vxCommand.js" type="text/javascript"></script>
-  <script src="js/vx/vxPropteries.js" type="text/javascript"></script>
-  <script src="js/vx/vxMeshPart.js" type="text/javascript"></script>
-  <script src="js/vx/vxMesh.js" type="text/javascript"></script>
-  <script src="js/vx/vxModel.js" type="text/javascript"></script>
-  <script src="js/vx/vxMeasure.js" type="text/javascript"></script>
-  
-    
-    <!-- Inport Scripts -->
-    <script src="js/io/io_img.js" type="text/javascript"></script>
-    <script src="js/io/io_obj.js" type="text/javascript"></script>
-    <script src="js/io/io_stl.js" type="text/javascript"></script>
-    <script src="js/io/io_ply.js" type="text/javascript"></script>
-    <script src="js/io/io_drctx.js" type="text/javascript"></script>
+<!-- Libraries -->
+<script type="text/javascript" src="lib/jquery-3.1.0.min.js"></script>
+<script type="text/javascript" src="lib/glMatrix-0.9.5.min.js" ></script>
+<script type="text/javascript" src="lib/dat.gui.js"></script>
+<script type="text/javascript" src="lib/stats.min.js"></script>
+
+
+<!-- Base vx3D code -->
+<script src="js/vx/vxCamera.js" type="text/javascript"></script>
+<script src="js/vx/vxColour.js" type="text/javascript"></script>
+<script src="js/vx/vxGeometry.js" type="text/javascript"></script>
+<script src="js/vx/vxCommand.js" type="text/javascript"></script>
+<script src="js/vx/vxPropteries.js" type="text/javascript"></script>
+<script src="js/vx/vxMeshPart.js" type="text/javascript"></script>
+<script src="js/vx/vxMesh.js" type="text/javascript"></script>
+<script src="js/vx/vxModel.js" type="text/javascript"></script>
+<script src="js/vx/vxMeasure.js" type="text/javascript"></script>
+<script src="js/vx/vxTetra.js" type="text/javascript"></script>
+
+
+<!-- Inport Scripts -->
+<script src="js/io/io_img.js" type="text/javascript"></script>
+<script src="js/io/io_obj.js" type="text/javascript"></script>
+<script src="js/io/io_stl.js" type="text/javascript"></script>
+<script src="js/io/io_ply.js" type="text/javascript"></script>
+<script src="js/io/io_drctx.js" type="text/javascript"></script>
+
+
+<link rel="stylesheet" href="lib/vx-ui-ribbon/ribbon.css">
+<script type="text/javascript" src="lib/vx-ui-ribbon/ribbon.js"></script>
+
+<link rel="stylesheet" href="lib/vx-ui-tree/tree.css">
+<script type="text/javascript" src="lib/vx-ui-tree/tree.js"></script>
+
 </head>
 
 <!-- Main Body of Code -->
 <body>
-<div id="div_main">
-  <div id="header" style="border: none;position:absolute; top:0px; left:0;height:32px;width:100%;background:darkorange"></div>
+  <div id="div_main">
+    <div id="div_ribbon" style="border: none;position:absolute; top:0px; left:0;height:117px;width:100%;background:darkorange"></div>
     <div>
       <div id="div_canvas">
-        <canvas id="glcanvas3D" class="glcanvas3D" style="border: none;position:absolute; top:32px; left:0;" width="500" height="500"></canvas>
+        <canvas id="glcanvas3D" class="glcanvas3D" style="border: none;position:absolute; top:118px; left:0;" width="500" height="500"></canvas>
       </div>
-    <div class="footer" id="div_footer" style="border: none;position:absolute;bottom:0px; left:0;">
-      <a class="corner-status-text" id="footer_text">footer-text</a>
-    </div>
-    <div>
-      <img id="img_profile" src="assets/icon_24.png" style="position:absolute;top:4px; right:4px; width:24px;height:24px;"></img>
-    </div>
+      <div class="footer" id="div_footer" style="border: none;position:absolute;bottom:0px; left:0;">
+        <a class="corner-status-text" id="footer_text">footer-text</a>
+      </div>
+      <div>
+        <img id="img_profile" src="assets/icon_24.png" style="position:absolute;top:4px; right:4px; width:24px;height:24px;"></img>
+      </div>
     <!--
     <div class="admob" style="position:absolute;bottom:24px; align-content: center;">
       <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -98,8 +109,8 @@ color: #2a2a2a; position: absolute; top: 20%; left: 44%; z-index: 600; width: 50
         (adsbygoogle = window.adsbygoogle || []).push({});
       </script>
     -->
-    </div>
   </div>
+</div>
 
 <!-- Footer Images -->
 <div ><a class="img-footer" data-icon="fb" id="btn_social_fb" href=#></a></div>
@@ -109,161 +120,56 @@ color: #2a2a2a; position: absolute; top: 20%; left: 44%; z-index: 600; width: 50
 
 
 <!-- Treeview Control 
-====================================================================== -->
-<div id="tree_div" style="
-  border: thin solid #FFF;">
-  <div id="model_treeview" class="ui-cntrl-treeview" style="position:absolute; top:32px; left:0px; max-height: 250px; overflow-y: scroll; overflow-x:hidden; direction: rtl;">
-    <div id="treeview_capsuleDiv" style="direction: ltr; position:relative; left:0px;">
-          <li>
-              <input type="checkbox" id="tree_root" checked="checked" /><label><input type="checkbox" checked="checked" /><span></span> </label><label data-icon="envrroot" for="tree_root">Enviroment</label>
-              <ul id="tree_root_ul"></ul>
-          </li>
-        </div>
+  ====================================================================== -->
+<div id="model_treeview" class="tree-div">
+  <div id="js-treediv" style="direction: ltr;"></div>
   </div>
-</div>
 
 
 <!-- Open File Control
-====================================================================== -->
-<input id="menu_file_openSelect" multiple="multiple" type="file" style="display:none" />
-<div class="menubar" id="top_menu" style="border: none;position:absolute; top:0px; left:0;">
-  <!-- Top Menu Bar -->
-  <nav class="menubar">
-  <div id="Hamburger"><a id="btn_logo" href="#">Menu</a></div>
-  <!--<div id="logo"><a id="btn_logo" href="#">Iris Viewer</a></div>-->
-  <label for="drop" class="toggle">Menu</label>
-  <input type="checkbox" id="drop" />
-  <ul class="menu">
-    <li> 
-      <!-- First Tier Drop Down -->
-      <label for="drop-1" class="toggle">View</label>
-      <a href="#">View</a>
-      <input type="checkbox" id="drop-1"/>
-      <ul>
-        
-            <li><a id="menu_view_perspec" data-icon="icon-view-persp" href="#">Perspective</a></li>
-            <li><a id="menu_view_ortho" data-icon="icon-view-ortho" href="#">Orthogonal</a></li>
-            
-        <li><hr class="menubar-splitter-min" /></li>
-        <!-- Second Tier Drop Down -->
-        <li> 
-          <label for="drop-3" class="toggle">SetViewto</label>
-          <a href="#">Set View to...    </a>
-          <input type="checkbox" id="drop-3"/>
-          <ul>
-            <li><a id="menu_view_iso" data-icon="icon-view-iso" href="#">Corner</a></li>
-              <li><hr class="menubar-splitter-min" /></li>
-            <li><a id="menu_view_top" data-icon="icon-view-top" href="#">Top</a></li>
-            <li><a id="menu_view_bottom" data-icon="icon-view-bottom" href="#">Bottom</a></li>
-            <li><a id="menu_view_front" data-icon="icon-view-front"  href="#">Front</a></li>
-            <li><a id="menu_view_back" data-icon="icon-view-back" href="#">Back</a></li>
-            <li><a id="menu_view_left" data-icon="icon-view-left" href="#">Left</a></li>
-            <li><a id="menu_view_right" data-icon="icon-view-right" href="#">Right</a></li>
-          </ul>
-        </li>
-        
-              <li><hr class="menubar-splitter" /></li>
-            <li><a id="menu_view_zoomIn" data-icon="icon-view-zoom-in" href="#">Zoom In</a></li>
-            <li><a id="menu_view_zoomOut" data-icon="icon-view-zoom-out" href="#">Zoom Out</a></li>
-            <li><a id="menu_view_zoomFit" data-icon="icon-view-zoom-fit"  href="#">Fit</a></li>
-        <!-- Second Tier Drop Down -->
-        <!--
-                <li><hr class="modal-splitter" /></li>
-        <li> 
-          <label for="drop-3" class="toggle">SetViewto</label>
-          <a href="#">Rendering Style    </a>
-          <input type="checkbox" id="drop-3"/>
-          <ul>
-            <li><a id="menu_view_shadedEdge" data-icon="icon-view-shadededge" href="#">Shaded Edge</a></li>
-            <li><a id="menu_view_shaded" data-icon="icon-view-shaded" href="#">Shaded</a></li>
-            <li><a id="menu_view_wireframe" data-icon="icon-view-wireframe" href="#">Wireframe</a></li>
-          </ul>
-        </li>
-        -->
-      </ul>
-    </li>
-        <li> 
-      <label for="drop-3" class="toggle">Rendering</label>
-      <a href="#">Rendering</a>
-      <input type="checkbox" id="drop-3"/>
-      <ul>
-            <li><a id="menu_view_textured" data-icon="icon-view-textured" href="#">Textured</a></li>
-            <li><a id="menu_view_shaded" data-icon="icon-view-shaded" href="#">Shaded</a></li>
-            <li><a id="menu_view_wireframe" data-icon="icon-view-wireframe" href="#">Wireframe</a></li>
-                <li><hr class="menubar-splitter-min" /></li>
-            <li><a id="menu_view_surfaceNormal" data-icon="icon-view-normal" href="#">Surface Normal</a></li>
-                <li><hr class="menubar-splitter" /></li>
-                <li><a id="menu_view_doEdge" data-icon="icon-view-shadededge" href="#">Show Edge</a></li>
-                <li><a id="menu_view_noEdge" data-icon="icon-view-shaded" href="#">No Edge</a></li>
-      </ul>
-    </li>
-    <li> 
-      <label for="drop-2" class="toggle">Tools</label>
-      <a href="#">Tools</a>
-      <input type="checkbox" id="drop-2"/>
-      <ul>
-        <li><a  id="menu_tools_measure" data-icon="icon-tools-measure" href="#">Measure Distance</a></li>
-        <!--<li><a  id="menu_tools_measure_angle" data-icon="icon-tools-measure-angle" href="#">Measure Angle</a></li>-->
-        <li><hr class="modal-splitter" /></li>
-        <li><a  id="menu_tools_debug" data-icon="icon-tools-debug" href="#">Toggle Debug Info</a></li>
-      </ul>
-      
-    </li>
-  </ul>
-</nav>
-</div>
-</div>
-
-<!--
-<div class="icon-bar" style="border: none;position:absolute; top:85%; left:0;">
-  <a class="active" href="#"><i class="fa fa-home"></i></a>
-  <a href="#">sdf<i class="fa fa-search"></i></a>
-  <a href="#"><i class="fa fa-envelope"></i></a>
-  <a href="#">asdf<i class="fa fa-globe"></i></a>
-  <a href="#"><i class="fa fa-trash"></i></a>
-</div>
--->
+  ====================================================================== -->
+  <input id="menu_file_openSelect" multiple="multiple" type="file" style="display:none" />
 
 </body>
 
 <!-- The Intro Modal 
-====================================================================== -->
-<div id="modal_intro" class="modal_intro">
+  ====================================================================== -->
+  <div id="modal_intro" class="modal_intro">
 
-  <!-- Modal content -->
-<div class="modal_intro-content">
-  <div id ="into_title">
-    <tr>
-      <th>
-        <h1 id="intro_text_title">(title)</h1>
-      </th>
-      <th><p id="intro_text_subtitle">(short description)</p></th>
-      <th><p id="intro_text_versions"><img id="img_version_launch" src="img/badges/build_status.svg"/></p></th>
-      <th><br></th>
-      <th><p id="intro_text_description">(description)</p></th>
-      <th><br/></th>
-    </tr>
-  </div>
-    <div class="modal_intro-body">
-    <img id="intro_logo" src="assets/icon_128.png" alt="logo pic" style="width:128px;height:128px;">
+    <!-- Modal content -->
+    <div class="modal_intro-content">
+      <div id ="into_title">
+        <tr>
+          <th>
+            <h1 id="intro_text_title">(title)</h1>
+          </th>
+          <th><p id="intro_text_subtitle">(short description)</p></th>
+          <th><p id="intro_text_versions"><img id="img_version_launch" src="img/badges/build_status.svg"/></p></th>
+          <th><br></th>
+          <th><p id="intro_text_description">(description)</p></th>
+          <th><br/></th>
+        </tr>
+      </div>
+      <div class="modal_intro-body">
+        <img id="intro_logo" src="assets/icon_128.png" alt="logo pic" style="width:128px;height:128px;">
+      </div>
+      <div class="modal_intro-footer">
+        <p id="intro_text_disclaimer">(disclaimer)</p>
+        <br/>
+        <table style="width:100%">
+          <tr>
+            <th  style="text-align:left">
+              <p>(C) Virtex Edge Design</p>
+            </th>
+            <th style="float:right">
+              <iframe src="https://ghbtns.com/github-btn.html?user=VirtexEdgeDesign&repo=Iris-Web-Viewer&type=star&count=true" frameborder="0" scrolling="0" width="72px" height="20px"></iframe>
+            </th>
+          </tr>
+        </table>
+      </div>
     </div>
-    <div class="modal_intro-footer">
-    <p id="intro_text_disclaimer">(disclaimer)</p>
-    <br/>
-    <table style="width:100%">
-    <tr>
-    <th  style="text-align:left">
-      <p>(C) Virtex Edge Design</p>
-      </th>
-      <th style="float:right">
-      <iframe src="https://ghbtns.com/github-btn.html?user=VirtexEdgeDesign&repo=Iris-Web-Viewer&type=star&count=true" frameborder="0" scrolling="0" width="72px" height="20px"></iframe>
-      </th>
-      </tr>
-      </table>
-    </div>
   </div>
-</div>
-
+<!--
       <script>window.twttr = (function(d, s, id) {
          var js, fjs = d.getElementsByTagName(s)[0],
            t = window.twttr || {};
@@ -281,74 +187,74 @@ color: #2a2a2a; position: absolute; top: 20%; left: 44%; z-index: 600; width: 50
          return t;
          }(document, "script", "twitter-wjs"));
       </script>
-
+    -->
 <!-- The About Modal 
-====================================================================== -->
-<div id="modal_about" class="modal">
+  ====================================================================== -->
+  <div id="modal_about" class="modal">
 
-  <!-- Modal content -->
-  <div class="modal-content" style="width: 60%;">
-    <div class="modal-header">
-      <!--<span class="close">&times;</span>-->
-      <h2>Iris Web Viewer - About</h2>
-      <hr class="modal-splitter" />
-    </div>
-    <div class="modal-body">
-<table class="tg">
-  <tr>
-    <th class="tg-031e">
-      <img src="assets/icon_128.png" alt="Mountain View" style="width:128px;height:128px;">
-    </th>
-    <td class="tg-yw4l" style="width:150px">
-      <br/>
-     Iris Web Viewer is an online 3D Exchange file viewer. It allows you to view files on any computer with a web browser without having to bootup bulky 3D packages. Iris is currently in Beta, so If there's a format or feature you want added, contact us below and we'll do our best to add it in. 
-    <br/>
-    <br/>
-    </th>
-    <h2>Supported Formats</h2>
-    <hr class="modal-splitter" />
-    <br/>
-    Currently Iris can open:
-    <br/>
-    <div style="position:relative; left:25px">
-    <ul>
-      <li>STereoLithography (*.stl)</li>
-      <li>Wavefront (*.obj)</li>
-      <li>Direct X 3D (*.x)</li>
-      <!--<li>PLY Files (*.ply)</li>-->
-      <!--<li>Autodesk Filmbox Files (*.fbx)</li>-->
-    </ul>
-    </div> 
-    <br/>
-    <p>
-      <b>NOTE:</b> Not all features of all file types are supported for importing and exporting. Check out the <a href="https://github.com/VirtexEdgeDesign/Iris-Web-Viewer/wiki" target="_blank">Github Wiki</a> for a break down of Iris' capabilities. 
-      </p>
-    <br/>
-    </td>
-  </tr>
-  <tr>
-    <td class="tg-yw4l" style="width:150px"></td>
-    <td class="tg-yw4l">
-      <h2>Contact and Follow</h2>
-      <hr class="modal-splitter" />
-    <br/>
-    Problem, question, concern? Iris is Open Source and hosted on  <a href="https://github.com/VirtexEdgeDesign/Iris-Web-Viewer" target="_blank">Github</a>, check the issues section or post a question there. If you want to reach me directly you can tweet to me on twitter.
-    <br/>
-    <br/>
-      <table style="width:100%">
+    <!-- Modal content -->
+    <div class="modal-content" style="width: 60%;">
+      <div class="modal-header">
+        <!--<span class="close">&times;</span>-->
+        <h2>Iris Web Viewer - About</h2>
+        <hr class="modal-splitter" />
+      </div>
+      <div class="modal-body">
+        <table class="tg">
+          <tr>
+            <th class="tg-031e">
+              <img src="assets/icon_128.png" alt="Mountain View" style="width:128px;height:128px;">
+            </th>
+            <td class="tg-yw4l" style="width:150px">
+              <br/>
+              Iris Web Viewer is an online 3D Exchange file viewer. It allows you to view files on any computer with a web browser without having to bootup bulky 3D packages. Iris is currently in Beta, so If there's a format or feature you want added, contact us below and we'll do our best to add it in. 
+              <br/>
+              <br/>
+            </th>
+            <h2>Supported Formats</h2>
+            <hr class="modal-splitter" />
+            <br/>
+            Currently Iris can open:
+            <br/>
+            <div style="position:relative; left:25px">
+              <ul>
+                <li>STereoLithography (*.stl)</li>
+                <li>Wavefront (*.obj)</li>
+                <li>Direct X 3D (*.x)</li>
+                <!--<li>PLY Files (*.ply)</li>-->
+                <!--<li>Autodesk Filmbox Files (*.fbx)</li>-->
+              </ul>
+            </div> 
+            <br/>
+            <p>
+              <b>NOTE:</b> Not all features of all file types are supported for importing and exporting. Check out the <a href="https://github.com/VirtexEdgeDesign/Iris-Web-Viewer/wiki" target="_blank">Github Wiki</a> for a break down of Iris' capabilities. 
+            </p>
+            <br/>
+          </td>
+        </tr>
         <tr>
-          <th style="width:40%">
-            <a class="twitter-follow-button" href="https://twitter.com/VirtexEdge"> Tweet @VirtexEdge</a>
-          </th>
-          <th>
-            <iframe src="https://ghbtns.com/github-btn.html?user=VirtexEdgeDesign&repo=Iris-Web-Viewer&type=follow&count=true" frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
-            <iframe src="https://ghbtns.com/github-btn.html?user=VirtexEdgeDesign&repo=Iris-Web-Viewer&type=star&count=true" frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
-          </th>
+          <td class="tg-yw4l" style="width:150px"></td>
+          <td class="tg-yw4l">
+            <h2>Contact and Follow</h2>
+            <hr class="modal-splitter" />
+            <br/>
+            Problem, question, concern? Iris is Open Source and hosted on  <a href="https://github.com/VirtexEdgeDesign/Iris-Web-Viewer" target="_blank">Github</a>, check the issues section or post a question there. If you want to reach me directly you can tweet to me on twitter.
+            <br/>
+            <br/>
+            <table style="width:100%">
+              <tr>
+                <th style="width:40%">
+                  <a class="twitter-follow-button" href="https://twitter.com/VirtexEdge"> Tweet @VirtexEdge</a>
+                </th>
+                <th>
+                  <iframe src="https://ghbtns.com/github-btn.html?user=VirtexEdgeDesign&repo=Iris-Web-Viewer&type=follow&count=true" frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
+                  <iframe src="https://ghbtns.com/github-btn.html?user=VirtexEdgeDesign&repo=Iris-Web-Viewer&type=star&count=true" frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
+                </th>
+              </tr>
+            </table>
+          </td>
         </tr>
       </table>
-    </td>
-  </tr>
-</table>
 
 
     </div>
@@ -360,10 +266,10 @@ color: #2a2a2a; position: absolute; top: 20%; left: 44%; z-index: 600; width: 50
 
 
 <!-- The Open File Modal 
-====================================================================== -->
-<div id="modal_openFile" class="modal">
-  <!-- Modal content -->
-  <div class="modal-content">
+  ====================================================================== -->
+  <div id="modal_openFile" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content">
      <table style="width: 100%">
       <tr>
         <th>
@@ -380,7 +286,7 @@ color: #2a2a2a; position: absolute; top: 20%; left: 44%; z-index: 600; width: 50
         <th>
           <span class="modal-subtitle">From Disk</span>
           <hr class="modal-splitter" />
-        <br/>
+          <br/>
           <button class="modal-btn" id="btn_openfile_local">               
             <div id="btn_container">
               <img class ="modal-btn-img" data-icon="open_local"/>
@@ -394,7 +300,7 @@ color: #2a2a2a; position: absolute; top: 20%; left: 44%; z-index: 600; width: 50
         <th>
           <span class="modal-subtitle">Google Drive</span>
           <hr class="modal-splitter" />
-        <br/>
+          <br/>
           <button class="modal-btn" id="btn_openfile_gdrive">               
             <div id="btn_container">
               <img class ="modal-btn-img" data-icon="open_gdrive"/>
@@ -420,11 +326,11 @@ color: #2a2a2a; position: absolute; top: 20%; left: 44%; z-index: 600; width: 50
 
 
 <!-- The Load File Modal 
-====================================================================== -->
-<div id="modal_loadFile" class="modal">
- 
-  <!-- Modal content -->
-  <div class="modal-content">
+  ====================================================================== -->
+  <div id="modal_loadFile" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
      <table style="width: 100%">
       <tr>
         <th>
@@ -436,21 +342,21 @@ color: #2a2a2a; position: absolute; top: 20%; left: 44%; z-index: 600; width: 50
       <tr>
         <table style="width: 75%;margin:auto;">
           <tr>
-        <th>
-          <span class="modal-txt" id="modal_loadFile_file-name">File Name:</span>
-        </th>
-        <th>
-          <span class="modal-txt" id="modal_loadFile_file-size">File Size:</span>
-        </th>
-        </tr>
+            <th>
+              <span class="modal-txt" id="modal_loadFile_file-name">File Name:</span>
+            </th>
+            <th>
+              <span class="modal-txt" id="modal_loadFile_file-size">File Size:</span>
+            </th>
+          </tr>
         </table>
       </tr>
       <tr>
-      <th>
+        <th>
           <div class="meter deepskyblue" style="width:75%;margin:auto;top:70%;height:8px;padding:4px;">
             <span id="modal_loadFile_file-prgrsbar" style="width:100%"></span>
           </div>
-      </th>
+        </th>
       </tr>
     </table>
   </div>
@@ -460,11 +366,11 @@ color: #2a2a2a; position: absolute; top: 20%; left: 44%; z-index: 600; width: 50
 
 
 <!-- The Google Drive File Picker Modal 
-====================================================================== -->
-<div id="modal_GDrivePicker" class="modal">
- 
-  <!-- Modal content -->
-  <div class="modal-content">
+  ====================================================================== -->
+  <div id="modal_GDrivePicker" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
      <table style="width: 100%">
       <tr>
         <th>
@@ -476,13 +382,13 @@ color: #2a2a2a; position: absolute; top: 20%; left: 44%; z-index: 600; width: 50
       <tr>
         <table style="width: 75%;margin:auto;">
           <tr>
-        <th>
-          <span class="modal-txt" id="modal_GDrivePicker-name">File Name:</span>
-        </th>
-        <th>
-          <span class="modal-txt" id="modal_GDrivePicker-size">File Size:</span>
-        </th>
-        </tr>
+            <th>
+              <span class="modal-txt" id="modal_GDrivePicker-name">File Name:</span>
+            </th>
+            <th>
+              <span class="modal-txt" id="modal_GDrivePicker-size">File Size:</span>
+            </th>
+          </tr>
         </table>
       </tr>
       <tr>
@@ -499,10 +405,10 @@ color: #2a2a2a; position: absolute; top: 20%; left: 44%; z-index: 600; width: 50
 
 
 <!-- The File Export Dialog
-====================================================================== -->
-<div id="modal_exportFile" class="modal">
-  <!-- Modal content -->
-  <div class="modal-content" style="width:700px">
+  ====================================================================== -->
+  <div id="modal_exportFile" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content" style="width:700px">
      <table style="width: 100%">
       <tr>
         <th>
@@ -588,8 +494,8 @@ color: #2a2a2a; position: absolute; top: 20%; left: 44%; z-index: 600; width: 50
                     <span class="modal-btn-txt">Export</span>
                   </div>
                 </button>
-                </th>
-                    <th>
+              </th>
+              <th>
                 <button class="modal-btn" id="btn_file_export_cancel">               
                   <div id="btn_container">
                     <img class ="modal-btn-img" data-icon="cancel"/>
@@ -607,10 +513,10 @@ color: #2a2a2a; position: absolute; top: 20%; left: 44%; z-index: 600; width: 50
 
 
 <!-- The File Load Results Warnings and Errors Modal
-====================================================================== -->
-<div id="modal_openFileResults" class="modal">
-  <!-- Modal content -->
-  <div class="modal-content" style="width:600px">
+  ====================================================================== -->
+  <div id="modal_openFileResults" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content" style="width:600px">
      <table style="width: 100%">
       <tr>
         <th>
@@ -626,7 +532,7 @@ color: #2a2a2a; position: absolute; top: 20%; left: 44%; z-index: 600; width: 50
       <tr>
         <th>
           <div id="div_results" class="scrollbar" id="style-4">             
-              <!-- Put Errors and Warnings Here-->
+            <!-- Put Errors and Warnings Here-->
           </div>
           <br/>
           <hr class="modal-splitter" />
@@ -650,74 +556,74 @@ color: #2a2a2a; position: absolute; top: 20%; left: 44%; z-index: 600; width: 50
 
 
 <!-- The Side Bar
-====================================================================== -->
-<div id="mySidenav" class="ui-cntrl-sidenav">
-  <div id="mnd">
+  ====================================================================== -->
+  <div id="mySidenav" class="ui-cntrl-sidenav">
+    <div id="mnd">
       <a style="border: none;position:absolute; top:10px; left:0;" id="sidebar_title">   Iris Viewer</a>
-  <a href="#" class="closebtn" id="btn_closeSidebar">&times;</a>
-  <a id="sidebar_file_new" href="#">New</a>
-  <a id="sidebar_file_import" data-icon="icon-import" href="#">Import</a>
-  <a id="sidebar_file_export" data-icon="icon-export" href="#">Export</a>
-  <hr class="modal-splitter" />
-  <a href="https://github.com/VirtexEdgeDesign/Iris-Web-Viewer/wiki" target="_blank">Help</a>
-  <a id="menu_about_about" href="#">About</a>
-  <div id="dev_signedOut" style="position:absolute; bottom:75px; left:10px;" >
-    <!--<div id="btn_googleSignIn" class="g-signin2" data-onsuccess="onSignIn" ></div>-->
-     <div id="btn_googleSignIn"></div>
-  <script>
-    function onSuccess(googleUser) {
+      <a href="#" class="closebtn" id="btn_closeSidebar">&times;</a>
+      <a id="sidebar_file_new" href="#">New</a>
+      <a id="sidebar_file_import" data-icon="icon-import" href="#">Import</a>
+      <a id="sidebar_file_export" data-icon="icon-export" href="#">Export</a>
+      <hr class="modal-splitter" />
+      <a href="https://github.com/VirtexEdgeDesign/Iris-Web-Viewer/wiki" target="_blank">Help</a>
+      <a id="menu_about_about" href="#">About</a>
+      <div id="dev_signedOut" style="position:absolute; bottom:75px; left:10px;" >
+        <!--<div id="btn_googleSignIn" class="g-signin2" data-onsuccess="onSignIn" ></div>-->
+        <div id="btn_googleSignIn"></div>
+        <script>
+          function onSuccess(googleUser) {
 //      console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
-      onSignIn(googleUser);
-    }
-    function onFailure(error) {
-      console.log(error);
-    }
-    function renderButton() {
-      gapi.signin2.render('btn_googleSignIn', {
-        'scope': 'profile email https://www.googleapis.com/auth/drive.readonly',
-        'width': 225,
-        'height': 36,
-        'longtitle': true,
-        'theme': 'light',
-        'onsuccess': onSuccess,
-        'onfailure': onFailure
-      });
-    }
-  </script>
-  <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
-  </div>
+onSignIn(googleUser);
+}
+function onFailure(error) {
+  console.log(error);
+}
+function renderButton() {
+  gapi.signin2.render('btn_googleSignIn', {
+    'scope': 'profile email https://www.googleapis.com/auth/drive.readonly',
+    'width': 225,
+    'height': 36,
+    'longtitle': true,
+    'theme': 'light',
+    'onsuccess': onSuccess,
+    'onfailure': onFailure
+  });
+}
+</script>
+<script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
+</div>
 
-  <div id="dev_signedIn" style="position:absolute; bottom:75px; left:10px;" >
+<div id="dev_signedIn" style="position:absolute; bottom:75px; left:10px;" >
   <table style="color:#555;font-size: 12px">
-  <tr>
-    <th></th>
-    <td>
-    <table style="color:#999;font-size: 12px">
     <tr>
-        <td style="color:#aaa;"">Signed In as</td>
+      <th></th>
+      <td>
+        <table style="color:#999;font-size: 12px">
+          <tr>
+            <td style="color:#aaa;"">Signed In as</td>
+          </tr>
+          <tr>
+            <td>
+              <span id="profile_name" class="profileInfo">profile_name</span>
+              <br/>
+              <span class="profileInfo" id="profile_email" >profile_email</span></td> 
+            </td>
+          </tr>
+          <tr>
+            <td>
+
+            </td>
+          </tr>
+        </table>
+      </td> 
     </tr>
-      <tr>
-        <td>
-          <span id="profile_name" class="profileInfo">profile_name</span>
-          <br/>
-          <span class="profileInfo" id="profile_email" >profile_email</span></td> 
-        </td>
-      </tr>
-      <tr>
-        <td>
-          
-        </td>
-      </tr>
-    </table>
-    </td> 
-  </tr>
-  <tr>
-    <td></td>
-    <td><a style="color:#0098cc;font-size: 12px; padding:0px" href="#" onclick="OnGoogleSignOut()">Sign Out</a></td> 
-  </tr>
-</table>
-  </div>
-  <img id="profile_img" style="position:absolute; bottom:75px; left:10px;width:42px;height:42px;margin:4px"></img><br/>
+    <tr>
+      <td></td>
+      <td><a style="color:#0098cc;font-size: 12px; padding:0px" href="#" onclick="OnGoogleSignOut()">Sign Out</a></td> 
+    </tr>
+  </table>
+</div>
+<img id="profile_img" style="position:absolute; bottom:75px; left:10px;width:42px;height:42px;margin:4px"></img><br/>
 </div>
 </div>
 
@@ -726,15 +632,15 @@ color: #2a2a2a; position: absolute; top: 20%; left: 44%; z-index: 600; width: 50
 
 
 <!-- Properties Control
-====================================================================== -->
-<div id="cntrl_properties" class="ui-cntrl-properties">
-  <a href="#"id="prop_header">Properties</a>
-  <div id="diprop">
-  <a href="#" class="ui-cntrl-properties-closebtn" id="btn_closeProperties">&times;</a>
-</div>
-</div>
+  ====================================================================== -->
+  <div id="cntrl_properties" class="ui-cntrl-properties">
+    <a href="#"id="prop_header">Properties</a>
+    <div id="diprop">
+      <a href="#" class="ui-cntrl-properties-closebtn" id="btn_closeProperties">&times;</a>
+    </div>
+  </div>
 
-<nav id="context-menu" class="context-menu">
+  <nav id="context-menu" class="context-menu">
     <ul class="context-menu__items">
       <li class="context-menu__item">
         <a id="SetViewToSel" href="#" class="context-menu__link" data-action="View"><i class="fa fa-eye"></i>Center View to Selection</a>
@@ -748,8 +654,11 @@ color: #2a2a2a; position: absolute; top: 20%; left: 44%; z-index: 600; width: 50
       </li>
     </ul>
   </nav>
-<!--multiple="multiple"-->
+  <!--multiple="multiple"-->
   <script src="js/main.js"></script>
+  <script src="js/contextmenu.js"></script>
   <script src="js/io/io_open.js" type="text/javascript"></script>
+  <!--
     <script src="https://apis.google.com/js/client:plusone.js" type="text/javascript"></script>
-</html>
+  -->
+  </html>

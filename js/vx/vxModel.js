@@ -242,7 +242,7 @@ vxModel.prototype.initTreeNodes = function() {
     if (this.IsTreeInit == false) {
         this.IsTreeInit = true;
         this.modelNode = "node_" + this.Name;
-        AddTreeNode(this.modelNode, this.Name, "node_mesh", "envrroot", true);
+        AddTreeNode(this.modelNode, this.Name, "node_models", "envrroot", true);
 
 
         // Add Global Model Geometry Nodes
@@ -399,28 +399,6 @@ vxModel.prototype.initTreeNodes = function() {
         AddTreeNode(nodeName + "_hex", "Hex: " + color.toHex(), nodeName, "hash");
 
     }
-    /*
-    for (var i = 0; i < this.Meshes.length; i++) {
-     
-          var mesh = this.Meshes[i];
-          
-          AddTreeNode("node_"+mesh.Name, mesh.Name, "node_"+this.Name, "mesh");
-          //  var center = "Model Center: : (" +modelprop_Center[0] +","+ modelprop_Center[1] +","+ modelprop_Center[2]+")";
-          var numOfVerts = "# of Vertices :" + mesh.GetVerticesCount();
-          var numOfFcs = "# of Faces      :"+ mesh.GetIndicesCount()/3;
-          
-          // Now add Tree Node Info
-          AddTreeNode("node_"+mesh.Name+"_geometry", "Geometry", "node_"+mesh.Name, "properties");
-          // AddTreeNode("node_"+FileName+"_numOfVerts", center, "node_"+FileName+"_properties");
-          AddTreeNode("node_"+mesh.Name+"_numOfVerts", numOfVerts, "node_"+mesh.Name+"_geometry", "axis");
-          AddTreeNode("node_"+mesh.Name+"_numOfVerts", numOfFcs, "node_"+mesh.Name+"_geometry", "plane");
-          
-          
-          //AddTreeNode("node_"+mesh.Name+"_material", "Material", "node_"+mesh.Name, "txtrs"); 
-          //AddTreeNode("node_"+mesh.Name+"_colour_diffuse", "Diffuse Colour", "node_"+mesh.Name+"_material", "txtrs"); 
-          //AddTreeNode("node_"+mesh.Name+"_textrures", "Textures", "node_"+mesh.Name+"_material", "txtrs"); 
-    }
-    */
 };
 
 

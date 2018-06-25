@@ -1,0 +1,181 @@
+
+
+
+/* Treeview Control */
+/* -------------------------------------------------------------------- */
+
+/*
+ * Imageless CSS3 Treeview with Checkbox Support
+ * @namespace window.AcidJs
+ * @class CSS3Treeview
+ * @version 3.0
+ * @author Martin Ivanov
+ * @url developer website: http://wemakesites.net/
+ * @url developer twitter: https://twitter.com/#!/wemakesitesnet
+ * @url developer blog http://acidmartin.wordpress.com/
+ **/
+ 
+/*
+ * Do you like this solution? Please, donate:
+ * https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=QFUHPWJB2JDBS
+ **/
+ 
+.ui-cntrl-treeview,
+.ui-cntrl-treeview *
+{
+    padding: 0;
+    margin: ;
+    list-style: none;
+    transition: margin-left .5s;
+  transition: background-color 1s ease;
+  background-color:rgba(0, 0, 0, 0);
+    text-shadow: 0px 0px 8px black;
+}
+ 
+.ui-cntrl-treeview label[for]::before,
+.ui-cntrl-treeview label span::before
+{
+    content: "\25b6";
+    display: inline-block;
+    margin: 2px 0 0;
+    width: 13px;
+    height: 13px;
+    vertical-align: top;
+    text-align: center;
+    color: #1375b3;
+    font-size: 8px;
+    line-height: 13px;
+}
+
+
+.ui-cntrl-treeview:hover
+{ 
+  background-color:rgba(0, 0, 0, .5);
+  box-shadow: 0 0 15px rgba(0, 0, 0, .75);   
+  transition: box-shadow 0.5s ease;
+}
+ 
+.ui-cntrl-treeview li ul
+{
+    margin: 0 0 0 22px;
+    
+}
+
+.ui-cntrl-treeview li ul li>label
+{
+  transition: background-color 0.1s ease;
+}
+  
+
+.ui-cntrl-treeview li ul li>label:hover
+{
+  /*color:black;*/
+  /*background-color:#0094f7;*/
+}
+
+.ui-cntrl-treeview *
+{
+    vertical-align: middle;
+}
+ 
+.ui-cntrl-treeview
+{
+    font: normal 13px/16px "Segoe UI", Arial, Sans-serif;
+}
+ 
+.ui-cntrl-treeview li
+{
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+}
+
+.ui-cntrl-treeview li ul li canvas[data-id="id"]
+{
+  position:absolute;
+  left:0px;
+  
+  transition: background-color 0.25s ease;
+}
+
+.ui-cntrl-treeview li ul li:hover > canvas[data-id="id"]
+{
+  background-color:#0094f7;
+}
+ 
+.ui-cntrl-treeview input[type="checkbox"]
+{
+    display: none;
+}
+ 
+.ui-cntrl-treeview label
+{
+    cursor: pointer;
+}
+
+
+
+.ui-cntrl-treeview label[for]::before
+{
+    -webkit-transform: translatex(-24px);
+    -moz-transform: translatex(-24px);
+    -ms-transform: translatex(-24px);
+    -o-transform: translatex(-24px);
+    transform: translatex(-45px);
+}
+ 
+.ui-cntrl-treeview label span::before
+{
+    -webkit-transform: translatex(16px);
+    -moz-transform: translatex(16px);
+    -ms-transform: translatex(16px);
+    -o-transform: translatex(16px);
+    transform: translatex(16px);
+}
+ 
+.ui-cntrl-treeview input[type="checkbox"][id]:checked ~ label[for]::before
+{
+    content: "\25bc";
+}
+ 
+.ui-cntrl-treeview input[type="checkbox"][id]:not(:checked) ~ ul
+{
+    display: none;
+}
+ 
+.ui-cntrl-treeview label:not([for])
+{
+    margin: 0 7px 0 5px;
+}
+
+
+ 
+.ui-cntrl-treeview label span::before
+{
+    content: "";
+    border: solid 1px #1375b3;
+    color: #1375b3;
+    opacity: .50;
+}
+ 
+.ui-cntrl-treeview label input:checked + span::before
+{
+    content: "\2714";
+    box-shadow: 0 0 2px rgba(0, 0, 0, .25) inset;
+    color: white;
+    opacity: 1;
+}
+
+
+.ui-cntrl-treeview label[for]
+{
+  position:relative;
+  left:16px;
+  
+  padding-left:5px;
+  padding-right:20px;
+  margin: 20px 0 0;
+  background-image: url('../img/tree/node_default.png');
+  background-repeat: no-repeat;
+  background-position: 0px 0px;
+}

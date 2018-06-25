@@ -1,0 +1,98 @@
+<input id="menu_file_openSelect" multiple="multiple" type="file" style="display:none" />
+<div class="menubar" id="top_menu" style="border: none;position:absolute; top:0px; left:0;">
+  <!-- Top Menu Bar -->
+  <nav class="menubar">
+  <div id="Hamburger"><a id="btn_logo" href="#">Menu</a></div>
+  <!--<div id="logo"><a id="btn_logo" href="#">Iris Viewer</a></div>-->
+  <label for="drop" class="toggle">Menu</label>
+  <input type="checkbox" id="drop" />
+  <ul class="menu">
+    <li> 
+      <!-- First Tier Drop Down -->
+      <label for="drop-1" class="toggle">View</label>
+      <a href="#">View</a>
+      <input type="checkbox" id="drop-1"/>
+      <ul>
+        
+            <li><a id="menu_view_perspec" data-icon="icon-view-persp" href="#">Perspective</a></li>
+            <li><a id="menu_view_ortho" data-icon="icon-view-ortho" href="#">Orthogonal</a></li>
+            
+        <li><hr class="menubar-splitter-min" /></li>
+        <!-- Second Tier Drop Down -->
+        <li> 
+          <label for="drop-3" class="toggle">SetViewto</label>
+          <a href="#">Set View to...    </a>
+          <input type="checkbox" id="drop-3"/>
+          <ul>
+            <li><a id="menu_view_iso" data-icon="icon-view-iso" href="#">Corner</a></li>
+              <li><hr class="menubar-splitter-min" /></li>
+            <li><a id="menu_view_top" data-icon="icon-view-top" href="#">Top</a></li>
+            <li><a id="menu_view_bottom" data-icon="icon-view-bottom" href="#">Bottom</a></li>
+            <li><a id="menu_view_front" data-icon="icon-view-front"  href="#">Front</a></li>
+            <li><a id="menu_view_back" data-icon="icon-view-back" href="#">Back</a></li>
+            <li><a id="menu_view_left" data-icon="icon-view-left" href="#">Left</a></li>
+            <li><a id="menu_view_right" data-icon="icon-view-right" href="#">Right</a></li>
+          </ul>
+        </li>
+        
+              <li><hr class="menubar-splitter" /></li>
+            <li><a id="menu_view_zoomIn" data-icon="icon-view-zoom-in" href="#">Zoom In</a></li>
+            <li><a id="menu_view_zoomOut" data-icon="icon-view-zoom-out" href="#">Zoom Out</a></li>
+            <li><a id="menu_view_zoomFit" data-icon="icon-view-zoom-fit"  href="#">Fit</a></li>
+        <!-- Second Tier Drop Down -->
+        <!--
+                <li><hr class="modal-splitter" /></li>
+        <li> 
+          <label for="drop-3" class="toggle">SetViewto</label>
+          <a href="#">Rendering Style    </a>
+          <input type="checkbox" id="drop-3"/>
+          <ul>
+            <li><a id="menu_view_shadedEdge" data-icon="icon-view-shadededge" href="#">Shaded Edge</a></li>
+            <li><a id="menu_view_shaded" data-icon="icon-view-shaded" href="#">Shaded</a></li>
+            <li><a id="menu_view_wireframe" data-icon="icon-view-wireframe" href="#">Wireframe</a></li>
+          </ul>
+        </li>
+        -->
+      </ul>
+    </li>
+        <li> 
+      <label for="drop-3" class="toggle">Rendering</label>
+      <a href="#">Rendering</a>
+      <input type="checkbox" id="drop-3"/>
+      <ul>
+            <li><a id="menu_view_textured" data-icon="icon-view-textured" href="#">Textured</a></li>
+            <li><a id="menu_view_shaded" data-icon="icon-view-shaded" href="#">Shaded</a></li>
+            <li><a id="menu_view_wireframe" data-icon="icon-view-wireframe" href="#">Wireframe</a></li>
+                <li><hr class="menubar-splitter-min" /></li>
+            <li><a id="menu_view_surfaceNormal" data-icon="icon-view-normal" href="#">Surface Normal</a></li>
+                <li><hr class="menubar-splitter" /></li>
+                <li><a id="menu_view_doEdge" data-icon="icon-view-shadededge" href="#">Show Edge</a></li>
+                <li><a id="menu_view_noEdge" data-icon="icon-view-shaded" href="#">No Edge</a></li>
+      </ul>
+    </li>
+    <li> 
+      <label for="drop-2" class="toggle">Tools</label>
+      <a href="#">Tools</a>
+      <input type="checkbox" id="drop-2"/>
+      <ul>
+        <li><a  id="menu_tools_measure" data-icon="icon-tools-measure" href="#">Measure Distance</a></li>
+        <!--<li><a  id="menu_tools_measure_angle" data-icon="icon-tools-measure-angle" href="#">Measure Angle</a></li>-->
+        <li><hr class="modal-splitter" /></li>
+        <li><a  id="menu_tools_debug" data-icon="icon-tools-debug" href="#">Toggle Debug Info</a></li>
+      </ul>
+      
+    </li>
+  </ul>
+</nav>
+</div>
+</div>
+
+<!--
+<div class="icon-bar" style="border: none;position:absolute; top:85%; left:0;">
+  <a class="active" href="#"><i class="fa fa-home"></i></a>
+  <a href="#">sdf<i class="fa fa-search"></i></a>
+  <a href="#"><i class="fa fa-envelope"></i></a>
+  <a href="#">asdf<i class="fa fa-globe"></i></a>
+  <a href="#"><i class="fa fa-trash"></i></a>
+</div>
+-->

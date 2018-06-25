@@ -301,11 +301,9 @@ function InitialiseFiles() {
         // now that all materials are set, initialise the tree nodes.
         model.initTreeNodes();
 
-        Zoom = Math.min(-model.MaxPoint.Length() * 1.5, Zoom) - 1;
-        rotX = -45;
-        rotY = 30;
-
-        //model.addImportNotes();
+        Camera.zoom = Math.min(-model.MaxPoint.Length() * 1.5, Camera.zoom) - 1;
+        Camera.rotX = -45;
+        Camera.rotY = 30;
     }
     
 

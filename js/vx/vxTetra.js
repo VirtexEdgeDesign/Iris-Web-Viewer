@@ -2,9 +2,10 @@
     //var vertexColorAttribute;
     //var hasTextureAttribute;
 
-    var mvMatrix = mat4.create();
-    var pMatrix = mat4.create();
-    var mvp = mat4.create();
+    //var mvMatrix = mat4.create();
+    var Camera = new vxCamera();
+    //var pMatrix = mat4.create();
+    
 
     // Vertex shader program
 
@@ -244,17 +245,17 @@
     }
 
     function setMatrixUniforms() {
-        gl.uniformMatrix4fv(shader.uniformLocations.projectionMatrix, false, pMatrix);
-        gl.uniformMatrix4fv(shader.uniformLocations.modelViewMatrix, false, mvMatrix);
+        gl.uniformMatrix4fv(shader.uniformLocations.projectionMatrix, false, Camera.projection);
+        gl.uniformMatrix4fv(shader.uniformLocations.modelViewMatrix, false, Camera.view);
 
         // recalculate the normal matrix as the transposition of the inverted 3x3 matrice of the View Matrix.
         var normalMatrix = mat3.create();
-        mat4.toInverseMat3(mvMatrix, normalMatrix);
+        mat4.toInverseMat3(Camera.view, normalMatrix);
         mat3.transpose(normalMatrix);
         gl.uniformMatrix3fv(shader.uniformLocations.normalMatrix, false, normalMatrix);
     }
 
-
+var pixels = new Uint8Array(4);
     function initBuffers() {
 
         numOfElements = 0;
@@ -295,101 +296,11 @@
 
     }
 
-
-    vec3.transformMat4 = function(out, a, m) {
-        var x = a[0],
-            y = a[1],
-            z = a[2],
-            w = m[3] * x + m[7] * y + m[11] * z + m[15];
-        w = w || 1.0;
-        out[0] = (m[0] * x + m[4] * y + m[8] * z + m[12]) / w;
-        out[1] = (m[1] * x + m[5] * y + m[9] * z + m[13]) / w;
-        out[2] = (m[2] * x + m[6] * y + m[10] * z + m[14]) / w;
-        return out;
-    };
-    var center = [0, 0, 0];
-
-    vec3.cross = function(out, a, b) {
-        var ax = a[0],
-            ay = a[1],
-            az = a[2],
-            bx = b[0],
-            by = b[1],
-            bz = b[2];
-
-        out[0] = ay * bz - az * by;
-        out[1] = az * bx - ax * bz;
-        out[2] = ax * by - ay * bx;
-        return out;
-    };
-
-    vec3.normalize = function(out, a) {
-        var x = a[0],
-            y = a[1],
-            z = a[2];
-        var len = x * x + y * y + z * z;
-        if (len > 0) {
-            //TODO: evaluate use of glm_invsqrt here?
-            len = 1 / Math.sqrt(len);
-            out[0] = a[0] * len;
-            out[1] = a[1] * len;
-            out[2] = a[2] * len;
-        }
-        return out;
-    };
-
     function drawScene() {
 
         if (safeToDraw == true) {
             stats.begin();
 
-            var resp = 8;
-            // monitored code goes here
-            currotX = Smooth(currotX, DegToRad(rotX), resp);
-            currotY = Smooth(currotY, DegToRad(rotY), resp);
-            curZoom = Smooth(curZoom, Zoom, resp);
-
-
-            var theta = currotX;
-            var phi = currotY;
-
-            var up = [0, 1, 0];
-            up[0] = Math.sin(theta) * Math.sin(phi);
-            up[1] = Math.cos(phi);
-            up[2] = -Math.cos(theta) * Math.sin(phi);
-            //console.log(up);
-
-            //var center = [0,0,0];
-
-            // now get the foward vector, the right vector will be the x-product of that
-            // and the up vector.
-            var fwd = [0, 0, 0];
-            var eye = [0, 0, curZoom];
-            eye[0] = Math.sin(theta) * Math.cos(phi) * curZoom;
-            eye[1] = -Math.sin(phi) * curZoom;
-            eye[2] = -Math.cos(theta) * Math.cos(phi) * curZoom;
-
-            fwd[0] = center[0] - eye[0];
-            fwd[1] = center[1] - eye[1];
-            fwd[2] = center[2] - eye[2];
-
-            var fwdN = [0, 0, 0];
-            vec3.normalize(fwdN, fwd);
-            var right = [0, 0, 0];
-            vec3.cross(right, up, fwdN);
-
-            modelprop_Center[0] += panY * up[0] + panX * right[0];
-            modelprop_Center[1] += panY * up[1] + panX * right[1];
-            modelprop_Center[2] += panY * up[2] + panX * right[2];
-            //mat4.translate(mvMatrix, [panY/10 * up[0], panY/10 * up[1], panY/10 * up[2]]);
-            //mat4.translate(mvMatrix, [-panX/10 * right[0], -panX/10 * right[1], -panX/10 * right[2]]);
-            panX = 0;
-            panY = 0;
-
-
-            Cur_Center[0] = Smooth(Cur_Center[0], modelprop_Center[0], 8);
-            Cur_Center[1] = Smooth(Cur_Center[1], modelprop_Center[1], 8);
-            Cur_Center[2] = Smooth(Cur_Center[2], modelprop_Center[2], 8);
 
             // Clear the canvas before we start drawing on it.
             gl.clearColor(0, 0, 0, 1); // Clear to black, fully opaque
@@ -399,36 +310,8 @@
             // Set the viewport to match
             gl.viewport(0, 0, canvas.width, canvas.height);
 
-            // Establish the perspective with which we want to view the
-            // scene. Our field of view is 45 degrees, with a width/height
-            // ratio of 640:480, and we only want to see objects between 0.1 units
-            // and 100 units away from the camera.
-            var factor = -curZoom / 800;
-
-            if (ProjectionType == vxProjectionType.Perspective) {
-                mat4.perspective(45, canvas.width / canvas.height, 0.1, 1000000.0, pMatrix);
-            } else if (ProjectionType == vxProjectionType.Ortho) {
-                mat4.ortho(-factor * canvas.width / 2, factor * canvas.width / 2, -factor * canvas.height / 2, factor * canvas.height / 2, -10000, 10000, pMatrix);
-            }
-
-            // Set the drawing position to the "identity" point, which is
-            // the center of the scene.
-            mat4.identity(mvMatrix);
-
-            mat4.translate(mvMatrix, [0, 0, curZoom]);
-
-            mat4.translate(mvMatrix, [-2 * panX / 10, -2 * panY / 10, 0]);
-            mat4.rotate(mvMatrix, currotY, [1, 0, 0]);
-            mat4.rotate(mvMatrix, currotX, [0, 1, 0]);
-
-
-            // Now get the cross product of the 
-
-            //vec3.transformMat4(Cur_Center, mvMatrix, [panX/10, panY/10, 0]);
-            mat4.translate(mvMatrix, Cur_Center);
-
-            mat4.multiply(pMatrix, mvMatrix, mvp);
-            // Save the current matrix, then rotate before we draw.
+            // Update Camera
+            Camera.update();
 
             mvPushMatrix();
 
@@ -445,13 +328,13 @@
 
             // Get Selection Information
             //***************************************************************************************
-            var pixels = new Uint8Array(4);
+            
             gl.readPixels(MouseState.x, gl.drawingBufferHeight - MouseState.y, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
 
             HoverIndex = 0;
             HoverIndex = pixels[0] + pixels[1] * 255 + pixels[2] * 255 * 255;
 
-            var backCol = 0.125;
+            var backCol = 0.1;
             gl.clearColor(backCol, backCol, backCol, 1.0); // Clear to black, fully opaque
             gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
@@ -561,22 +444,22 @@
             gl.viewport(canvas.width - size, canvas.height - size, size, size);
 
 
-            if (ProjectionType == vxProjectionType.Perspective) {
-                mat4.perspective(45, 1, 0.1, 10000.0, pMatrix);
+            if (Camera.projectionType == vxProjectionType.Perspective) {
+                mat4.perspective(45, 1, 0.1, 10000.0, Camera.projection);
 
-            } else if (ProjectionType == vxProjectionType.Ortho) {
+            } else if (Camera.projectionType == vxProjectionType.Ortho) {
                 size = 15;
-                mat4.ortho(-size, size, -size, size, -10000, 10000, pMatrix);
+                mat4.ortho(-size, size, -size, size, -10000, 10000, Camera.projection);
             }
 
 
             // Set the drawing position to the "identity" point, which is
             // the center of the scene.
-            mat4.identity(mvMatrix);
+            mat4.identity(Camera.view);
 
-            mat4.translate(mvMatrix, [-0.0, 0.0, -size / 2]);
-            mat4.rotate(mvMatrix, currotY, [1, 0, 0]);
-            mat4.rotate(mvMatrix, currotX, [0, 1, 0]);
+            mat4.translate(Camera.view, [-0.0, 0.0, -size / 2]);
+            mat4.rotate(Camera.view, Camera.phi, [1, 0, 0]);
+            mat4.rotate(Camera.view, Camera.theta, [0, 1, 0]);
 
             setMatrixUniforms();
 
@@ -594,49 +477,49 @@
 
 
     function SetViewToIso() {
-        rotX = -45;
-        rotY = 30;
+        Camera.rotX = -45;
+        Camera.rotY = 30;
     }
 
     function SetViewToTop() {
-        rotY = 90;
-        rotX = 90;
+        Camera.rotY = 90;
+        Camera.rotX = 90;
     }
 
     function SetViewToBottom() {
-        rotY = -90;
-        rotX = 90;
+        Camera.rotY = -90;
+        Camera.rotX = 90;
     }
 
     function SetViewToFront() {
-        rotY = 0;
-        rotX = 270;
+        Camera.rotY = 0;
+        Camera.rotX = 270;
     }
 
     function SetViewToBack() {
-        rotY = 0;
-        rotX = 90;
+        Camera.rotY = 0;
+        Camera.rotX = 90;
     }
 
     function SetViewToLeft() {
-        rotY = 0;
-        rotX = 180;
+        Camera.rotY = 0;
+        Camera.rotX = 180;
     }
 
     function SetViewToRight() {
-        rotY = 0;
-        rotX = 0;
+        Camera.rotY = 0;
+        Camera.rotX = 0;
     }
 
 
     function AdjustZoom(amount) {
-        Zoom *= amount;
+        Camera.zoom *= amount;
     }
 
     function FitZoom() {
         for (var i = 0; i < ModelCollection.length; i++) {
             var model = ModelCollection[i];
-            Zoom = Math.min(-model.MaxPoint.Length() * 1.5, Zoom) - 1;
+            Camera.zoom = Math.min(-model.MaxPoint.Length() * 1.5, Camera.zoom) - 1;
         }
     }
 
@@ -672,14 +555,14 @@
 
 
     function SetViewToPerspective() {
-        ProjectionType = vxProjectionType.Perspective;
-        log("ProjectionType = " + ProjectionType);
+        Camera.projectionType = vxProjectionType.Perspective;
+        log("ProjectionType = " + Camera.projectionType);
         SetMenuBarValues();
     }
 
     function SetViewToOrtho() {
-        ProjectionType = vxProjectionType.Ortho;
-        log("ProjectionType = " + ProjectionType);
+        Camera.projectionType = vxProjectionType.Ortho;
+        log("ProjectionType = " + Camera.projectionType);
         SetMenuBarValues();
     }
 
@@ -690,17 +573,17 @@
 
     function setMenuItemState(string, toggleState) {
         var item = document.getElementById(string);
-        document.getElementById(string).parentElement.style.backgroundColor = (toggleState == true) ? selCol : unSelCol;
+        //document.getElementById(string).parentElement.style.backgroundColor = (toggleState == true) ? selCol : unSelCol;
         //document.getElementById(string).parentElement.style.border = (toggleState==true) ? "thin solid #0000FF" : "thin solid #333";
-        document.getElementById(string).parentElement.style.borderColor = (toggleState == true) ? selCol : unSelCol;
-        item.style.color = (toggleState == true) ? "#fff" : "#ccc";
+        //document.getElementById(string).parentElement.style.borderColor = (toggleState == true) ? selCol : unSelCol;
+        //item.style.color = (toggleState == true) ? "#fff" : "#ccc";
     }
 
 
     function SetMenuBarValues() {
 
         // Handle Projection Type
-        switch (ProjectionType) {
+        switch (Camera.projectionType) {
             case vxProjectionType.Perspective:
                 setMenuItemState("menu_view_perspec", true);
                 setMenuItemState("menu_view_ortho", false);
@@ -796,7 +679,7 @@
     // Push a Metrix onto the Stack
     function mvPushMatrix() {
         var copy = mat4.create();
-        mat4.set(mvMatrix, copy);
+        mat4.set(Camera.view, copy);
         mvMatrixStack.push(copy);
     }
 
@@ -805,7 +688,7 @@
         if (mvMatrixStack.length === 0) {
             throw "Invalid popMatrix!";
         }
-        mvMatrix = mvMatrixStack.pop();
+        Camera.view = mvMatrixStack.pop();
     }
 
 
