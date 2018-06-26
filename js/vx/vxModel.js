@@ -383,8 +383,8 @@ vxModel.prototype.initTreeNodes = function() {
         img.onload = function(e) {
             //console.log("Img "+texture.name+" Applied to model");
             AddTreeNodeTexture(imgNodeID, nodeName, img, size);
-            AddTreeNode(imgNodeID + "_w", "Width: " + img.width, imgNodeID, "hash");
-            AddTreeNode(imgNodeID + "_h", "Height: " + img.height, imgNodeID, "hash");
+            //AddTreeNode(imgNodeID + "_w", "Width: " + img.width, imgNodeID, "hash");
+            //AddTreeNode(imgNodeID + "_h", "Height: " + img.height, imgNodeID, "hash");
         };
 
     }
