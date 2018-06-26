@@ -2,9 +2,7 @@
 
 ![image_import](ref/screenshots/IRIS_TILE_SMALL.png 'tile')
 
-### Status
-
-| Build Status | ![image_version](https://img.shields.io/badge/build-beta%20%5Bv.%200.5.0%5D-blue.svg 'Version') |
+### Status ![image_version](https://img.shields.io/badge/build-beta%20%5Bv.%200.5.0%5D-blue.svg 'Version') 
 
 Iris Web Viewer is an open source experimental online model viewer. It allows you to view 3D Exchange format files through a web browser with out the need for larger packages to be installed on a computer. It runs off of Javascript and WebGL is available at [Iris Web Viewer](https://VirtexEdgeDesign.github.io/Iris-Web-Viewer/) as well as through a Chrome Web Extension:
 
