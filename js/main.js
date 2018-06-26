@@ -875,7 +875,8 @@ $('#btn_openfile_local').click(function() {
 });
 
 $('#btn_openfile_gdrive').click(function() {
-  //loadPicker();
+  console.log('open picker');
+  loadPicker();
 });
 
 function openInNewTab(url) {
