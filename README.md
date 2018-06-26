@@ -1,14 +1,14 @@
 # Iris Web Viewer
 
 ### Status
-![image_version](https://img.shields.io/badge/build-beta%20%5Bv.%200.3.0%5D-green.svg "Version")
+![image_version](https://img.shields.io/badge/build-beta%20%5Bv.%200.5.0%5D-blue.svg "Version")
 
 Iris Web Viewer is an open source experimental online model viewer. It allows you to view 3D Exchange format files through a web browser with out the need for larger packages to be installed on your or someone elses computer. It runs through Javascript and WebGL and is there fore cross paltform and available through a number of different browsers.
 
 
 You can always access it here: [Iris Web Viewer](https://VirtexEdgeDesign.github.io/Iris-Web-Viewer/)
 
-![image_intro](img/ref/scrnsht_intro.png "Intro")
+![image_import](ref/screenshots/01intro.png "Intro")
 
 ## License & Disclaimer
 
@@ -24,7 +24,12 @@ Iris can import any of the following model formats. If there's one you don't see
 * stl (both ASCII and Binary)
 * obj (material files not supported yet)
 
-![image_import](img/ref/clsup_menu.png "Import")
+![image_import](ref/screenshots/02model_import.png "Export")
+
+## Export
+Iris can can also export to stl files for use in 3D Printing. We currently only support ASCII stl files.
+
+![image_import](ref/screenshots/03model_export.png "Import")
 
 ## Tree View Breakdown
 The Iris Envrioment has a treeview overlayed on the screen, allowing you to view statistics of each imported models as well as be able to hide and show groups/sub meshes of each model. Other info, such as measurements, are added to the treeview, allowing you to see broken down information (such as the measured distance in each coordinate axis).
