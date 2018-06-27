@@ -1,6 +1,7 @@
 # v 0.5 June 26th 2018
 * Added Chrome Extension.
 * Added Ribbon and Tree support.
+* Added Console.
 
 # v 0.4 October 3rd 2017
 * Added Direct X (.x) 3D File Support.
