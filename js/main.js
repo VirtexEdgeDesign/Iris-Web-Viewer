@@ -67,6 +67,8 @@ var modelprop_Radius = 1;
 
 var numOfFaces = 1;
 
+var Log = new vxConsole();
+
 // Render State, Shaded, Wireframe, etc...
 //**************************************************
 
@@ -90,6 +92,8 @@ var ShaderState = vxShaderState.Diffuse;
 var HoverIndex = 0;
 
 var treeHasFocus = 0;
+
+var LogHasFocus = 0;
 
 //This is a collection of all of the current models. A model is defined as a
 // individual file.
@@ -166,6 +170,9 @@ var TreeNode_Measurements = new vxTreeNode('node_measurements', 'Measurements');
 var loadWait = 1;
 
 function InitVariables() {
+  log('// IRIS Viewer  - [v. ' + iris.version + ' - Beta]');
+  log('// by rtroe');
+  log('// https://github.com/VirtexEdgeDesign/Iris-Web-Viewer');
   log('InitVariables()');
 
   loadingPrgrsBar.style.width = '0%';
@@ -280,6 +287,7 @@ function InitRibbon() {
   var tglTreeBtn = new RibbonButton('Toggle Tree', 'toggle_tree');
   tglTreeBtn.control.addEventListener('click', function() {
     tree.ToggleVisibility();
+    Resize();
   });
   cntrlsGroup.addItem(tglTreeBtn);
 
@@ -290,7 +298,10 @@ function InitRibbon() {
   cntrlsGroup.addItem(tglPropsBtn);
 
   var tglCnslBtn = new RibbonButton('Toggle Console', 'toggle_console');
-  tglCnslBtn.control.addEventListener('click', function() {});
+  tglCnslBtn.control.addEventListener('click', function() {
+    Log.ToggleVisibility();
+    Resize();
+  });
   cntrlsGroup.addItem(tglCnslBtn);
 
   // About Group
@@ -777,7 +788,16 @@ function Resize() {
   stats.dom.style.top = window.innerHeight - 75 + 'px';
   //footer.bottom = -30 + "px";
   //footer.left = 0 + "px";
+  var pad = 0;
+  Log.form.style.top = window.innerHeight - 122 + 'px';
+  Log.form.style.left = pad + 'px';
+  Log.form.style.width = window.innerWidth - 2 * pad + 'px';
 
+  if (Log.isVisible == true) {
+    tree.tree.style.height = window.innerHeight - 123 - 122 + 'px';
+  } else {
+    tree.tree.style.height = window.innerHeight - 142 + 'px';
+  }
   gl.viewport(0, 0, canvas.width, canvas.height);
 }
 
@@ -793,6 +813,7 @@ $('.tree-control').mouseleave(function() {
 // *****************************************************************************************************
 function log(Text) {
   //console.log(">> "+Text);
+  Log.WriteLine(Text);
   if (DoDebug === true) {
     log(Text);
     //var TextSoFar = $('#console').html();
@@ -1070,6 +1091,7 @@ function LeftMouseClickEvent() {
 
     newMesh.Name = 'Face.' + HoverIndex;
 
+    newMesh.Mesh = HoveredMesh.Mesh;
     newMesh.Model = HoveredMesh.Model;
 
     var ind = 0;
@@ -1230,6 +1252,8 @@ function MouseWheelHandler(e) {
       } else {
         tree.style.top = '118px';
       }
+    } else if (LogHasFocus == 1) {
+      // do nothing
     } else {
       // Set zoom info
       Camera.zoom -= delta * (Camera.zoom / 10);

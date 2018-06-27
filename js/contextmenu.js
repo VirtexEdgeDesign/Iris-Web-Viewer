@@ -88,8 +88,7 @@
   var clickCoordsX;
   var clickCoordsY;
 
-  var menu = document.querySelector('.context-menu');
-  //console.log(document.getElementById('context-menu'));
+  var menu = document.querySelector('#context-menu');
   var menuItems = menu.querySelectorAll('.context-menu__item');
   var menuState = 0;
   var menuWidth;

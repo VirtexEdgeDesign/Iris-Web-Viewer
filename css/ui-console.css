@@ -1,0 +1,17 @@
+.ui-cntrl-console {
+  width: 500px;
+  font-size: 12px;
+  position: absolute;
+  z-index: 1;
+  background-color: rgba(34, 34, 34, 0.5);
+  transition: 0.3s;
+  opacity: 0.75;
+}
+.ui-cntrl-console:hover {
+  opacity: 1;
+  background-color: #222;
+}
+.ui-cntrl-console-insides {
+  overflow: scroll;
+  height: 48px;
+}

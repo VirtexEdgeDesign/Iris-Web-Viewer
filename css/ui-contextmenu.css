@@ -1,0 +1,95 @@
+/* context menu */
+
+.context-menu {
+  display: none;
+  position: absolute;
+  z-index: 10;
+  /*padding: 2px 0;*/
+  width: 200px;
+  background-color: #222;
+  border: solid 1px #111;
+  box-shadow: 1px 1px 2px #000;
+}
+
+.context-menu--active {
+  display: block;
+  z-index: 10000;
+}
+
+.context-menu__items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.context-menu__item {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.context-menu__item#splitter {
+  padding: 0px 10px 0px 10px;
+  margin: 0px 5px 0px 5px;
+  color: #888;
+  background-color: #888;
+  font-size: 1%;
+  width: 100% - 10px;
+  height: 1px;
+  border: 0;
+}
+.context-menu__item#splitter:hover {
+  color: #888;
+  background-color: #888;
+}
+
+.context-menu__item > a {
+  display: block;
+  padding: 0 10px;
+  color: #bbb;
+  font-size: 11px;
+  line-height: 20px;
+  text-decoration: none;
+}
+
+.context-menu__item > a:before {
+  vertical-align: center;
+  /*content: url('../assets/icon_16.png');*/
+  top: 4px;
+  left: -10px;
+  position: absolute;
+}
+
+.context-menu__item > a[data-icon='properties']::before {
+  content: url('../img/tree/node_properties.png');
+}
+
+.context-menu__item:last-child {
+  margin-bottom: 0;
+}
+
+.context-menu__link {
+  display: block;
+  padding: 0px 10px 5px 200px;
+
+  position: relative;
+  left: 20px;
+
+  color: #bbb;
+  font-size: 11px;
+  /*line-height: 20px;*/
+  text-decoration: none;
+  /*
+    display: block;
+    padding: 4px 12px;
+    color: #aaa;
+    text-decoration: none;
+    */
+}
+
+.context-menu__link:hover {
+  color: #fff;
+}
+
+.context-menu__item:hover {
+  background-color: #0094f7;
+}
